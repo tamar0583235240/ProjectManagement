@@ -1,4 +1,4 @@
-const Projects = require('d:/ProjectReactNode/Backend/models/Projects');
+const Projects = require('../models/Projects');
 
 exports.AddProject = async (req, res) => {
     try {
