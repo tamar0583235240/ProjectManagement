@@ -1,0 +1,32 @@
+# Node modules
+node_modules/
+
+# לוגים
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# מערכת הפעלה / עורך קוד
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# קבצי סביבה
+.env
+.env.local
+.env.*.local
+
+# Build files
+dist/
+build/
+
+# קבצי זמניים של npm
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# test coverage
+coverage/
