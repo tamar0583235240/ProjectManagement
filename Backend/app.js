@@ -13,6 +13,7 @@ const tasksRoutes = require('./routes/tasksRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 const organizationsRoutes = require('./routes/organizationsRoutes');
 const authRoutes = require('./routes/authRoutes');
+const eventsRoutes = require('./routes/eventsRoutes');
 
 
 const PORT = process.env.PORT || 7001;
@@ -35,7 +36,7 @@ app.use("/api/tasks", tasksRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/organizations", organizationsRoutes);
 app.use("/api/auth",authRoutes )
-
+app.use('/api/events', eventsRoutes);
 
 
 // Home route
