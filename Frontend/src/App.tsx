@@ -26,9 +26,9 @@ import { store } from './app/store'
 
 import { Provider } from 'react-redux'
 import HomePage from '../src/pages/HomePage'
-import React from 'react'
-import { RouterProvider, useNavigate } from 'react-router'
-import router from './app/router'
+
+
+
 import Dashboard from './pages/Dashboard'
 
 
