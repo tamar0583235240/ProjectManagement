@@ -1,0 +1,88 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .form label {
+    margin-bottom: 8px;
+  }
+  
+  .form input,
+  .form textarea,
+  .form select {
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .form button {
+    padding: 10px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .form .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  
+  .employees-container {
+    /* border: 1px solid #ccc; */
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .employee-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+  }
+  
+  .employee-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .employee-details label {
+    margin-bottom: 4px;
+  }
+  
+  .employee-actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .add-employee-button {
+    padding: 10px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 16px;
+  }
+  
+  .add-employee-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .new-employee-input {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .employee-actions {
+    display: flex;
+    gap: 8px;
+  }

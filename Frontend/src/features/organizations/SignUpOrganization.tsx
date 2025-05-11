@@ -1,5 +1,4 @@
 import type React from "react"
-import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
@@ -15,7 +14,8 @@ import type { Organization } from "../../types/Organization"
 import type { User } from "../../types/User"
 import { useAddOrganizationMutation } from "./organizationsApi"
 import { SchemaOrganization, type OrganizationFormData } from "../../schemas/SchemaSignUpOrganization"
-
+import { useForm } from "react-hook-form"
+import { useCookies } from "react-cookie"
 interface OrganizationDialogProps {
     open: boolean
     onClose: () => void
@@ -37,6 +37,7 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
     const [addOrganization] = useAddOrganizationMutation();
     const [addUser] = useSignUpMutation();
     const [getRoleByName] = useLazyGetRoleByNameQuery();
+    const [cookies, setCookies] = useCookies(['token'])
     const onSubmit = async (organizationData: OrganizationFormData) => {
         if (!organizationData || !userData) {
             console.error("Missing organization or user data.");
@@ -71,7 +72,10 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
                     organization_id: resOrganization._id,
                 };
                 console.log("User data after change:", user);
-                const response = await addUser(user).unwrap();
+                const token = await addUser(user).unwrap();
+                console.log("access token:", token)
+                setCookies("token", token, { path: "/", maxAge: 3600 * 24 * 7 });
+                
                 alert("Registration completed successfully!");
                 onClose();
                 reset();

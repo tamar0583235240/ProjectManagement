@@ -12,10 +12,7 @@ export const organizationsApi = api.injectEndpoints({
       }),
       invalidatesTags: ["Organization"],
     }),
-    // כאן אפשר להוסיף בהמשך:
-    // updateOrganization: ...
-    // deleteOrganization: ...
-    // getOrganizations: ...
+
   }),
   overrideExisting: false,
 });

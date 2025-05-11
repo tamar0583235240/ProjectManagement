@@ -11,6 +11,8 @@ import Button from "@mui/material/Button"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import { SchemaSignIn, type SignInFormData } from "../../schemas/SchemaSignIn"
+import { useSignInMutation } from "./authApi"
+import { useCookies } from "react-cookie"
 
 interface SignInDialogProps {
   open: boolean
@@ -19,22 +21,64 @@ interface SignInDialogProps {
 }
 
 const SignIn: React.FC<SignInDialogProps> = ({ open, onClose, onSuccess }) => {
+
+  const [SignIn] = useSignInMutation();
+  const [cookies, setCookies] = useCookies(['token'])
+
   const { register, handleSubmit, formState: { errors }, reset } = useForm<SignInFormData>({
     resolver: zodResolver(SchemaSignIn),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   })
 
-  const onSubmit = (data: SignInFormData) => {
-    console.log(data)
-    alert("Sign in successful!")
-    onClose()
-    reset()
-    // קריאה לפונקציה onSuccess אם היא הועברה
-    if (onSuccess) {
-      onSuccess()
+  // const onSubmit = async(data: SignInFormData) => {
+  //   console.log(data)
+  //   // const token = await SignIn(data).unwrap();
+  //   // console.log("access token:", token)
+  //   // setCookies("token", token, { path: "/", maxAge: 3600 * 24 * 7 });
+
+  //   const response = await SignIn(data).unwrap();
+  //   console.log("response:", response);
+    
+  //   // התגובה מהשרת עכשיו מכילה גם user וגם accessToken
+  //   const { accessToken } = response;
+    
+  //   console.log("access token:", accessToken);
+  //   setCookies("token", accessToken, { path: "/", maxAge: 3600 * 24 * 7 });
+  //   alert("Sign in successful!")
+  //   onClose()
+  //   reset()
+  //   // קריאה לפונקציה onSuccess אם היא הועברה
+  //   if (onSuccess) {
+  //     onSuccess()
+  //   }
+  // }
+
+  const onSubmit = async(data: SignInFormData) => {
+    console.log(data);
+    try {
+      const response = await SignIn(data).unwrap();
+      console.log("response:", response);
+      
+      // התגובה מהשרת עכשיו מכילה גם user וגם accessToken
+      const { accessToken } = response;
+      
+      console.log("access token:", accessToken);
+      setCookies("token", accessToken, { path: "/", maxAge: 3600 * 24 * 7 });
+      
+      alert("Sign in successful!");
+      onClose();
+      reset();
+      
+      // קריאה לפונקציה onSuccess אם היא הועברה
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (error) {
+      console.error("Sign in error:", error);
+      alert("Sign in failed. Please try again.");
     }
   }
 
@@ -51,12 +95,12 @@ const SignIn: React.FC<SignInDialogProps> = ({ open, onClose, onSuccess }) => {
           <TextField
             margin="normal"
             fullWidth
-            id="username"
-            label="Username"
-            placeholder="Enter username"
-            {...register("username")}
-            error={!!errors.username}
-            helperText={errors.username?.message}
+            id="email"
+            label="email"
+            placeholder="Enter email"
+            {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
           />
 
           <TextField
