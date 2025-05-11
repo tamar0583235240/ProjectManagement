@@ -16,6 +16,7 @@
     "@mui/icons-material": "^7.1.0",
     "@mui/material": "^7.1.0",
     "@reduxjs/toolkit": "^2.8.1",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.508.0",
     "react": "^19.1.0",
     "react-cookie": "^8.0.1",
