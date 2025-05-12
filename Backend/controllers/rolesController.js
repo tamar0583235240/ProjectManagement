@@ -72,10 +72,10 @@ exports.getRoleByName = async (req, res) => {
 
 exports.getRoleById = async (req, res) => {
     try {
-        const roleId = req.params._id;
+        const roleId = req.params.id;
         const roleName = await Role.findOne({ role_id: roleId }).role_name;
 
-        if (!role) {
+        if (!roleName) {
             return res.status(404).json({ message: "Role not found" });
         }
 
