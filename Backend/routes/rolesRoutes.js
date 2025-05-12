@@ -6,5 +6,6 @@ router.post('/AllRoles', AllRoles);
 router.post('/AddRole', AddRole);
 router.delete('/DeleteRole/:role_id', DeleteRole);
 router.put('/UpdateRole/:role_id', UpdateRole);
-router.get("/getRoleByName/:name", getRoleByName)
+router.get("/getRoleByName/:name", getRoleByName);
+router.get('/getRoleById/:id', getRoleByName);
 module.exports = router;

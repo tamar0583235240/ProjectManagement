@@ -69,3 +69,19 @@ exports.getRoleByName = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
+exports.getRoleById = async (req, res) => {
+    try {
+        const roleId = req.params._id;
+        const roleName = await Role.findOne({ role_id: roleId }).role_name;
+
+        if (!role) {
+            return res.status(404).json({ message: "Role not found" });
+        }
+
+        res.json(roleName);
+    } catch (error) {
+        console.error("Error fetching role by name:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
