@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { api } from './api' // הנתיב לקובץ שבו מוגדר ה-RTK Query slice
-import userReducer from "../features/auth/userSlice";
+import { api } from './api'
+import userReducer from "../features/auth/userSlice" 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,

@@ -5,9 +5,7 @@ import Projects from "../pages/Projects";
 import Tasks from "../pages/Tasks";
 import EmployeeManagment from "../pages/EmployeeManagment";
 import NotFound from "../pages/NotFound";
-import useLoadUserFromCookie from "../hooks/useLoadUserFromCookie";
 
-useLoadUserFromCookie();
 
 const router = createBrowserRouter([
     // {

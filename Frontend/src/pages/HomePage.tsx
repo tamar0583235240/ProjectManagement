@@ -1,9 +1,15 @@
-import React from 'react'
+
+import useLoadUserFromCookie from '../hooks/useLoadUserFromCookie';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../features/auth/userSlice';
 
 const HomePage = () => {
+  
+  useLoadUserFromCookie();
+  const user = useSelector(selectCurrentUser);
   return (
     <div>
-      <h1>Home Page</h1>
+      <h1>hello {user?.role}</h1>
     </div>
   )
 }
