@@ -9,13 +9,14 @@ import Button from "@mui/material/Button"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import { type FormData } from "../../schemas/SchemaSignUp"
-import { useSignUpMutation, useLazyGetRoleByNameQuery } from "../auth/authApi"
+import { useSignUpMutation } from "../auth/authApi"
 import type { Organization } from "../../types/Organization"
 import type { User } from "../../types/User"
 import { useAddOrganizationMutation } from "../organizations/organizationsApi"
 import { SchemaOrganization, type OrganizationFormData } from "../../schemas/SchemaSignUpOrganization"
 import { useForm } from "react-hook-form"
 import { useCookies } from "react-cookie"
+import { useGetRoleByNameQuery } from "../../service/roleApi"
 interface OrganizationDialogProps {
     open: boolean
     onClose: () => void
@@ -36,7 +37,7 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
 
     const [addOrganization] = useAddOrganizationMutation();
     const [addUser] = useSignUpMutation();
-    const [getRoleByName] = useLazyGetRoleByNameQuery();
+    const [getRoleByName] = useGetRoleByNameQuery ();
     const [cookies, setCookies] = useCookies(['token'])
     const onSubmit = async (organizationData: OrganizationFormData) => {
         if (!organizationData || !userData) {

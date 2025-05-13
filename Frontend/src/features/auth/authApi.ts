@@ -22,12 +22,12 @@ export const authApi = api.injectEndpoints({
       }),
       invalidatesTags: ["User"],
   }),
-    getRoleByName: builder.query<Role, string>({
-      query: (roleName) => ({
-        url: `roles/getRoleByName/${roleName}`,
-        method: "GET",
-      }),
-    }),
+    // getRoleByName: builder.query<Role, string>({
+    //   query: (roleName) => ({
+    //     url: `roles/getRoleByName/${roleName}`,
+    //     method: "GET",
+    //   }),
+    // }),
   }),
   overrideExisting: false,
 });
@@ -35,5 +35,5 @@ export const authApi = api.injectEndpoints({
 export const {
   useSignUpMutation,
   useSignInMutation,
-  useLazyGetRoleByNameQuery,
+  // useLazyGetRoleByNameQuery,
 } = authApi;
