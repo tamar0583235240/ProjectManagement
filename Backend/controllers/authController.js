@@ -53,9 +53,9 @@ exports.SignUp = async (req, res) => {
      
             
           return res.status(201).json({
-            user,
+          
             accessToken,
-            message: `New user ${user.user_name} created`
+     
         });
 
        
