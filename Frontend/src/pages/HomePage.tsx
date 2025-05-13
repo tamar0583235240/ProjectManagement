@@ -8,8 +8,12 @@ const HomePage = () => {
   
   useLoadUserFromCookie();
   const user = useSelector(selectCurrentUser);
+  console.log("name"+user?.user_name);
   return (
+  
     <div>
+     
+     
       <h1>hello {user?.user_name}</h1>
     </div>
   )

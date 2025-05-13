@@ -1,7 +1,33 @@
 
 
-import { api } from "../app/api";
+// import { api } from "../app/api";
 
+// import type { Role } from "../types/Role";
+
+// export const rolesApi = api.injectEndpoints({
+//     endpoints: (builder) => ({
+//         getRoleByName: builder.query<Role, string>({
+//             query: (roleName) => ({
+//                 url: `roles/getRoleByName/${roleName}`,
+//                 method: 'GET',
+//             }),
+//         }),
+//         getRoleById: builder.query<string, string>({
+//             query: (roleId) => ({
+//                 url: `roles/getRoleByName/${roleId}`,
+//                 method: 'GET',
+//             }),
+//         })
+//     }),
+    
+//     overrideExisting: false,
+// });
+
+// export const {
+//     useGetRoleByNameQuery,
+//     useGetRoleByIdQuery
+// } = rolesApi;
+import { api } from "../app/api";
 import type { Role } from "../types/Role";
 
 export const rolesApi = api.injectEndpoints({
@@ -14,16 +40,17 @@ export const rolesApi = api.injectEndpoints({
         }),
         getRoleById: builder.query<string, string>({
             query: (roleId) => ({
-                url: `roles/getRoleByName/${roleId}`,
+                url: `roles/getRoleById/${roleId}`, // ← תיקנתי את ה־URL שהיה שגוי
                 method: 'GET',
             }),
-        })
+        }),
     }),
-    
     overrideExisting: false,
 });
 
 export const {
     useGetRoleByNameQuery,
-    useGetRoleByIdQuery
+    useGetRoleByIdQuery,
+    useLazyGetRoleByNameQuery, // ← נוספה הקריאה הזו
+    useLazyGetRoleByIdQuery    // ← אם תצטרכי גם לפי ID
 } = rolesApi;

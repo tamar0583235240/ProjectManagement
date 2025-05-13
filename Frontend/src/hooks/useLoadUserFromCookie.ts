@@ -13,6 +13,7 @@ const useLoadUserFromCookie = () => {
 
   useEffect(() => {
     console.log("Checking for user in cookie...");
+    console.log("Cookie token:", cookies.token);
     
     if (!user && typeof cookies.token === "string") {
       try {
