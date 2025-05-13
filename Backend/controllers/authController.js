@@ -88,6 +88,8 @@ exports.SignIn = async (req, res) => {
                 userId: user._id,
                 role: user.role,
                 organization_id: user.organization_id,
+                manager_id: user.manager_id,
+                user_name: user.user_name,
             },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: '1h' }
