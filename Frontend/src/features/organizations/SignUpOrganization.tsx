@@ -17,6 +17,7 @@ import { SchemaOrganization, type OrganizationFormData } from "../../schemas/Sch
 import { useForm } from "react-hook-form"
 import { useCookies } from "react-cookie"
 import { useLazyGetRoleByNameQuery } from "../../service/roleApi"
+import { string } from "zod"
 // import { useGetRoleByNameQuery } from "../../service/roleApi"
 // import { useGetRoleByNameQuery } from "../../service/roleApi"
 // import { getRoleByName } from "../../../../Backend/controllers/rolesController"
@@ -75,10 +76,16 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
                     manager_id: null,
                     organization_id: resOrganization._id,
                 };
+
+           
                 console.log("User data after change:", user);
-                const token = await addUser(user).unwrap();
-                console.log("access token:", token)
-                setCookies("token", token, { path: "/", maxAge: 3600 * 24 * 7 });
+                const response  = await addUser(user).unwrap();
+                 console.log("Response from addUser:", response);  // הדפסת כל התשובה
+                // console.log("Access token:", response.accessToken);  // הדפסת ה- accessToken
+                console.log("access token:", response)
+                setCookies("token", response, { path: "/", maxAge: 3600 * 24 * 7 });
+
+               
                 
                 alert("Registration completed successfully!");
                 onClose();
