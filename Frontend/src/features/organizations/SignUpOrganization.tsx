@@ -17,6 +17,8 @@ import { SchemaOrganization, type OrganizationFormData } from "../../schemas/Sch
 import { useForm } from "react-hook-form"
 import { useCookies } from "react-cookie"
 import { useGetRoleByNameQuery } from "../../service/roleApi"
+// import { useGetRoleByNameQuery } from "../../service/roleApi"
+// import { getRoleByName } from "../../../../Backend/controllers/rolesController"
 interface OrganizationDialogProps {
     open: boolean
     onClose: () => void
@@ -37,7 +39,7 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
 
     const [addOrganization] = useAddOrganizationMutation();
     const [addUser] = useSignUpMutation();
-    const [getRoleByName] = useGetRoleByNameQuery ();
+    const [RoleByName] = useGetRoleByNameQuery();
     const [cookies, setCookies] = useCookies(['token'])
     const onSubmit = async (organizationData: OrganizationFormData) => {
         if (!organizationData || !userData) {
@@ -62,7 +64,7 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
                 console.log("Organization registration response:", resOrganization);
 
 
-                const roleResponse = await getRoleByName("Manager").unwrap();
+                const roleResponse = await RoleByName("Manager").unwrap();
                 console.log("Fetched role:", roleResponse);
                 const user: User = {
                     user_name: userData.username,

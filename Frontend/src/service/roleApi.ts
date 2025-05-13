@@ -25,4 +25,5 @@ export const rolesApi = api.injectEndpoints({
 
 export const {
     useGetRoleByNameQuery,
+    useGetRoleByIdQuery
 } = rolesApi;
