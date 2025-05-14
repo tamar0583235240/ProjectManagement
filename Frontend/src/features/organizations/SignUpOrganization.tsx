@@ -80,10 +80,10 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
            
                 console.log("User data after change:", user);
                 const response  = await addUser(user).unwrap();
-                 console.log("Response from addUser:", response);  // הדפסת כל התשובה
-                // console.log("Access token:", response.accessToken);  // הדפסת ה- accessToken
+                 console.log("Response from addUser:", response); 
+                console.log("Access token:", response.accessToken);  
                 console.log("access token:", response)
-                setCookies("token", response, { path: "/", maxAge: 3600 * 24 * 7 });
+                setCookies("token", response.accessToken, { path: "/", maxAge: 3600 * 24 * 7 });
 
                
                 

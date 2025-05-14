@@ -40,7 +40,7 @@ export const rolesApi = api.injectEndpoints({
         }),
         getRoleById: builder.query<string, string>({
             query: (roleId) => ({
-                url: `roles/getRoleById/${roleId}`, // ← תיקנתי את ה־URL שהיה שגוי
+                url: `roles/getRoleById/${roleId}`, 
                 method: 'GET',
             }),
         }),

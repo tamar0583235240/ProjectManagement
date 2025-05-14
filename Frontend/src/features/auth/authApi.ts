@@ -1,6 +1,6 @@
 import { api } from "../../app/api";
 import type { SignInFormData } from "../../schemas/SchemaSignIn";
-import type { Role } from "../../types/Role";
+
 import type { User } from "../../types/User";
 
 
