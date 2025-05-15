@@ -1,4 +1,4 @@
-import type React from "react"
+import React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"

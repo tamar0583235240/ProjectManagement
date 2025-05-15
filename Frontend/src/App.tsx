@@ -5,7 +5,7 @@ import { store } from './app/store'
 import { Provider } from 'react-redux'
 import HomePage from '../src/pages/HomePage'
 import Dashboard from './pages/Dashboard'
-import { AddEmployeeForm } from './features/users/AddEmployeeForm'
+// import {  AddEmployeeForm } from './features/users/AddEmployeeForm'
 
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
     <>
       <Provider store={store}>
         {cookies.token?
-         <AddEmployeeForm/>
+         <HomePage/>
           :<Dashboard/>}
       </Provider>
     </>
