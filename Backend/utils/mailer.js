@@ -22,7 +22,8 @@ async function sendInviteEmail(email, token) {
   };
 
   await transporter.sendMail(mailOptions);
+  console.log("mail sent to:", email);
 }
-console.log("mail sent to:", email);
+
 
 module.exports = sendInviteEmail;
