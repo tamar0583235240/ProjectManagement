@@ -56,33 +56,56 @@
 // services/userApi.ts
 import { api } from "../../app/api"; // הבסיס של RTK Query שלך
 import type { SetPasswordRequest } from "../../types/SetPasswordRequest"; // סוג הבקשה לעדכון סיסמה
+import type { User } from "../../types/User";
 
 export const userApi = api.injectEndpoints({
   endpoints: (build) => ({
-    setPassword: build.mutation<void, SetPasswordRequest>({
-      query: ({ token, user_name, password }) => ({
-        url: `/users/set-password/${token}`, // הנתיב שרת לקבלת set password
-        method: "POST",
-        body: { user_name, password }, // גוף הבקשה בלי הטוקן שב-URL
-      }),
-    }),
 
-    addUser: build.mutation<
-      void,
-      { email: string; role: string; managerId?: string; organizationId: string }>({
-      query: (body) => ({
-        url: "/users/invite",
-        method: "POST",
-        body,
-      }),
+    getTeamLeaders: build.query<string[],string>({
+        query: (managerId) => ({
+            url: `/users/team-leaders/${managerId}`, 
+            method: 'GET',
+        }),
     }),
+    
 
-    getTeamLeaders: build.query<
-      { _id: string; user_name: string }[],
-      void
-    >({
-      query: () => "/users/team-leaders",
-    }),
+
+// getTeamLeaders: build.query<
+    //   { _id: string; user_name: string }[],
+    //   void
+    // >({
+    //   query: () => "/users/team-leaders",
+    // }),
+
+
+
+    // setPassword: build.mutation<void, SetPasswordRequest>({
+    //   query: ({ token, user_name, password }) => ({
+    //     url: `/users/set-password/${token}`, // הנתיב שרת לקבלת set password
+    //     method: "POST",
+    //     body: { user_name, password }, // גוף הבקשה בלי הטוקן שב-URL
+    //   }),
+    // }),
+
+    // addUser: build.mutation<
+    //   void,
+    //   { email: string; role: string; managerId?: string; organizationId: string }>({
+    //   query: (body) => ({
+    //     url: "/users/invite",
+    //     method: "POST",
+    //     body,
+    //   }),
+    // }),
+
+    
+    // signIn: builder.mutation< User,SignInFormData>({
+    //     query: (user) => ({
+    //         url: 'auth/SignIn',
+    //         method: "POST",
+    //         body: user,
+    //     }),
+    //     invalidatesTags: ["User"],
+    // }),
   }),
 });
 
