@@ -5,6 +5,7 @@ import Projects from "../pages/Projects";
 import Tasks from "../pages/Tasks";
 import EmployeeManagment from "../pages/EmployeeManagment";
 import NotFound from "../pages/NotFound";
+import LandingPage from "../pages/LandingPage";
 
 
 const router = createBrowserRouter([
@@ -29,8 +30,12 @@ const router = createBrowserRouter([
     //     path: "/landingPage",
     //     element: <LandingPage />,
     //     index: true,
-    // },
-    { path: "/",element: <AppLayout/>,
+   // },
+   {
+        element: <LandingPage />,
+        index: true,
+    },
+    { path: "projectly",element: <AppLayout/>,
         children: [
             { element: <HomePage />, index: true },
             { path: "projects", element: <Projects /> },
