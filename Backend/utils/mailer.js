@@ -21,8 +21,14 @@ async function sendInviteEmail(email, token) {
            <p>הקישור תקף לשעה אחת בלבד.</p>`
   };
 
-  await transporter.sendMail(mailOptions);
-  console.log("mail sent to:", email);
+//   await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("mail sent to:", email);
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
+  
 }
 
 
