@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form"
 import { useCookies } from "react-cookie"
 import { useLazyGetRoleByNameQuery } from "../../service/roleApi"
 import { string } from "zod"
+import type { SignInResponse } from "../../types/SignInResponse"
 // import { useGetRoleByNameQuery } from "../../service/roleApi"
 // import { useGetRoleByNameQuery } from "../../service/roleApi"
 // import { getRoleByName } from "../../../../Backend/controllers/rolesController"
@@ -68,7 +69,7 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
 
                 const roleResponse = await RoleByName("Manager").unwrap();
                 console.log("Fetched role:", roleResponse);
-                const user: User = {
+                const u: User = {
                     user_name: userData.username,
                     password: userData.password,
                     email: userData.email,
@@ -77,16 +78,18 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
                     organization_id: resOrganization._id,
                 };
 
-           
-                console.log("User data after change:", user);
-                const response  = await addUser(user).unwrap();
-                 console.log("Response from addUser:", response); 
-                console.log("Access token:", response.accessToken);  
-                console.log("access token:", response)
-                setCookies("token", response.accessToken, { path: "/", maxAge: 3600 * 24 * 7 });
 
-               
-                
+                console.log("User data after change:", u);
+                const response :SignInResponse= await addUser(u).unwrap();
+                const { accessToken, user } = response;
+                console.log("Response from addUser:", response);
+                console.log("Access token:", accessToken);
+                console.log("access token:", response)
+                setCookies("token", accessToken, { path: "/", maxAge: 3600 * 24 * 7 });
+                localStorage.setItem("currentUser", JSON.stringify(user));
+
+
+
                 alert("Registration completed successfully!");
                 onClose();
                 reset();
