@@ -11,7 +11,7 @@ import SignIn from '../features/auth/SignIn';
 import SignUp from '../features/auth/SignUp';
 import { useCookies } from 'react-cookie';
 const LandingPage = () => {
-    const [cookies] = useCookies(['token'])
+    // const [cookies] = useCookies(['token'])
     const navigate = useNavigate()
     const [openSignUpDialog, setOpenSignUpDialog] = React.useState(false)
     const [openSignInDialog, setOpenSignInDialog] = React.useState(false)
@@ -39,12 +39,6 @@ const LandingPage = () => {
     const handleSuccessfulSignUp = () => {
         navigate('/app');
     }
-
-    useEffect(() => {
-        if (cookies.token) {
-            navigate('/projectly')
-        }
-    }, [cookies.token, navigate])
 
     return (
         <div className="landing-page">
