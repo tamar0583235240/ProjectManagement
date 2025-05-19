@@ -1,10 +1,8 @@
-import { z } from "zod";
+
+import * as z from "zod";
 
 export const addUserSchema = z.object({
-  email: z.string().email("אימייל לא תקין"),
-  user_name: z.string().min(2, "שם קצר מדי"),
+  email: z.string().email("כתובת אימייל לא תקינה"),
   role: z.enum(["team_leader", "employee"]),
-  team_leader_id: z.string().optional(),
+  teamLeaderId: z.string().optional(),
 });
-
-export type AddUserFormData = z.infer<typeof addUserSchema>;

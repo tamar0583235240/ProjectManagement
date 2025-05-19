@@ -126,6 +126,8 @@ const NavBar = () => {
                                 }}
                             >
                                 {pages.map((page) => (
+                                    //if (user.role !== "admin"&& page === "EmployeeManagment") return null
+
                                     <MenuItem key={page} onClick={handleCloseNavMenu}>
                                         <Typography sx={{ textAlign: "center", color: "#333" }}>
                                             <Link

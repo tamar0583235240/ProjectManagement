@@ -16,11 +16,13 @@ function App() {
   const [cookies] = useCookies(['token'])
   return (
     <>
-      <Provider store={store}>
-        {cookies.token?
-         <HomePage/>
-          :<AddUserForm/>}
-      </Provider>
+       <Provider store={store}>
+       <AddUserForm></AddUserForm>
+        {/* {cookies.token? */}
+        {/* //  <HomePage/>
+        //   :<AddUserForm/>} */}
+     </Provider> 
+    
     </>
   )
 }

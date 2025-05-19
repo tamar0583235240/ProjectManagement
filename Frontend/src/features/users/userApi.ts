@@ -55,27 +55,29 @@
 // } = userApi;
 // services/userApi.ts
 import { api } from "../../app/api"; // הבסיס של RTK Query שלך
+import type { AddUserInputs } from "../../types/AddUserInputs";
 import type { SetPasswordRequest } from "../../types/SetPasswordRequest"; // סוג הבקשה לעדכון סיסמה
 import type { User } from "../../types/User";
 
 export const userApi = api.injectEndpoints({
-  endpoints: (build) => ({
+  endpoints: (builder) => ({
 
-    getTeamLeaders: build.query<string[],string>({
+    getTeamLeaders: builder.query<User[],string>({
         query: (managerId) => ({
-            url: `/users/team-leaders/${managerId}`, 
+            url: `user/getTeamLeaderNames/${managerId}`, 
             method: 'GET',
         }),
     }),
-    
+    signUp: builder.mutation<AddUserInputs, User>({
+        query: (user) => ({
+          url: "invite/inviteUser",
+          method: "POST",
+          body: user,
+        }),
+        invalidatesTags: ["User"],
+      }),
 
-
-// getTeamLeaders: build.query<
-    //   { _id: string; user_name: string }[],
-    //   void
-    // >({
-    //   query: () => "/users/team-leaders",
-    // }),
+ 
 
 
 
@@ -109,4 +111,4 @@ export const userApi = api.injectEndpoints({
   }),
 });
 
-export const { useSetPasswordMutation, useAddUserMutation, useGetTeamLeadersQuery } = userApi;
+export const {  useGetTeamLeadersQuery } = userApi;
