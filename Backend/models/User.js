@@ -30,10 +30,6 @@ const UserSchema = new mongoose.Schema({
         ref: 'Organization', 
         required: [true, "Organization must be complete."] 
     },
-    is_active: { 
-        type: Boolean, 
-        default: false 
-    },
     password_token: { 
         type: String, 
         default: null 

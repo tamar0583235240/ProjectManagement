@@ -35,6 +35,7 @@ app.use("/api/tasks", tasksRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/organizations", organizationsRoutes);
 app.use("/api/auth",authRoutes )
+app.use('/api/invite', inviteRoutes);
 // app.use('/api/auth', );
 
 
