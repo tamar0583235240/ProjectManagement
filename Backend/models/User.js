@@ -1,23 +1,24 @@
 const mongoose = require('mongoose');
+const Role = require('../enums/role.enum');
 
 const UserSchema = new mongoose.Schema({
     user_name: {
         type: String,
-        required: [true,"user_name must be complete."] 
+        required: [true, "user_name must be complete."]
     },
     password: {
         type: String,
-        required: [true,"password must be complete."] 
+        required: [true, "password must be complete."]
     },
     email: {
         type: String,
-        required: [true,"email must be complete."] ,
+        required: [true, "email must be complete."],
         unique: true
     },
     role: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Role', 
-        required: [true,"role must be complete."] 
+        type: String,
+        enum: Object.values(Role),
+        required: [true, "Role must be complete."]
     },
     manager_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -27,7 +28,7 @@ const UserSchema = new mongoose.Schema({
     organization_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Organization',
-        required: [true,"Organization must be complete."] 
+        required: [true, "Organization must be complete."]
     }
 }, { timestamps: true });
 
