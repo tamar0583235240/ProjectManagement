@@ -1,18 +1,19 @@
 const mongoose = require('mongoose');
+const Status = require('../enums/status.enum');
 
 const TasksSchema = new mongoose.Schema({
     project_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Projects',
-        required: [true,"project must be complete."] 
+        required: [true, "project must be complete."]
     },
     task_name: {
         type: String,
-        required: [true,"task name must be complete."] 
+        required: [true, "task name must be complete."]
     },
     description: {
         type: String,
-        required: [true,"Description must be complete."] 
+        required: [true, "Description must be complete."]
     },
     performed_by: {
         type: mongoose.Schema.Types.ObjectId,
@@ -22,16 +23,16 @@ const TasksSchema = new mongoose.Schema({
     created_by: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: [true,"Must send the name of the task creator."] 
+        required: [true, "Must send the name of the task creator."]
     },
     deadline: {
         type: Date,
-        required: [true,"Deadline must be complete."] 
+        required: [true, "Deadline must be complete."]
     },
     status: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Status',
-        required: [true,"status must be complete."] 
+        type: String,
+        enum: Object.values(Status),
+        required: [true, "Status must be complete."]
     }
 }, { timestamps: true });
 
