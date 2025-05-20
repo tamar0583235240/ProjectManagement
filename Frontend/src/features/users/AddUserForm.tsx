@@ -2,18 +2,19 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addUserSchema } from "../../schemas/SchemaAddUser";
 import { TextField, Button, MenuItem, Alert } from "@mui/material";
-import { SelectTeamLeader } from "./SelectTeamLeader";
 import { useAddUserMutation } from "../users/userApi";
 import type { z } from "zod";
-import type { Role } from "../../types/Role";
+import { Role } from "../../enums/role.enum";
+import SelectTeamLeader from "./SelectTeamLeader";
 
 type AddUserInputs = z.infer<typeof addUserSchema>;
 
 interface AddUserFormProps {
-  teamLeaders?: { id: string; name: string }[]; // אופציונלי עם ?
+  teamLeaders?: { id: string; name: string }[];
+  organizationId: string; // קלט חובה לפרופס
 }
 
-export const AddUserForm = ({ teamLeaders = [] }: AddUserFormProps) => {
+const AddUserForm = ({ teamLeaders = [] }: AddUserFormProps) => {
   const {
     control,
     handleSubmit,
@@ -23,7 +24,7 @@ export const AddUserForm = ({ teamLeaders = [] }: AddUserFormProps) => {
     resolver: zodResolver(addUserSchema),
     defaultValues: {
       email: "",
-      role: "team_leader",
+      role: Role.TEAM_LEADER,
     },
   });
 
@@ -31,10 +32,17 @@ export const AddUserForm = ({ teamLeaders = [] }: AddUserFormProps) => {
   const [addUser, { isLoading, isError }] = useAddUserMutation();
 
   const onSubmit = async (data: AddUserInputs) => {
-    console.log("Sending user data:", data);
-   
+    const payload = {
+      email: data.email,
+      role: Role.TEAM_LEADER, 
+      manager_id: data.role === Role.EMPLOYEE ? data.team_leader_id :localStorage.getItem("userData"),
+      organization_id: "680ffe67d0ba76a9ac31efcb",
+    };
+
+    console.log("Sending user data:", payload);
+
     try {
-      await addUser(data).unwrap();
+      await addUser(payload).unwrap();
       alert("ההזמנה נשלחה בהצלחה!");
     } catch (error) {
       console.error("שגיאה בשליחת ההזמנה", error);
@@ -73,21 +81,21 @@ export const AddUserForm = ({ teamLeaders = [] }: AddUserFormProps) => {
             error={!!errors.role}
             helperText={errors.role?.message}
           >
-            <MenuItem value="team_leader">ראש צוות</MenuItem>
-            <MenuItem value="employee" disabled={noTeamLeaders}>
+            <MenuItem value={Role.TEAM_LEADER}>ראש צוות</MenuItem>
+            <MenuItem value={Role.EMPLOYEE}disabled={noTeamLeaders}>
               עובד {noTeamLeaders ? "(אין ראשי צוות זמינים)" : ""}
             </MenuItem>
           </TextField>
         )}
       />
 
-      {role === "employee" && noTeamLeaders && (
+      {role === Role.EMPLOYEE && noTeamLeaders && (
         <Alert severity="warning" sx={{ mt: 2 }}>
           לא ניתן להוסיף עובד כיוון שאין ראשי צוות זמינים במערכת. אנא הוסף ראש צוות תחילה.
         </Alert>
       )}
 
-      {role === "employee" && !noTeamLeaders && (
+      {role === Role.EMPLOYEE && !noTeamLeaders && (
         <SelectTeamLeader control={control} teamLeaders={teamLeaders} />
       )}
 
@@ -96,7 +104,7 @@ export const AddUserForm = ({ teamLeaders = [] }: AddUserFormProps) => {
         variant="contained"
         fullWidth
         sx={{ mt: 2 }}
-        disabled={isLoading || (role === "employee" && noTeamLeaders)}
+        disabled={isLoading || (role === Role.EMPLOYEE && noTeamLeaders)}
       >
         שלח הזמנה
       </Button>
@@ -107,3 +115,5 @@ export const AddUserForm = ({ teamLeaders = [] }: AddUserFormProps) => {
     </form>
   );
 };
+
+export default AddUserForm

@@ -2,7 +2,7 @@ import { Controller } from "react-hook-form";
 import { useGetTeamLeadersQuery } from "../../features/users/userApi";
 import { TextField, MenuItem } from "@mui/material";
 
-export const SelectTeamLeader = ({ control }: { control: any }) => {
+const SelectTeamLeader = ({ control }: { control: any }) => {
   const { data: teamLeaders = [] } = useGetTeamLeadersQuery();
 
   return (
@@ -21,3 +21,5 @@ export const SelectTeamLeader = ({ control }: { control: any }) => {
     />
   );
 };
+
+export default SelectTeamLeader
