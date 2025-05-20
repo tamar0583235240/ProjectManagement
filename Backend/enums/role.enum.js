@@ -1,5 +1,5 @@
 const Role = {
-  Admin: 'ADMIN',
+  Admin: 'TEAM_LEADER',
   Manager: 'MANAGER',
   Employee: 'EMPLOYEE'
 };

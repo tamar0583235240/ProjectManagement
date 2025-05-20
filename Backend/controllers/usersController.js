@@ -87,7 +87,7 @@ exports.UpdateUser = async (req, res) => {
 };
 
 
-export const getTeamLeaders = async (req, res) => {
+exports.getTeamLeaders = async (req, res) => {
   const { managerId } = req.params;
 
   if (!managerId) {

@@ -10,6 +10,8 @@ const tasksRoutes = require('./routes/tasksRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 const organizationsRoutes = require('./routes/organizationsRoutes');
 const authRoutes = require('./routes/authRoutes');
+const inviteRoutes = require('./routes/inviteRoutes');
+
 
 
 const PORT = process.env.PORT || 7001;

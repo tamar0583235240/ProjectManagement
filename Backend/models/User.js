@@ -4,11 +4,11 @@ const Role = require('../enums/role.enum');
 const UserSchema = new mongoose.Schema({
     user_name: {
         type: String,
-        required: [true, "user_name must be complete."]
+        // required: [true, "user_name must be complete."]
     },
     password: {
         type: String,
-        required: [true, "password must be complete."]
+        // required: [true, "password must be complete."]
     },
     email: {
         type: String,
