@@ -11,7 +11,7 @@ export const userApi = api.injectEndpoints({
       }),
     }),
 
-    addUser: build.mutation<void,
+    inviteUser: build.mutation<void,
       { email: string; role: string; managerId?: string; organizationId: string }>({
       query: (body) => ({
         url: "/invite/inviteUser",
@@ -29,4 +29,4 @@ export const userApi = api.injectEndpoints({
   }),
 });
 
-export const { useSetPasswordMutation, useAddUserMutation, useGetTeamLeadersQuery } = userApi;
+export const { useSetPasswordMutation, useInviteUserMutation, useGetTeamLeadersQuery } = userApi;

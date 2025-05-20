@@ -2,19 +2,32 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addUserSchema } from "../../schemas/SchemaAddUser";
 import { TextField, Button, MenuItem, Alert } from "@mui/material";
-import { useAddUserMutation } from "../users/userApi";
+import { useInviteUserMutation } from "../users/userApi";
 import type { z } from "zod";
 import { Role } from "../../enums/role.enum";
 import SelectTeamLeader from "./SelectTeamLeader";
+import { useMemo } from "react";
+// import type { AddUserInputs } from "../../types/AddUserInputs";
 
 type AddUserInputs = z.infer<typeof addUserSchema>;
 
 interface AddUserFormProps {
   teamLeaders?: { id: string; name: string }[];
-  organizationId: string; // קלט חובה לפרופס
+  organizationId: string;
 }
 
 const AddUserForm = ({ teamLeaders = [] }: AddUserFormProps) => {
+  const currentManager = useMemo(() => {
+    const userStr = localStorage.getItem("currentUser");
+    if (!userStr) return "";
+    try {
+      const user = JSON.parse(userStr);
+      return user;
+    } catch {
+      return "";
+    }
+  }, []);
+
   const {
     control,
     handleSubmit,
@@ -29,20 +42,20 @@ const AddUserForm = ({ teamLeaders = [] }: AddUserFormProps) => {
   });
 
   const role = watch("role");
-  const [addUser, { isLoading, isError }] = useAddUserMutation();
+  const [inviteUser, { isLoading, isError }] = useInviteUserMutation();
 
   const onSubmit = async (data: AddUserInputs) => {
     const payload = {
       email: data.email,
-      role: Role.TEAM_LEADER, 
-      manager_id: data.role === Role.EMPLOYEE ? data.team_leader_id :localStorage.getItem("userData"),
-      organization_id: "680ffe67d0ba76a9ac31efcb",
+      role: data.role, 
+      manager_id: data.role === Role.EMPLOYEE ? data.team_leader_id :currentManager._id,
+      organization_id:currentManager.organization_id,
     };
 
     console.log("Sending user data:", payload);
 
     try {
-      await addUser(payload).unwrap();
+      await inviteUser(payload).unwrap();
       alert("ההזמנה נשלחה בהצלחה!");
     } catch (error) {
       console.error("שגיאה בשליחת ההזמנה", error);
