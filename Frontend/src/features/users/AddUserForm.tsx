@@ -16,7 +16,7 @@ interface AddUserFormProps {
   organizationId: string;
 }
 
-const AddUserForm = ({ teamLeaders = [] }: AddUserFormProps) => {
+const AddUserForm = () => {
   const currentManager = useMemo(() => {
     const userStr = localStorage.getItem("currentUser");
     if (!userStr) return "";
@@ -43,6 +43,7 @@ const AddUserForm = ({ teamLeaders = [] }: AddUserFormProps) => {
 
   const role = watch("role");
   const [inviteUser, { isLoading, isError }] = useInviteUserMutation();
+  co
 
   const onSubmit = async (data: AddUserInputs) => {
     const payload = {
