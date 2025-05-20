@@ -86,3 +86,28 @@ exports.UpdateUser = async (req, res) => {
     }
 };
 
+
+exports.getTeamLeaders = async (req, res) => {
+  const { managerId } = req.params;
+
+  if (!managerId) {
+    return res.status(400).json({ message: "managerId is required" });
+  }
+
+  try {
+    const teamLeaders = await User.find({
+      role: "team_leader",
+      manager_id: managerId,
+    }).select("_id name"); 
+
+    return res.json(
+      teamLeaders.map((tl) => ({
+        _id: tl._id,
+        name: tl.name || tl.email,
+      }))
+    );
+  } catch (error) {
+    console.error("Error fetching team leaders:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
