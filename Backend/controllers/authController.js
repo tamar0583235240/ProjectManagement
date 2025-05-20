@@ -18,16 +18,9 @@ exports.SignUp = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: 'This email already exists in the system' });
         }
-       
-       
-       
-
         const hashedPwd = await bcrypt.hash(password, 10)
         const userObject = { user_name, password: hashedPwd, email, role, manager_id, organization_id }
         const user = await User.create(userObject)
-  
-      
-
         if(!user){
             return res.status(400).json({ message: 'User creation failed' })
         }
@@ -43,22 +36,8 @@ exports.SignUp = async (req, res) => {
                 },
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: '1h' }
-            );
-            // res.cookie("accessToken", accessToken, {
-            //     httpOnly: true,
-            //     secure: process.env.NODE_ENV === "production", // רק ב-HTTPS בפרודקשן
-            //     sameSite: "Strict",
-            //     maxAge: 3600000, // שעה
-            // });
-     
-            
-          return res.status(201).json({
-          
-            accessToken,
-     
-        });
-
-       
+            );        
+          return res.status(201).json({  accessToken,user });
     }
 
      catch (error) {
@@ -95,7 +74,7 @@ exports.SignIn = async (req, res) => {
             { expiresIn: '1h' }
 
         );
-        res.json({ accessToken: accessToken })
+        res.json({ accessToken: accessToken , user: user})
 
     } catch (err) {
         console.error('Login error:', err);

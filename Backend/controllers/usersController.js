@@ -56,31 +56,28 @@ exports.UpdateUser = async (req, res) => {
     }
 };
 
-
-
-
- exports.getTeamLeaderNamesByManager = async (req, res) => {
+exports.getTeamLeaders = async (req, res) => {
   const { managerId } = req.params;
 
+  if (!managerId) {
+    return res.status(400).json({ message: "managerId is required" });
+  }
+
   try {
-
-    const teamLeaderRole = await Role.findOne({ name: 'team_leader' });
-    if (!teamLeaderRole) {
-      return res.status(404).json({ error: 'תפקיד ראש צוות לא נמצא.' });
-    }
-
-
     const teamLeaders = await User.find({
-      role: teamLeaderRole._id,
+      role: "team_leader",
       manager_id: managerId,
-    }).select('user_name');
+    }).select("_id name"); 
 
-    const names = teamLeaders.map(user => user.user_name);
-    res.json(names);
+    return res.json(
+      teamLeaders.map((tl) => ({
+        _id: tl._id,
+        name: tl.name || tl.email,
+      }))
+    );
   } catch (error) {
-    console.error('שגיאה בשליפת ראשי הצוות:', error);
-    res.status(500).json({ error: 'שגיאה בשרת' });
+    console.error("Error fetching team leaders:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
-
 
