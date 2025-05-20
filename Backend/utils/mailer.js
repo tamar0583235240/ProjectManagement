@@ -1,10 +1,9 @@
 const nodemailer = require('nodemailer');
-
 async function sendInviteEmail(email, token) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.EMAIL_USER, // מייל שנשלח ממנו
+      user: process.env.EMAIL_USER, 
       pass: process.env.EMAIL_PASS
     }
   });
@@ -18,17 +17,14 @@ async function sendInviteEmail(email, token) {
     html: `<p>שלום,</p>
            <p>קיבלת הזמנה להצטרף למערכת. לחץ/י על הקישור כדי לבחור סיסמה:</p>
            <a href="${url}">${url}</a>
-           <p>הקישור תקף לשעה אחת בלבד.</p>`
+           <p>הקישור תקף ל-48 שעות בלבד!.</p>`
   };
-
-//   await transporter.sendMail(mailOptions);
   try {
     await transporter.sendMail(mailOptions);
     console.log("mail sent to:", email);
   } catch (error) {
     console.error("Error sending email:", error);
   }
-  
 }
 
 

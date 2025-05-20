@@ -43,7 +43,7 @@ const jwt = require('jsonwebtoken');
 
 exports.inviteUser = async (req, res) => {
   try {
-    const { email, user_name, role, manager_id, organization_id } = req.body;
+    const { email, role, manager_id, organization_id } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -80,7 +80,7 @@ exports.inviteUser = async (req, res) => {
 // 2. בחירת סיסמה דרך הטוקן
 exports.setPassword = async (req, res) => {
   try {
-    const { token, password } = req.body;
+    const { token, password ,user_name} = req.body;
 
     // מציאת משתמש לפי הטוקן ותוקפו
     const user = await User.findOne({
@@ -100,6 +100,7 @@ exports.setPassword = async (req, res) => {
     user.password = hashedPassword;
     user.password_token = null;
     user.password_token_expires = null;
+    user.user_name = user_name;
 
     const newUser= await User.UpdateUser(user)
 
