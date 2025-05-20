@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-const User = require('../models/User');
-const Role = require('../models/Role'); 
+// const User = require('../models/User');
+// const Role = require('../models/Role'); 
 
 exports.AllUsers = async (req, res) => {
     try {
