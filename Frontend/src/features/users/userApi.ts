@@ -67,8 +67,7 @@ export const userApi = api.injectEndpoints({
       }),
     }),
 
-    addUser: build.mutation<
-      void,
+    addUser: build.mutation<void,
       { email: string; role: string; managerId?: string; organizationId: string }>({
       query: (body) => ({
         url: "/users/invite",
