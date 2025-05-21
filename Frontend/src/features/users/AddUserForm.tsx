@@ -2,7 +2,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addUserSchema } from "../../schemas/SchemaAddUser";
 import { TextField, Button, MenuItem, Alert } from "@mui/material";
-import { useInviteUserMutation } from "../users/userApi";
+import { useGetTeamLeadersQuery, useInviteUserMutation } from "../users/userApi";
 import type { z } from "zod";
 import { Role } from "../../enums/role.enum";
 import SelectTeamLeader from "./SelectTeamLeader";
@@ -43,7 +43,7 @@ const AddUserForm = () => {
 
   const role = watch("role");
   const [inviteUser, { isLoading, isError }] = useInviteUserMutation();
-  co
+  const GetTeamLeaders = useGetTeamLeadersQuery(currentManager._id);
 
   const onSubmit = async (data: AddUserInputs) => {
     const payload = {

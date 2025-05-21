@@ -1,32 +1,51 @@
+
 import { api } from "../../app/api"; // הבסיס של RTK Query שלך
+import type { AddUserInputs } from "../../types/AddUserInputs";
 import type { SetPasswordRequest } from "../../types/SetPasswordRequest"; // סוג הבקשה לעדכון סיסמה
+import type { User } from "../../types/User";
 
 export const userApi = api.injectEndpoints({
-  endpoints: (build) => ({
-    setPassword: build.mutation<void, SetPasswordRequest>({
-      query: ({ token, user_name, password }) => ({
-        url: `/users/set-password/${token}`, // הנתיב שרת לקבלת set password
-        method: "POST",
-        body: { user_name, password }, // גוף הבקשה בלי הטוקן שב-URL
+  endpoints: (builder) => ({
+    getTeamLeaders: builder.query<User[], string>({
+      query: (managerId) => ({
+        url: `user/getTeamLeaderNames/${managerId}`,
+        method: 'GET',
       }),
     }),
-
-    inviteUser: build.mutation<void,
-      { email: string; role: string; managerId?: string; organizationId: string }>({
-      query: (body) => ({
-        url: "/invite/inviteUser",
+    signUp: builder.mutation<AddUserInputs, User>({
+      query: (user) => ({
+        url: "invite/inviteUser",
         method: "POST",
-        body,
+        body: user,
       }),
+      invalidatesTags: ["User"],
     }),
 
-    getTeamLeaders: build.query<
-      { _id: string; user_name: string }[],
-      void
-    >({
-      query: () => "/users/team-leaders",
+    inviteUser: builder.mutation<string, AddUserInputs>({
+      query: (user) => ({
+        url: "invite/inviteUser",
+        method: "POST",
+        body: user,
+      }),
+      invalidatesTags: ["User"],
     }),
+
+
+  setPassword: builder.mutation<string, SetPasswordRequest>({
+    query: (body) => ({
+      url: '/set-password',
+      method: 'POST',
+      body,
+    }),
+
+    invalidatesTags: ["User"],
+
   }),
-});
+}),
+})
+
+
+
 
 export const { useSetPasswordMutation, useInviteUserMutation, useGetTeamLeadersQuery } = userApi;
+
