@@ -10,7 +10,7 @@ const AppLayout = () => {
   return (
     <div>
       <NavBar />
-      <Outlet /> {/* כאן יכנסו שאר הקומפוננטות */}
+      <Outlet /> 
     </div>
   );
 };
