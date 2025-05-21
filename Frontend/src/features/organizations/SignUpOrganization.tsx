@@ -64,16 +64,12 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
             try {
 
                 const resOrganization = await addOrganization(organization).unwrap();
-                console.log("Organization registration response:", resOrganization);
-
-
-                const roleResponse = await RoleByName("Manager").unwrap();
-                console.log("Fetched role:", roleResponse);
+                console.log("Organization registration response:", resOrganization);;
                 const u: User = {
                     user_name: userData.username,
                     password: userData.password,
                     email: userData.email,
-                    role: roleResponse._id,
+                    role: "MANAGER",
                     manager_id: null,
                     organization_id: resOrganization._id,
                 };

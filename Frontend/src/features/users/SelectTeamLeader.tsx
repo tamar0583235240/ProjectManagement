@@ -58,12 +58,17 @@ import { Controller } from "react-hook-form";
 import { TextField, MenuItem } from "@mui/material";
 import type { Control } from "react-hook-form";
 
-interface Props {
+
+
+  interface Props {
   control: Control<any>;
-  teamLeaders: { id: string; name: string }[];
+ 
 }
 
-export const SelectTeamLeader = ({ control, teamLeaders }: Props) => {
+
+export const SelectTeamLeader = ({ control }: Props) => {
+  const { data: teamLeaders = [] } = useGetTeamLeadersQuery();
+
   return (
     <Controller
       name="teamLeaderId"
@@ -88,3 +93,5 @@ export const SelectTeamLeader = ({ control, teamLeaders }: Props) => {
     />
   );
 };
+
+export default SelectTeamLeader

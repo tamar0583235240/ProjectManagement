@@ -1,4 +1,1 @@
-export interface Role {
-    _id: string;
-    roleName: string;
-}
+export type Role = "TEAM_LEADER" | "EMPLOYEE" | "MANAGER" ;

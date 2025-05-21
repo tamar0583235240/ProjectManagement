@@ -1,20 +1,22 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  TextField,
-  Button,
-  MenuItem,
-  Alert,
-  CircularProgress,
-} from "@mui/material";
 import { addUserSchema } from "../../schemas/SchemaAddUser";
-import { useSignUpMutation } from "../../features/auth/authApi";
-import { useGetTeamLeadersQuery } from "../../features/users/userApi"; // קריאת שרת
-import { SelectTeamLeader } from "./SelectTeamLeader";
-import type { AddUserInputs } from "../../types/AddUserInputs";
+import { TextField, Button, MenuItem, Alert } from "@mui/material";
+import { useGetTeamLeadersQuery, useInviteUserMutation } from "../users/userApi";
+import type { z } from "zod";
+import { Role } from "../../enums/role.enum";
+import SelectTeamLeader from "./SelectTeamLeader";
 import { useMemo } from "react";
+// import type { AddUserInputs } from "../../types/AddUserInputs";
 
-export const AddUserForm = () => {
+type AddUserInputs = z.infer<typeof addUserSchema>;
+
+interface AddUserFormProps {
+  teamLeaders?: { id: string; name: string }[];
+  organizationId: string;
+}
+
+const AddUserForm = () => {
   const currentManager = useMemo(() => {
     const userStr = localStorage.getItem("currentUser");
     if (!userStr) return "";
@@ -35,44 +37,33 @@ export const AddUserForm = () => {
     resolver: zodResolver(addUserSchema),
     defaultValues: {
       email: "",
-      role: "team_leader",
+      role: Role.TEAM_LEADER,
     },
   });
 
   const role = watch("role");
-  const [signUp, { isLoading, isError }] = useSignUpMutation();
-
-
-  const {
-    data: teamLeadersData = [],
-    isLoading: isLoadingTeamLeaders,
-    isError: isTeamLeadersError,
-  } = useGetTeamLeadersQuery(currentManager._id, {
-    skip: !currentManager, 
-  });
-
-  const teamLeaders = teamLeadersData.map((user) => ({
-    id: user._id,
-    name: user.user_name,
-  }));
-
-  const noTeamLeaders = teamLeaders.length === 0;
+  const [inviteUser, { isLoading, isError }] = useInviteUserMutation();
+  const GetTeamLeaders = useGetTeamLeadersQuery(currentManager._id);
 
   const onSubmit = async (data: AddUserInputs) => {
-    const finalData: AddUserInputs = {
-      ...data,
-      teamLeaderId:
-        data.role === "team_leader" ? currentManager._id : data.teamLeaderId || "",
-      organizationId: currentManager.organizationId,
+    const payload = {
+      email: data.email,
+      role: data.role, 
+      manager_id: data.role === Role.EMPLOYEE ? data.team_leader_id :currentManager._id,
+      organization_id:currentManager.organization_id,
     };
 
+    console.log("Sending user data:", payload);
+
     try {
-      await signUp(finalData).unwrap();
+      await inviteUser(payload).unwrap();
       alert("ההזמנה נשלחה בהצלחה!");
     } catch (error) {
       console.error("שגיאה בשליחת ההזמנה", error);
     }
   };
+
+  const noTeamLeaders = !Array.isArray(teamLeaders) || teamLeaders.length === 0;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -83,7 +74,6 @@ export const AddUserForm = () => {
           <TextField
             {...field}
             label="אימייל העובד"
-            type="email"
             fullWidth
             margin="normal"
             error={!!errors.email}
@@ -105,31 +95,21 @@ export const AddUserForm = () => {
             error={!!errors.role}
             helperText={errors.role?.message}
           >
-            <MenuItem value="team_leader">ראש צוות</MenuItem>
-            <MenuItem value="employee" disabled={noTeamLeaders}>
+            <MenuItem value={Role.TEAM_LEADER}>ראש צוות</MenuItem>
+            <MenuItem value={Role.EMPLOYEE}disabled={noTeamLeaders}>
               עובד {noTeamLeaders ? "(אין ראשי צוות זמינים)" : ""}
             </MenuItem>
           </TextField>
         )}
       />
 
-      {role === "employee" && isLoadingTeamLeaders && (
-        <CircularProgress size={24} sx={{ mt: 2 }} />
-      )}
-
-      {role === "employee" && isTeamLeadersError && (
-        <Alert severity="error" sx={{ mt: 2 }}>
-          שגיאה בטעינת רשימת ראשי הצוות.
-        </Alert>
-      )}
-
-      {role === "employee" && noTeamLeaders && !isLoadingTeamLeaders && (
+      {role === Role.EMPLOYEE && noTeamLeaders && (
         <Alert severity="warning" sx={{ mt: 2 }}>
-          לא ניתן להוסיף עובד כיוון שאין ראשי צוות זמינים. אנא הוסף ראש צוות תחילה.
+          לא ניתן להוסיף עובד כיוון שאין ראשי צוות זמינים במערכת. אנא הוסף ראש צוות תחילה.
         </Alert>
       )}
 
-      {role === "employee" && !noTeamLeaders && (
+      {role === Role.EMPLOYEE && !noTeamLeaders && (
         <SelectTeamLeader control={control} teamLeaders={teamLeaders} />
       )}
 
@@ -138,7 +118,7 @@ export const AddUserForm = () => {
         variant="contained"
         fullWidth
         sx={{ mt: 2 }}
-        disabled={isLoading || (role === "employee" && noTeamLeaders)}
+        disabled={isLoading || (role === Role.EMPLOYEE && noTeamLeaders)}
       >
         שלח הזמנה
       </Button>
@@ -149,3 +129,5 @@ export const AddUserForm = () => {
     </form>
   );
 };
+
+export default AddUserForm
