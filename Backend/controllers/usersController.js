@@ -67,12 +67,12 @@ exports.getTeamLeaders = async (req, res) => {
     const teamLeaders = await User.find({
       role: "team_leader",
       manager_id: managerId,
-    }).select("_id name"); 
+    }).select("_id user_name "); 
 
     return res.json(
       teamLeaders.map((tl) => ({
         _id: tl._id,
-        name: tl.name || tl.email,
+        name: tl.user_name  || tl.email,
       }))
     );
   } catch (error) {

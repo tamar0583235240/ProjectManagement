@@ -43,7 +43,7 @@ const jwt = require('jsonwebtoken');
 
 exports.inviteUser = async (req, res) => {
   try {
-    const { email, role, manager_id, organization_id } = req.body;
+    const { email, role, manager_id, organization_id ,user_name} = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -93,7 +93,12 @@ exports.setPassword = async (req, res) => {
     }
 
     // הצפנת הסיסמה
+    // if (password) {
+    //   const hashedPwd = await bcrypt.hash(password, 10);
+    //   updateData.password = hashedPwd;
+    // }
     const hashedPassword = await bcrypt.hash(password, 10);
+
 
     
     // עדכון המשתמש: סיסמה, הפעלה, ניקוי הטוקן
@@ -104,7 +109,7 @@ exports.setPassword = async (req, res) => {
 
     const newUser= await User.UpdateUser(user)
 
-    res.status(200).json(newUser,{ message: 'Password set successfully' });
+    res.status(200).json({newUser, message: 'Password set successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
