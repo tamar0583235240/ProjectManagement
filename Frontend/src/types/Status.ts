@@ -1,0 +1,1 @@
+export type Status = "NOT_STARTED" | "PENDING" | "IN_PROGRESS" | "COMPLETED" | "DELAYED";
