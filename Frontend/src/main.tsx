@@ -27,10 +27,10 @@ import { BrowserRouter } from 'react-router-dom'
 createRoot(document.getElementById('root')!).render(
   <CookiesProvider>
     <StrictMode>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+      {/* <ThemeProvider theme={theme}>
+        <CssBaseline /> */}
         <App />
-      </ThemeProvider>
+      {/* </ThemeProvider> */}
     </StrictMode>
   </CookiesProvider>
 
