@@ -7,7 +7,7 @@ const { DeleteUser, UpdateUser, inviteUser } = require('../controllers/usersCont
 // router.post('/AddUser', AddUser);
 router.delete('/DeleteUser/:user_id',verifyJWT, DeleteUser);
 router.put('/UpdateUser/:user_id',verifyJWT, UpdateUser);
-router.get('/invite',verifyJWT, inviteUser);
+// router.get('/invite',verifyJWT, inviteUser);
 // router.post('/signIn',signIn);
 
 module.exports = router;
