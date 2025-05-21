@@ -9,7 +9,7 @@ import PicSmartAndIntuitiveDashboard from '../assets/PicSmartAndIntuitiveDashboa
 import PicEasyAndSecureLogin from '../assets/PicEasyAndSecureLogin.jpg';
 import SignIn from '../features/auth/SignIn';
 import SignUp from '../features/auth/SignUp';
-const Dashboard = () => {
+const LandingPage = () => {
     const navigate = useNavigate();
     const [openSignUpDialog, setOpenSignUpDialog] = React.useState(false)
     const [openSignInDialog, setOpenSignInDialog] = React.useState(false)
@@ -361,4 +361,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard
+export default LandingPage

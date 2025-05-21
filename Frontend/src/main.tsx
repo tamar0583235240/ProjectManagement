@@ -26,14 +26,12 @@ import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')!).render(
   <CookiesProvider>
-    <BrowserRouter>
-      <StrictMode>
-          <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
-      </StrictMode>
-    </BrowserRouter>
+    <StrictMode>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
+    </StrictMode>
   </CookiesProvider>
 
 )
