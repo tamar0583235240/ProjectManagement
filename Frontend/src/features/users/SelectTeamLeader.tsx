@@ -57,21 +57,16 @@
 import { Controller } from "react-hook-form";
 import { TextField, MenuItem } from "@mui/material";
 import type { Control } from "react-hook-form";
-
-
-
-  interface Props {
+import { useGetTeamLeadersQuery } from "./userApi";
+interface Props {
   control: Control<any>;
- 
 }
-
-
+const user = JSON.parse(localStorage.getItem("user") || "{}");
 export const SelectTeamLeader = ({ control }: Props) => {
-  const { data: teamLeaders = [] } = useGetTeamLeadersQuery();
-
+  const { data: teamLeaders = [] } = useGetTeamLeadersQuery(user._id);
   return (
     <Controller
-      name="teamLeaderId"
+      name="teamLeadId"
       control={control}
       render={({ field }) => {
         return (
@@ -84,7 +79,7 @@ export const SelectTeamLeader = ({ control }: Props) => {
           >
             {teamLeaders.map((leader) => (
               <MenuItem key={leader.id} value={leader.id}>
-                {leader.name}
+                {leader.user_name}
               </MenuItem>
             ))}
           </TextField>

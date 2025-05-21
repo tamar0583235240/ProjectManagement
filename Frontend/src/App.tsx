@@ -3,23 +3,22 @@ import './App.css'
 import { store } from './app/store'
 import { Provider } from 'react-redux'
 
-import { RouterProvider } from 'react-router-dom'
 import router from './routes/router'
-
-// import {  AddEmployeeForm } from './features/users/AddEmployeeForm'
-
+import InviteUserForm from './features/users/InviteUserForm'
+// import { RouterProvider } from 'react-router-dom'
+// import { RouterProvider } from 'react-router-dom';
+// import { InviteUserForm } from './features/users/InviteUserForm';
 
 function App() {
   return (
     <>
-
       <Provider store={store}>
-         <RouterProvider router={router} />
-</Provider>
+        {/* <RouterProvider router={router} /> */}
+        <InviteUserForm/>
+      </Provider>
 
     </>
   )
-  
-}
 
+}
 export default App

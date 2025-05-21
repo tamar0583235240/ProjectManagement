@@ -9,31 +9,9 @@ import LandingPage from "../pages/LandingPage";
 import InitialRouter from "../components/InitialRouter";
 import { Children } from "react";
 import SetPasswordPage from "../pages/SetPasswordPage";
-import { AddUserForm } from "../features/users/AddUserForm";
+import AddUserForm from "../features/users/InviteUserForm";
+
 const router = createBrowserRouter([
-
-    // {
-    //     path: "/",
-    //     element: <HomePage />,
-    //     index: true,
-    // },
-    // {
-    //     path: "/app",
-    //     element: <AppLayout />,
-    //     children: [
-    //         { element: <HomePage />, index: true },
-    //         { path: "projects", element: <Projects /> },
-    //         { path: "tasks", element: <Tasks /> },
-    //         { path: "employee-management", element: <EmployeeManagment /> },
-    //         { path: "*", element: <NotFound /> },
-    //     ],
-    // },
-
-    // {
-    //     path: "/landingPage",
-    //     element: <LandingPage />,
-    //     index: true,
-    // },
    {
     path: '/',
     element: <InitialRouter />
@@ -53,10 +31,20 @@ const router = createBrowserRouter([
             { element: <HomePage />, index: true },
             { path: "projects", element: <Projects /> },
             { path: "tasks", element: <Tasks /> },
-            { path: "employeemanagement", element: <EmployeeManagment /> ,
-          children:[
-            {path:"addUser",element:<AddUserForm/>}
-          ]},
+            {
+              path: "employeemanagement",
+              element: <EmployeeManagment />,
+              children: [
+                {
+                  index: true,
+                  element: <AddUserForm />  // יוצג כשנכנסים ל-employeemanagement
+                },
+                {
+                  path: "addUser",
+                  element: <AddUserForm />
+                }
+              ]
+            },
             { path: "*", element: <NotFound /> },
         ],
     },
