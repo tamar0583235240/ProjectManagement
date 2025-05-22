@@ -31,5 +31,5 @@ const useLoadUserFromCookie = () => {
   //   }
   // }, [cookies.token, user]);
 
-
+}
 export default useLoadUserFromCookie;

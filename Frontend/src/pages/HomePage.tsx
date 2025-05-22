@@ -7,14 +7,11 @@ import React from 'react';
 const HomePage = () => {
   
   useLoadUserFromCookie();
-  const user = useSelector(selectCurrentUser);
-  console.log("name"+user?.user_name);
-  return (
-  
+  const userStr = localStorage.getItem("currentUser");
+  const user = userStr ? JSON.parse(userStr) : null;
+  return ( 
     <div>
-     
-     
-      <h1>hello {user?.user_name}</h1>
+      <h1>hello {user.user_name}</h1>
     </div>
   )
 }
