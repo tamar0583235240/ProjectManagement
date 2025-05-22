@@ -20,6 +20,27 @@ exports.AllProjects = async (req, res) => {
     }
 };
 
+
+exports.getProjectsByManagerId = async (req, res) => {
+    console.log('Fetching projects for manager ID:', req.params.manager_id);
+
+    try {
+        const managerId = req.params.manager_id;
+        const projects = await Projects.find({
+             project_manager_id: managerId 
+            }).populate('status project_manager_id organization_id');
+
+        if (!projects || projects.length === 0) {
+            return res.status(404).json({ message: 'No projects found for this manager' });
+        }
+
+        res.json(projects);
+    } catch (error) {
+        console.error('Failed to get projects:', error);
+        res.status(500).json({ message: 'Failed to get projects', error: error.message });
+    }
+};
+
 exports.DeleteProject = async (req, res) => {
     const projectId = req.params.project_id;
     try {
