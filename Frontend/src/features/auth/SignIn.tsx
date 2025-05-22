@@ -33,55 +33,27 @@ const SignIn: React.FC<SignInDialogProps> = ({ open, onClose, onSuccess }) => {
     },
   })
 
-  // const onSubmit = async(data: SignInFormData) => {
-  //   console.log(data)
-  //   // const token = await SignIn(data).unwrap();
-  //   // console.log("access token:", token)
-  //   // setCookies("token", token, { path: "/", maxAge: 3600 * 24 * 7 });
-
-  //   const response = await SignIn(data).unwrap();
-  //   console.log("response:", response);
-    
-  //   // התגובה מהשרת עכשיו מכילה גם user וגם accessToken
-  //   const { accessToken } = response;
-    
-  //   console.log("access token:", accessToken);
-  //   setCookies("token", accessToken, { path: "/", maxAge: 3600 * 24 * 7 });
-  //   alert("Sign in successful!")
-  //   onClose()
-  //   reset()
-  //   // קריאה לפונקציה onSuccess אם היא הועברה
-  //   if (onSuccess) {
-  //     onSuccess()
-  //   }
-  // }
-
-  const onSubmit = async(data: SignInFormData) => {
+  const onSubmit = async (data: SignInFormData) => {
     console.log(data);
     try {
       const response = await SignIn(data).unwrap();
       console.log("response:", response);
-      
-      // התגובה מהשרת עכשיו מכילה גם user וגם accessToken
-      const { accessToken } = response;
-      
-      console.log("access token:", accessToken);
+      const { accessToken, user } = response;
       setCookies("token", accessToken, { path: "/", maxAge: 3600 * 24 * 7 });
-      
+      localStorage.setItem("currentUser", JSON.stringify(user));
       alert("Sign in successful!");
       onClose();
       reset();
-      
-      // קריאה לפונקציה onSuccess אם היא הועברה
+
       if (onSuccess) {
         onSuccess();
       }
+
     } catch (error) {
       console.error("Sign in error:", error);
       alert("Sign in failed. Please try again.");
     }
-  }
-
+  };
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ fontWeight: "bold", color: "#0d9488", fontSize: "1.25rem" }}>Sign In</DialogTitle>
