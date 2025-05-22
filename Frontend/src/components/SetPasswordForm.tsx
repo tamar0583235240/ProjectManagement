@@ -114,7 +114,6 @@ const SetPasswordForm=({ token }: Props)=>{
       <Typography variant="h5" color="primary" align="center">
         הגדרת סיסמה
       </Typography>
-
       <TextField
         label="שם משתמש"
         {...register("user_name")}
@@ -122,7 +121,6 @@ const SetPasswordForm=({ token }: Props)=>{
         helperText={errors.user_name?.message}
         fullWidth
       />
-
       <TextField
         label="סיסמה חדשה"
         type="password"
@@ -131,9 +129,7 @@ const SetPasswordForm=({ token }: Props)=>{
         helperText={errors.password?.message}
         fullWidth
       />
-
       {error && <Typography color="error">{error}</Typography>}
-
       <Button
         type="submit"
         variant="contained"
