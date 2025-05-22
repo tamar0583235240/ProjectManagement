@@ -38,7 +38,7 @@ export const projectApi = createApi({
 
     getProjectsByManagerId: builder.query<Project[], string>({
       query: (managerId) => ({
-        url: `project/getProjectsByManagerId/${managerId}`,
+        url: `projects/getProjectsByManagerId/${managerId}`,
         method: 'GET',
       }),
     })
