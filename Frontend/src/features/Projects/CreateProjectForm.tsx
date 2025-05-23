@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import { projectSchema, ProjectFormData } from './projectSchema';
 import { 
   Box, 
   Typography, 
@@ -10,7 +12,7 @@ import {
   InputLabel, 
   Select, 
   MenuItem, 
-
+  Divider,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -34,10 +36,10 @@ import {
   Save as SaveIcon,
   PersonAdd as PersonAddIcon
 } from '@mui/icons-material';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { he } from 'date-fns/locale';
+// import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// import { he } from 'date-fns/locale';
 
 // הגדרת ערכת צבעים מותאמת לפי התמונה
 const theme = {
@@ -99,7 +101,7 @@ const projectManagers = [
   { _id: '3', user_name: 'רותי ישראלי' }
 ];
 
-const CreateProjectForm=()=> {
+export default function CreateProjectForm() {
   // Form state
   const [formData, setFormData] = useState({
     project_name: '',
@@ -536,5 +538,3 @@ const CreateProjectForm=()=> {
     </LocalizationProvider>
   );
 }
-
-export default CreateProjectForm;

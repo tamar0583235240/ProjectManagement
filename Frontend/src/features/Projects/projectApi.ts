@@ -1,19 +1,10 @@
 // src/services/api/projectApi.ts - RTK Query APIs
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ProjectFormData } from './projectSchema';
 import type { Project } from '../../types/Project';
+import { api } from '../../app/api';
 
-export const projectApi = createApi({
-  reducerPath: 'projectApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-  tagTypes: ['Project', 'Status', 'User'],
+
+export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // קבלת רשימת סטטוסים
-    getStatuses: builder.query({
-      query: () => 'statuses',
-      providesTags: ['Status'],
-    }),
-
     // קבלת רשימת מנהלי פרויקט
     getProjectManagers: builder.query({
       query: () => 'users/project-managers',
@@ -45,7 +36,7 @@ export const projectApi = createApi({
   }),
 });
 export const {
-  useGetStatusesQuery,
+  useGetProjectsByManagerIdQuery,
   useGetProjectManagersQuery,
   useSearchUserByEmailQuery,
   useAddProjectMutation

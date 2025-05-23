@@ -1,27 +1,38 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { User } from "../../types/User";
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import type { RootState } from '../../app/store'
 
+// טיפוס של ה-state במודול המשתמש
 interface UserState {
-  currentUser: User | null;
+  role: string | null
+  currentManager: string | null
 }
 
+const storedUser = JSON.parse(localStorage.getItem('currentUser') || '{}')
+
 const initialState: UserState = {
-  currentUser: null,
-};
+  role: storedUser.role || null,
+  currentManager: storedUser.role!=="MANAGER"? storedUser.manager_id : storedUser._id,
+}
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
-    setCurrentUser(state, action: PayloadAction<User>) {
-      state.currentUser = action.payload;
+    setRole: (state, action: PayloadAction<string | null>) => {
+      state.role = action.payload
     },
-    clearCurrentUser(state) {
-      state.currentUser = null;
+    setCurrentManager: (state, action: PayloadAction<string | null>) => {
+      state.currentManager = action.payload
+    },
+    resetUser: (state) => {
+      state.role = null
+      state.currentManager = null
     },
   },
-});
+})
 
-export const selectCurrentUser = (state: { user: UserState }) => state.user.currentUser;
-export const { setCurrentUser, clearCurrentUser } = userSlice.actions;
-export default userSlice.reducer;
+export const selectCurrentManagerId = (state: RootState): string | null => state.user.currentManager
+
+export const { setRole, setCurrentManager, resetUser } = userSlice.actions
+export default userSlice.reducer
+

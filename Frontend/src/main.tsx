@@ -15,22 +15,32 @@
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { CssBaseline, ThemeProvider } from '@mui/material';
-
 import './index.css'
 import App from './App.tsx'
-import theme from './theme/theme.ts';
 import { CookiesProvider } from 'react-cookie'
-import { BrowserRouter } from 'react-router-dom'
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2196f3', // ניתן להתאים לצבעים בתמונה
+    },
+    secondary: {
+      main: '#ff9800',
+    },
+  },
+  typography: {
+    fontFamily: '"Assistant", "Roboto", "Arial", sans-serif',
+  },
+});
 // import React from 'react'
 
 createRoot(document.getElementById('root')!).render(
   <CookiesProvider>
     <StrictMode>
-      {/* <ThemeProvider theme={theme}>
-        <CssBaseline /> */}
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
         <App />
-      {/* </ThemeProvider> */}
+      </ThemeProvider>
     </StrictMode>
   </CookiesProvider>
 

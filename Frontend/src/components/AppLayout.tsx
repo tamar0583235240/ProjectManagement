@@ -1,11 +1,8 @@
 import React from 'react';
 import NavBar from './NavBar';
-import { Outlet } from 'react-router-dom'; // תיקון ייבוא Outlet
-import useLoadUserFromCookie from '../hooks/useLoadUserFromCookie'; // ייבוא הפונקציה
+import { Outlet } from 'react-router-dom'; // תיקון ייבוא Outlet // ייבוא הפונקציה
 
 const AppLayout = () => {
-  // הפעלת הפונקציה שמטעינה את המשתמש מקוקי
-  useLoadUserFromCookie();
 
   return (
     <div>
