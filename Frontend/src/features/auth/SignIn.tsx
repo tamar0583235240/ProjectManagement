@@ -39,6 +39,7 @@ const SignIn: React.FC<SignInDialogProps> = ({ open, onClose, onSuccess }) => {
     try {
       const response :SignInResponse= await SignIn(data).unwrap();
       console.log("response:", response);
+<<<<<<< HEAD
        const {accessToken, user} = response;
 
       setCookies("token", accessToken, { path: "/", maxAge: 3600 * 24 * 7 });
@@ -47,15 +48,24 @@ const SignIn: React.FC<SignInDialogProps> = ({ open, onClose, onSuccess }) => {
       alert("Sign in successful!");
       onClose();
       reset();
+=======
+      const { accessToken, user } = response;
+      setCookies("token", accessToken, { path: "/", maxAge: 3600 * 24 * 7 });
+      localStorage.setItem("currentUser", JSON.stringify(user));
+      alert("Sign in successful!");
+      onClose();
+      reset();
+
+>>>>>>> branchFrontend
       if (onSuccess) {
         onSuccess();
       }
+
     } catch (error) {
       console.error("Sign in error:", error);
       alert("Sign in failed. Please try again.");
     }
-  }
-
+  };
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ fontWeight: "bold", color: "#0d9488", fontSize: "1.25rem" }}>Sign In</DialogTitle>

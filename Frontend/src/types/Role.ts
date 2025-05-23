@@ -1,1 +1,3 @@
-export type Role = "TEAM_LEADER" | "EMPLOYEE" | "MANAGER" ;
+
+export type Role = "EMPLOYEE" | "MANAGER" | "TEAM_LEAD" ;
+

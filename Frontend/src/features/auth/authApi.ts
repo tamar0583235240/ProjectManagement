@@ -1,12 +1,12 @@
 import { api } from "../../app/api";
 import type { SignInFormData } from "../../schemas/SchemaSignIn";
 
-import type { User } from "../../types/User";
+import type { SignInResponse, User } from "../../types/User";
 
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    signUp: builder.mutation<User, User>({
+    signUp: builder.mutation<SignInResponse, User>({
       query: (user) => ({
         url: "auth/SignUp",
         method: "POST",
@@ -14,7 +14,7 @@ export const authApi = api.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
-    signIn: builder.mutation< User,SignInFormData>({
+    signIn: builder.mutation< SignInResponse,SignInFormData>({
       query: (user) => ({
           url: 'auth/SignIn',
           method: "POST",

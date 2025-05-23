@@ -9,10 +9,8 @@ import PicSmartAndIntuitiveDashboard from '../assets/PicSmartAndIntuitiveDashboa
 import PicEasyAndSecureLogin from '../assets/PicEasyAndSecureLogin.jpg';
 import SignIn from '../features/auth/SignIn';
 import SignUp from '../features/auth/SignUp';
-import { useCookies } from 'react-cookie';
 const LandingPage = () => {
-    // const [cookies] = useCookies(['token'])
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [openSignUpDialog, setOpenSignUpDialog] = React.useState(false)
     const [openSignInDialog, setOpenSignInDialog] = React.useState(false)
 

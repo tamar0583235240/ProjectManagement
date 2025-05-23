@@ -18,15 +18,20 @@ import { useForm } from "react-hook-form"
 import { useCookies } from "react-cookie"
 import { useLazyGetRoleByNameQuery } from "../../service/roleApi"
 import { string } from "zod"
+<<<<<<< HEAD
 import type { SignInResponse } from "../../types/SignInResponse"
 // import { useGetRoleByNameQuery } from "../../service/roleApi"
 // import { useGetRoleByNameQuery } from "../../service/roleApi"
 // import { getRoleByName } from "../../../../Backend/controllers/rolesController"
+=======
+import type { Role } from "../../types/Role"
+>>>>>>> branchFrontend
 interface OrganizationDialogProps {
     open: boolean
     onClose: () => void
     userData: FormData | null
     onSuccess?: () => void
+
 }
 
 const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, userData, onSuccess }) => {
@@ -62,10 +67,14 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
                 manager_id: null,
             };
             try {
-
                 const resOrganization = await addOrganization(organization).unwrap();
+<<<<<<< HEAD
                 console.log("Organization registration response:", resOrganization);;
                 const u: User = {
+=======
+                console.log("Organization registration response:", resOrganization);
+                const user: User = {
+>>>>>>> branchFrontend
                     user_name: userData.username,
                     password: userData.password,
                     email: userData.email,
@@ -73,6 +82,7 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
                     manager_id: null,
                     organization_id: resOrganization._id,
                 };
+<<<<<<< HEAD
 
 
                 console.log("User data after change:", u);
@@ -86,6 +96,14 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
 
 
 
+=======
+                console.log("User data after change:", user);
+                const response = await addUser(user).unwrap();
+                console.log("Response from addUser:", response);
+                setCookies("token", response.accessToken, { path: "/", maxAge: 3600 * 24 * 7 });
+                localStorage.setItem("currentUser", JSON.stringify(response.user));
+
+>>>>>>> branchFrontend
                 alert("Registration completed successfully!");
                 onClose();
                 reset();
