@@ -17,7 +17,7 @@ import SignUp from "../features/auth/SignUp"
 import LockIcon from "@mui/icons-material/Lock"
 
 const NavBar = () => {
-    const pages = ["HomePage", "Projects", "Tasks", "EmployeeManagment"]
+    const pages = ["HomePage", "Projects", "Tasks", "EmployeeManagement"]
     const settings = ["Profile"]
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
@@ -126,7 +126,7 @@ const NavBar = () => {
                                 }}
                             >
                                 {pages.map((page) => (
-                                    //if (user.role !== "admin"&& page === "EmployeeManagment") return null
+                                    //if(user.role !== "admin"&& page === "EmployeeManagment") return null;
 
                                     <MenuItem key={page} onClick={handleCloseNavMenu}>
                                         <Typography sx={{ textAlign: "center", color: "#333" }}>

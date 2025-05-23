@@ -10,6 +10,7 @@ import InitialRouter from "../components/InitialRouter";
 import { Children } from "react";
 import SetPasswordPage from "../pages/SetPasswordPage";
 import AddUserForm from "../features/users/InviteUserForm";
+import InviteUserForm from "../features/users/InviteUserForm";
 
 const router = createBrowserRouter([
    {
@@ -36,12 +37,12 @@ const router = createBrowserRouter([
               element: <EmployeeManagment />,
               children: [
                 {
-                  index: true,
-                  element: <AddUserForm />  // יוצג כשנכנסים ל-employeemanagement
+                  index: true,  // ברירת מחדל בכניסה לנתיב הזה
+                  element: <InviteUserForm />  // במקום InitialRouter
                 },
                 {
-                  path: "addUser",
-                  element: <AddUserForm />
+                  path: "invite",
+                  element: <InviteUserForm />
                 }
               ]
             },
