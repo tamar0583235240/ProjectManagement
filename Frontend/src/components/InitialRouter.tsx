@@ -5,7 +5,6 @@ import { useEffect } from 'react'
 const InitialRouter = () => {
   const [cookies] = useCookies(['token'])
   const navigate = useNavigate()
-
   useEffect(() => {
     if (cookies.token) {
       navigate('/app')
@@ -13,8 +12,6 @@ const InitialRouter = () => {
       navigate('/landingPage')
     }
   }, [cookies.token, navigate])
-
   return null
 }
-
 export default InitialRouter
