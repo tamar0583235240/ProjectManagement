@@ -16,8 +16,6 @@ import { useAddOrganizationMutation } from "../organizations/organizationsApi"
 import { SchemaOrganization, type OrganizationFormData } from "../../schemas/SchemaSignUpOrganization"
 import { useForm } from "react-hook-form"
 import { useCookies } from "react-cookie"
-import { string } from "zod"
-import type { Role } from "../../types/Role"
 interface OrganizationDialogProps {
     open: boolean
     onClose: () => void

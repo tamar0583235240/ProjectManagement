@@ -17,7 +17,7 @@ import { useCookies } from "react-cookie"
 interface SignInDialogProps {
   open: boolean
   onClose: () => void
-  onSuccess?: () => void // פרופ חדש
+  onSuccess?: () => void 
 }
 
 const SignIn: React.FC<SignInDialogProps> = ({ open, onClose, onSuccess }) => {
