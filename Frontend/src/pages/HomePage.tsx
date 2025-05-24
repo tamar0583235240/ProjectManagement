@@ -1,12 +1,12 @@
 
-import useLoadUserFromCookie from '../hooks/useLoadUserFromCookie';
+// import useLoadUserFromCookie from '../hooks/useLoadUserFromCookie';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../features/auth/userSlice';
 import React from 'react';
 
 const HomePage = () => {
   
-  useLoadUserFromCookie();
+  // useLoadUserFromCookie();
   const user = useSelector(selectCurrentUser);
   console.log("name"+user?.user_name);
   return (

@@ -37,18 +37,8 @@ const SignIn: React.FC<SignInDialogProps> = ({ open, onClose, onSuccess }) => {
   const onSubmit = async (data: SignInFormData) => {
     console.log(data);
     try {
-      const response :SignInResponse= await SignIn(data).unwrap();
+      const response = await SignIn(data).unwrap();
       console.log("response:", response);
-<<<<<<< HEAD
-       const {accessToken, user} = response;
-
-      setCookies("token", accessToken, { path: "/", maxAge: 3600 * 24 * 7 });
-      localStorage.setItem("currentUser", JSON.stringify(user));
-
-      alert("Sign in successful!");
-      onClose();
-      reset();
-=======
       const { accessToken, user } = response;
       setCookies("token", accessToken, { path: "/", maxAge: 3600 * 24 * 7 });
       localStorage.setItem("currentUser", JSON.stringify(user));
@@ -56,7 +46,6 @@ const SignIn: React.FC<SignInDialogProps> = ({ open, onClose, onSuccess }) => {
       onClose();
       reset();
 
->>>>>>> branchFrontend
       if (onSuccess) {
         onSuccess();
       }
