@@ -24,7 +24,7 @@ const Projects = () => {
   return (
     <div>
       {/* <ProjectShow projects={sampleProjects || []} /> */}
-      <ProjectsDashboard initialProjects={projects || []} />
+      <ProjectsDashboard initialProjects={projects|| []} />
     </div>
   )
 }

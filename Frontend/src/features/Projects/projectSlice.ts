@@ -1,0 +1,38 @@
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import type { Project } from '../../types/Project'
+
+
+interface ProjectsState {
+  items: Project[]
+  isLoading: boolean
+  error: string | null
+}
+
+const initialState: ProjectsState = {
+  items: [],
+  isLoading: false,
+  error: null,
+}
+
+const projectsSlice = createSlice({
+  name: 'projects',
+  initialState,
+  reducers: {
+    setProjects: (state, action: PayloadAction<Project[]>) => {
+      state.items = action.payload
+      state.isLoading = false
+      state.error = null
+    },
+    setLoading: (state) => {
+      state.isLoading = true
+      state.error = null
+    },
+    setError: (state, action: PayloadAction<string>) => {
+      state.isLoading = false
+      state.error = action.payload
+    },
+  },
+})
+
+export const { setProjects, setLoading, setError } = projectsSlice.actions
+export default projectsSlice.reducer

@@ -1,5 +1,4 @@
-import { useCurrentUser } from "../hooks/useCurrentUser";
-
+import useCurrentUser from "../hooks/useCurrentUser";
 
 const HomePage = () => {
   const user = useCurrentUser();
