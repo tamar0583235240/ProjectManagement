@@ -21,8 +21,8 @@ interface ProjectsGridViewProps {
   onMenuOpen: (event: React.MouseEvent<HTMLElement>, project: Project) => void
 }
 
-export const ProjectsGridView: React.FC<ProjectsGridViewProps> = ({ projects, onMenuOpen }) => {
-  // חישוב ימים שנותרו
+const ProjectsGridView: React.FC<ProjectsGridViewProps> = ({ projects, onMenuOpen }) => {
+  // Calculate remaining days
   const getDaysRemaining = (deadline: string) => {
     try {
       const today = new Date()
@@ -49,7 +49,7 @@ export const ProjectsGridView: React.FC<ProjectsGridViewProps> = ({ projects, on
                   <Typography variant="h6" component="h3" noWrap sx={{ maxWidth: "80%" }}>
                     {project.project_name}
                   </Typography>
-                  <IconButton size="small" onClick={(e) => onMenuOpen(e, project)} aria-label="פעולות נוספות">
+                  <IconButton size="small" onClick={(e) => onMenuOpen(e, project)} aria-label="More actions">
                     <MoreVert />
                   </IconButton>
                 </Box>
@@ -85,28 +85,30 @@ export const ProjectsGridView: React.FC<ProjectsGridViewProps> = ({ projects, on
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <CalendarToday fontSize="small" color="action" />
                     <Typography variant="body2" color="text.secondary">
-                      תאריך יעד: {format(new Date(project.deadline), "dd/MM/yyyy")}
+                      Deadline: {format(new Date(project.deadline), "dd/MM/yyyy")}
                     </Typography>
                   </Box>
 
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <AccessTime fontSize="small" color="action" />
                     <Typography variant="body2" color={daysRemaining < 0 ? "error" : "text.secondary"}>
-                      {daysRemaining < 0 ? `באיחור של ${Math.abs(daysRemaining)} ימים` : `${daysRemaining} ימים נותרו`}
+                      {daysRemaining < 0
+                        ? `Overdue by ${Math.abs(daysRemaining)} days`
+                        : `${daysRemaining} days remaining`}
                     </Typography>
                   </Box>
 
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Person fontSize="small" color="action" />
                     <Typography variant="body2" color="text.secondary">
-                      {project.project_manager_id?.user_name || "לא מוגדר"}
+                      {project.project_manager_id?.user_name || "Not assigned"}
                     </Typography>
                   </Box>
                 </Stack>
 
                 <Box sx={{ mt: 2 }}>
                   <Box sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}>
-                    <Typography variant="body2">התקדמות:</Typography>
+                    <Typography variant="body2">Progress:</Typography>
                     <Typography variant="body2">{progress}%</Typography>
                   </Box>
                   <LinearProgress variant="determinate" value={progress} sx={{ height: 6, borderRadius: 1 }} />
@@ -119,4 +121,5 @@ export const ProjectsGridView: React.FC<ProjectsGridViewProps> = ({ projects, on
     </Grid>
   )
 }
+
 export default ProjectsGridView

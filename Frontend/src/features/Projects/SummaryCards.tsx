@@ -6,7 +6,7 @@ interface SummaryCardsProps {
   projects: Project[]
 }
 
-export const SummaryCards: React.FC<SummaryCardsProps> = ({ projects }) => {
+const SummaryCards: React.FC<SummaryCardsProps> = ({ projects }) => {
   const totalProjects = projects.length
   const completedProjects = projects.filter((p) => p.status === "COMPLETED").length
   const delayedProjects = projects.filter((p) => p.status === "DELAYED").length
@@ -18,7 +18,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({ projects }) => {
         <Card elevation={2} sx={{ height: "100%" }}>
           <CardContent sx={{ textAlign: "center", py: 3 }}>
             <Typography variant="h6" color="text.secondary" gutterBottom>
-              סה"כ פרויקטים
+              Total Projects
             </Typography>
             <Typography variant="h2" color="primary" fontWeight="bold">
               {totalProjects}
@@ -30,7 +30,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({ projects }) => {
         <Card elevation={2} sx={{ height: "100%" }}>
           <CardContent sx={{ textAlign: "center", py: 3 }}>
             <Typography variant="h6" color="text.secondary" gutterBottom>
-              בתהליך
+              In Progress
             </Typography>
             <Typography variant="h2" sx={{ color: "#00bcd4" }} fontWeight="bold">
               {inProgressProjects}
@@ -42,7 +42,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({ projects }) => {
         <Card elevation={2} sx={{ height: "100%" }}>
           <CardContent sx={{ textAlign: "center", py: 3 }}>
             <Typography variant="h6" color="text.secondary" gutterBottom>
-              הושלמו
+              Completed
             </Typography>
             <Typography variant="h2" sx={{ color: "#ffc107" }} fontWeight="bold">
               {completedProjects}
@@ -54,7 +54,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({ projects }) => {
         <Card elevation={2} sx={{ height: "100%" }}>
           <CardContent sx={{ textAlign: "center", py: 3 }}>
             <Typography variant="h6" color="text.secondary" gutterBottom>
-              באיחור
+              Delayed
             </Typography>
             <Typography variant="h2" color="error" fontWeight="bold">
               {delayedProjects}
@@ -65,3 +65,4 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({ projects }) => {
     </Grid>
   )
 }
+export default SummaryCards

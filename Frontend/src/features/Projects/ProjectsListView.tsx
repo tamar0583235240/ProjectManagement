@@ -24,10 +24,10 @@ interface ProjectsListViewProps {
   onDelete: (project: Project) => void
 }
 
-export const ProjectsListView: React.FC<ProjectsListViewProps> = ({ projects, onEdit, onDelete }) => {
+const ProjectsListView: React.FC<ProjectsListViewProps> = ({ projects, onEdit, onDelete }) => {
   const theme = useTheme()
 
-  // חישוב ימים שנותרו
+  // Calculate remaining days
   const getDaysRemaining = (deadline: string) => {
     try {
       const today = new Date()
@@ -80,14 +80,14 @@ export const ProjectsListView: React.FC<ProjectsListViewProps> = ({ projects, on
                         <AccessTime fontSize="small" color="action" />
                         <Typography variant="body2" color={daysRemaining < 0 ? "error" : "text.secondary"}>
                           {daysRemaining < 0
-                            ? `באיחור של ${Math.abs(daysRemaining)} ימים`
-                            : `${daysRemaining} ימים נותרו`}
+                            ? `Overdue by ${Math.abs(daysRemaining)} days`
+                            : `${daysRemaining} days remaining`}
                         </Typography>
                       </Box>
                       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                         <Person fontSize="small" color="action" />
                         <Typography variant="body2" color="text.secondary">
-                          {project.project_manager_id?.user_name || "לא מוגדר"}
+                          {project.project_manager_id?.user_name || "Not assigned"}
                         </Typography>
                       </Box>
                     </Box>
@@ -113,3 +113,4 @@ export const ProjectsListView: React.FC<ProjectsListViewProps> = ({ projects, on
   )
 }
 
+export default ProjectsListView

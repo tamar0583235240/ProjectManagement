@@ -1,0 +1,37 @@
+// import { z } from "zod"
+
+// export const addProjectSchema = z.object({
+//   projectName: z.string().min(1, "Project name is required"),
+//   description: z.string().optional(),
+//   manager: z.string().min(1, "Please select a manager"),
+//   startDate: z.string().min(1, "Start date is required"),
+//   deadline: z.string().min(1, "Deadline is required"),
+// })
+
+// export type AddProjectFormData = z.infer<typeof addProjectSchema>
+
+import { z } from "zod"
+
+export const addProjectSchema = z.object({
+  projectName: z.string().min(1, "Project name is required"),
+  description: z.string().optional(),
+  manager: z.string().min(1, "Please select a manager"),
+  startDate: z.string().min(1, "Start date is required"),
+  deadline: z.string().min(1, "Deadline is required"),
+  status: z.enum(["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "ON_HOLD"]).default("NOT_STARTED"),
+  authorizedUsers: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string().min(1, "User name is required"),
+      email: z.string().email("Invalid email address"),
+    })
+  ).default([]),
+})
+
+export type AddProjectFormData = z.infer<typeof addProjectSchema>
+
+export type AuthorizedUser = {
+  id: string;
+  name: string;
+  email: string;
+}

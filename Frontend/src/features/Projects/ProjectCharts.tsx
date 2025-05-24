@@ -14,7 +14,7 @@ import {
   ResponsiveContainer,
 } from "recharts"
 import { format } from "date-fns"
-import { he } from "date-fns/locale"
+import { enUS } from "date-fns/locale"
 import type { Project } from "../../types/Project"
 
 interface ProjectChartsProps {
@@ -22,28 +22,28 @@ interface ProjectChartsProps {
 }
 
 const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
-  // חישוב סטטיסטיקות
+  // Calculate statistics
   const completedProjects = projects.filter((p) => p.status === "COMPLETED").length
   const delayedProjects = projects.filter((p) => p.status === "DELAYED").length
   const inProgressProjects = projects.filter((p) => p.status === "IN_PROGRESS").length
   const notStartedProjects = projects.filter((p) => p.status === "NOT_STARTED").length
 
-  // נתונים לגרף עוגה
+  // Data for pie chart
   const pieChartData = [
-    { name: "בתהליך", value: inProgressProjects, color: "#00bcd4" },
-    { name: "הושלם", value: completedProjects, color: "#4caf50" },
-    { name: "באיחור", value: delayedProjects, color: "#f44336" },
-    { name: "טרם התחיל", value: notStartedProjects, color: "#ffc107" },
+    { name: "In Progress", value: inProgressProjects, color: "#00bcd4" },
+    { name: "Completed", value: completedProjects, color: "#4caf50" },
+    { name: "Delayed", value: delayedProjects, color: "#f44336" },
+    { name: "Not Started", value: notStartedProjects, color: "#ffc107" },
   ].filter((item) => item.value > 0)
 
-  // נתונים לגרף עמודות לפי חודשי דדליין
+  // Data for bar chart by deadline month
   const getMonthData = () => {
     const monthCounts: Record<string, number> = {}
 
     projects.forEach((project) => {
       if (project.deadline) {
         try {
-          const month = format(new Date(project.deadline), "MMM", { locale: he })
+          const month = format(new Date(project.deadline), "MMM", { locale: enUS })
           monthCounts[month] = (monthCounts[month] || 0) + 1
         } catch (error) {
           console.warn("Invalid date format:", project.deadline)
@@ -65,7 +65,7 @@ const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
         <Card elevation={2} sx={{ height: "100%" }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              פרויקטים לפי סטטוס
+              Projects by Status
             </Typography>
             <Box sx={{ height: 300 }}>
               <ResponsiveContainer width="100%" height="100%">
@@ -96,7 +96,7 @@ const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
         <Card elevation={2} sx={{ height: "100%" }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              פרויקטים לפי חודש דדליין
+              Projects by Deadline Month
             </Typography>
             <Box sx={{ height: 300 }}>
               <ResponsiveContainer width="100%" height="100%">

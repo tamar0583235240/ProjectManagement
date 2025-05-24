@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { useState, useEffect } from "react"
 import {
@@ -23,22 +21,24 @@ import { Add, Edit, Delete, ViewModule, ViewList, ViewHeadline } from "@mui/icon
 import rtlPlugin from "stylis-plugin-rtl"
 import { CacheProvider } from "@emotion/react"
 import createCache from "@emotion/cache"
-import { SummaryCards } from "./SummaryCards"
-import { ProjectsGridView } from "./ProjectsGridView"
 import { ProjectsTableView } from "./ProjectsTableView"
-import { ProjectsListView } from "./ProjectsListView"
-import { EditDialog, DeleteDialog, AddProjectDialog } from "./ProjectDialog"
-import { FilterPanel, type FilterValues } from "./FilterPanel"
+import FilterPanel, { type FilterValues } from "./FilterPanel"
 import { type Project, generateId } from "../../types/Project"
 import ProjectCharts from "./ProjectCharts"
+import EditDialog from "./EditDialog"
+import DeleteDialog from "./DeleteDialog"
+import AddProjectDialog from "./AddProjectDialog"
+import SummaryCards from "./SummaryCards"
+import ProjectsGridView from "./ProjectsGridView"
+import ProjectsListView from "./ProjectsListView"
 
-// יצירת קאש עבור RTL
+// Create cache for RTL
 const cacheRtl = createCache({
   key: "muirtl",
   stylisPlugins: [rtlPlugin],
 })
 
-// יצירת ערכת נושא מותאמת
+// Create custom theme
 const theme = createTheme({
   direction: "rtl",
   palette: {
@@ -113,7 +113,7 @@ interface ProjectsDashboardProps {
   initialProjects: Project[]
 }
 
-export default function ProjectsDashboard({ initialProjects }: ProjectsDashboardProps) {
+const ProjectsDashboard = ({ initialProjects }: ProjectsDashboardProps) => {
   const [projects, setProjects] = useState<Project[]>(initialProjects || [])
   const [filteredProjects, setFilteredProjects] = useState<Project[]>(initialProjects || [])
   const [tabValue, setTabValue] = useState(0)
@@ -129,7 +129,7 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
     severity: "success",
   })
 
-  // פונקציות לטיפול בפרויקטים
+  // Project action handlers
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, project: Project) => {
     setAnchorEl(event.currentTarget)
     setSelectedProject(project)
@@ -150,10 +150,9 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
   }
 
   const confirmDelete = () => {
-    // במציאות כאן היה קוד לקריאת API למחיקת הפרויקט
     setSnackbar({
       open: true,
-      message: `הפרויקט "${selectedProject?.project_name}" נמחק בהצלחה`,
+      message: `Project "${selectedProject?.project_name}" deleted successfully`,
       severity: "success",
     })
     setIsDeleteDialogOpen(false)
@@ -161,10 +160,9 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
 
   const saveProjectChanges = (e: React.FormEvent) => {
     e.preventDefault()
-    // במציאות כאן היה קוד לקריאת API לעדכון הפרויקט
     setSnackbar({
       open: true,
-      message: `הפרויקט "${selectedProject?.project_name}" עודכן בהצלחה`,
+      message: `Project "${selectedProject?.project_name}" updated successfully`,
       severity: "success",
     })
     setIsEditDialogOpen(false)
@@ -172,25 +170,23 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
 
   const handleAddProject = (e: React.FormEvent) => {
     e.preventDefault()
-    // במציאות כאן היה קוד לקריאת API להוספת פרויקט
     setSnackbar({
       open: true,
-      message: "הפרויקט נוסף בהצלחה",
+      message: "Project added successfully",
       severity: "success",
     })
     setIsAddDialogOpen(false)
 
-    // יצירת פרויקט חדש לדוגמה
     const newProject: Project = {
       _id: generateId(),
-      project_name: "פרויקט חדש",
-      description: "תיאור של הפרויקט החדש",
+      project_name: "New Project",
+      description: "Description of the new project",
       start_date: new Date().toISOString(),
       deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
       status: "NOT_STARTED",
       project_manager_id: {
         _id: "123",
-        user_name: "תמר",
+        user_name: "Tamar",
         email: "tamar@example.com",
         role: "MANAGER",
       },
@@ -236,7 +232,7 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
     setFilteredProjects(filtered)
     setSnackbar({
       open: true,
-      message: `נמצאו ${filtered.length} פרויקטים מתאימים`,
+      message: `${filtered.length} matching projects found`,
       severity: "success",
     })
   }
@@ -245,7 +241,6 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
     setFilteredProjects(projects)
   }
 
-  // עדכון הפרויקטים המסוננים כאשר הפרויקטים משתנים
   useEffect(() => {
     setFilteredProjects(projects)
   }, [projects])
@@ -259,7 +254,7 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
             <Box sx={{ width: "100%", minHeight: "100vh", p: { xs: 2, md: 4 } }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 4 }}>
                 <Typography variant="h4" component="h1" fontWeight="bold">
-                  לוח בקרת פרויקטים
+                  Project Dashboard
                 </Typography>
                 <Button
                   variant="contained"
@@ -267,21 +262,21 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
                   color="primary"
                   onClick={() => setIsAddDialogOpen(true)}
                 >
-                  פרויקט חדש
+                  New Project
                 </Button>
               </Box>
 
-              {/* כרטיסי סיכום */}
+              {/* Summary Cards */}
               <Box sx={{ mb: 4 }}>
                 <SummaryCards projects={filteredProjects} />
               </Box>
 
-              {/* גרפים */}
+              {/* Charts */}
               <Box sx={{ mb: 4 }}>
                 <ProjectCharts projects={filteredProjects} />
               </Box>
 
-              {/* פאנל סינון */}
+              {/* Filter Panel */}
               <FilterPanel
                 open={isFilterOpen}
                 onToggle={() => setIsFilterOpen(!isFilterOpen)}
@@ -289,7 +284,7 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
                 onReset={resetFilter}
               />
 
-              {/* טאבים לתצוגות שונות */}
+              {/* View Tabs */}
               <Paper elevation={2} sx={{ mb: 4 }}>
                 <Tabs
                   value={tabValue}
@@ -298,17 +293,15 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
                   indicatorColor="primary"
                   sx={{ borderBottom: 1, borderColor: "divider" }}
                 >
-                  <Tab icon={<ViewModule />} label="תצוגת גריד" />
-                  <Tab icon={<ViewList />} label="תצוגת טבלה" />
-                  <Tab icon={<ViewHeadline />} label="תצוגת רשימה" />
+                  <Tab icon={<ViewModule />} label="Grid View" />
+                  <Tab icon={<ViewList />} label="Table View" />
+                  <Tab icon={<ViewHeadline />} label="List View" />
                 </Tabs>
 
-                {/* תצוגת גריד */}
                 <TabPanel value={tabValue} index={0}>
                   <ProjectsGridView projects={filteredProjects} onMenuOpen={handleMenuOpen} />
                 </TabPanel>
 
-                {/* תצוגת טבלה */}
                 <TabPanel value={tabValue} index={1}>
                   <ProjectsTableView
                     projects={filteredProjects}
@@ -323,7 +316,6 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
                   />
                 </TabPanel>
 
-                {/* תצוגת רשימה */}
                 <TabPanel value={tabValue} index={2}>
                   <ProjectsListView
                     projects={filteredProjects}
@@ -339,7 +331,7 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
                 </TabPanel>
               </Paper>
 
-              {/* תפריט פעולות */}
+              {/* Context Menu */}
               <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
@@ -363,15 +355,15 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
               >
                 <MenuItem onClick={handleEditProject}>
                   <Edit fontSize="small" sx={{ mr: 1 }} />
-                  עריכה
+                  Edit
                 </MenuItem>
                 <MenuItem onClick={handleDeleteProject} sx={{ color: "error.main" }}>
                   <Delete fontSize="small" sx={{ mr: 1 }} />
-                  מחיקה
+                  Delete
                 </MenuItem>
               </Menu>
 
-              {/* דיאלוגים */}
+              {/* Dialogs */}
               <EditDialog
                 open={isEditDialogOpen}
                 project={selectedProject}
@@ -392,7 +384,7 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
                 onAdd={handleAddProject}
               />
 
-              {/* הודעות */}
+              {/* Snackbar */}
               <Snackbar
                 open={snackbar.open}
                 autoHideDuration={6000}
@@ -410,3 +402,5 @@ export default function ProjectsDashboard({ initialProjects }: ProjectsDashboard
     </StyledEngineProvider>
   )
 }
+
+export default ProjectsDashboard

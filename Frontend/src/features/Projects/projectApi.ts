@@ -11,14 +11,14 @@ export const projectApi = api.injectEndpoints({
       providesTags: ['User'],
     }),
 
-    // חיפוש משתמש לפי אימייל
-    searchUserByEmail: builder.query({
-      query: (email) => `users/search?email=${email}`,
-      providesTags: ['User'],
-    }),
+    // // חיפוש משתמש לפי אימייל
+    // searchUserByEmail: builder.query({
+    //   query: (email) => `users/search?email=${email}`,
+    //   providesTags: ['User'],
+    // }),
 
     // הוספת פרויקט חדש
-    addProject: builder.mutation({
+    addProject: builder.mutation<Project,Project>({
       query: (project) => ({
         url: 'projects',
         method: 'POST',
@@ -38,6 +38,6 @@ export const projectApi = api.injectEndpoints({
 export const {
   useGetProjectsByManagerIdQuery,
   useGetProjectManagersQuery,
-  useSearchUserByEmailQuery,
+  // useSearchUserByEmailQuery,
   useAddProjectMutation
 } = projectApi;

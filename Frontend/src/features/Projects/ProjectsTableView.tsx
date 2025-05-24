@@ -27,7 +27,7 @@ interface ProjectsTableViewProps {
 export const ProjectsTableView: React.FC<ProjectsTableViewProps> = ({ projects, onEdit, onDelete }) => {
   const theme = useTheme()
 
-  // חישוב ימים שנותרו
+  // Calculate remaining days
   const getDaysRemaining = (deadline: string) => {
     try {
       const today = new Date()
@@ -44,13 +44,13 @@ export const ProjectsTableView: React.FC<ProjectsTableViewProps> = ({ projects, 
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell align="right">שם הפרויקט</TableCell>
-            <TableCell align="right">תיאור</TableCell>
-            <TableCell align="right">סטטוס</TableCell>
-            <TableCell align="right">מנהל פרויקט</TableCell>
-            <TableCell align="right">תאריך יעד</TableCell>
-            <TableCell align="right">ימים שנותרו</TableCell>
-            <TableCell align="right">פעולות</TableCell>
+            <TableCell align="right">Project Name</TableCell>
+            <TableCell align="right">Description</TableCell>
+            <TableCell align="right">Status</TableCell>
+            <TableCell align="right">Project Manager</TableCell>
+            <TableCell align="right">Deadline</TableCell>
+            <TableCell align="right">Days Remaining</TableCell>
+            <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -76,10 +76,10 @@ export const ProjectsTableView: React.FC<ProjectsTableViewProps> = ({ projects, 
                     size="small"
                   />
                 </TableCell>
-                <TableCell align="right">{project.project_manager_id?.user_name || "לא מוגדר"}</TableCell>
+                <TableCell align="right">{project.project_manager_id?.user_name || "Not Assigned"}</TableCell>
                 <TableCell align="right">{format(new Date(project.deadline), "dd/MM/yyyy")}</TableCell>
                 <TableCell align="right" sx={{ color: daysRemaining < 0 ? theme.palette.error.main : "inherit" }}>
-                  {daysRemaining < 0 ? `${Math.abs(daysRemaining)} ימים באיחור` : `${daysRemaining} ימים`}
+                  {daysRemaining < 0 ? `${Math.abs(daysRemaining)} days overdue` : `${daysRemaining} days`}
                 </TableCell>
                 <TableCell align="right">
                   <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end" }}>

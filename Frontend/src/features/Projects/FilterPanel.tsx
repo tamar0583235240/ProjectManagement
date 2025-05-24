@@ -1,7 +1,4 @@
-"use client"
-
 import React from "react"
-
 import type { ReactElement } from "react"
 import {
   Box,
@@ -17,6 +14,7 @@ import {
   IconButton,
   Grid,
 } from "@mui/material"
+import type { SelectChangeEvent } from "@mui/material"
 import { Close, FilterList } from "@mui/icons-material"
 
 interface FilterPanelProps {
@@ -33,7 +31,12 @@ export interface FilterValues {
   dateTo: string
 }
 
-export const FilterPanel: React.FC<FilterPanelProps> = ({ open, onToggle, onFilter, onReset }): ReactElement => {
+const FilterPanel: React.FC<FilterPanelProps> = ({
+  open,
+  onToggle,
+  onFilter,
+  onReset,
+}): ReactElement => {
   const [filters, setFilters] = React.useState<FilterValues>({
     status: "",
     manager: "",
@@ -41,11 +44,14 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ open, onToggle, onFilt
     dateTo: "",
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
+  const handleSelectChange = (e: SelectChangeEvent) => {
     const { name, value } = e.target
-    if (name) {
-      setFilters((prev) => ({ ...prev, [name]: value }))
-    }
+    setFilters((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFilters((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -54,12 +60,13 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ open, onToggle, onFilt
   }
 
   const handleReset = () => {
-    setFilters({
+    const resetFilters = {
       status: "",
       manager: "",
       dateFrom: "",
       dateTo: "",
-    })
+    }
+    setFilters(resetFilters)
     onReset()
   }
 
@@ -79,7 +86,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ open, onToggle, onFilt
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <FilterList />
-          <Typography variant="h6">סינון פרויקטים</Typography>
+          <Typography variant="h6">Project Filter</Typography>
         </Box>
         <IconButton size="small" sx={{ color: "white" }}>
           {open ? <Close /> : <FilterList />}
@@ -89,60 +96,58 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ open, onToggle, onFilt
       <Collapse in={open}>
         <Box component="form" onSubmit={handleSubmit} sx={{ p: 3 }}>
           <Grid container spacing={3}>
-            <Grid xs={12} md={3}>
+            <Grid item xs={12} md={3}>
               <FormControl fullWidth variant="outlined">
-                <InputLabel>סטטוס</InputLabel>
+                <InputLabel>Status</InputLabel>
                 <Select
                   name="status"
-                  label="סטטוס"
+                  label="Status"
                   value={filters.status}
-                  onChange={handleChange}
-                  inputProps={{ dir: "rtl" }}
+                  onChange={handleSelectChange}
                 >
-                  <MenuItem value="">הכל</MenuItem>
-                  <MenuItem value="IN_PROGRESS">בתהליך</MenuItem>
-                  <MenuItem value="COMPLETED">הושלם</MenuItem>
-                  <MenuItem value="DELAYED">באיחור</MenuItem>
-                  <MenuItem value="NOT_STARTED">טרם התחיל</MenuItem>
+                  <MenuItem value="">All</MenuItem>
+                  <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
+                  <MenuItem value="COMPLETED">Completed</MenuItem>
+                  <MenuItem value="DELAYED">Delayed</MenuItem>
+                  <MenuItem value="NOT_STARTED">Not Started</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
-            <Grid xs={12} md={3}>
+            <Grid item xs={12} md={3}>
               <FormControl fullWidth variant="outlined">
-                <InputLabel>מנהל פרויקט</InputLabel>
+                <InputLabel>Project Manager</InputLabel>
                 <Select
                   name="manager"
-                  label="מנהל פרויקט"
+                  label="Project Manager"
                   value={filters.manager}
-                  onChange={handleChange}
-                  inputProps={{ dir: "rtl" }}
+                  onChange={handleSelectChange}
                 >
-                  <MenuItem value="">הכל</MenuItem>
-                  <MenuItem value="תמר">תמר</MenuItem>
-                  <MenuItem value="יוסי">יוסי</MenuItem>
-                  <MenuItem value="רונית">רונית</MenuItem>
+                  <MenuItem value="">All</MenuItem>
+                  <MenuItem value="Tamar">Tamar</MenuItem>
+                  <MenuItem value="Yossi">Yossi</MenuItem>
+                  <MenuItem value="Ronit">Ronit</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
-            <Grid xs={12} md={3}>
+            <Grid item xs={12} md={3}>
               <TextField
                 name="dateFrom"
-                label="מתאריך"
+                label="From Date"
                 type="date"
                 fullWidth
                 value={filters.dateFrom}
-                onChange={handleChange}
+                onChange={handleInputChange}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
-            <Grid xs={12} md={3}>
+            <Grid item xs={12} md={3}>
               <TextField
                 name="dateTo"
-                label="עד תאריך"
+                label="To Date"
                 type="date"
                 fullWidth
                 value={filters.dateTo}
-                onChange={handleChange}
+                onChange={handleInputChange}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -150,10 +155,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ open, onToggle, onFilt
 
           <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end", gap: 2 }}>
             <Button variant="outlined" onClick={handleReset}>
-              נקה סינון
+              Clear Filters
             </Button>
             <Button type="submit" variant="contained" startIcon={<FilterList />}>
-              סנן
+              Apply Filters
             </Button>
           </Box>
         </Box>
@@ -161,3 +166,5 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ open, onToggle, onFilt
     </Paper>
   )
 }
+
+export default FilterPanel
