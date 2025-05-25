@@ -1,37 +1,7 @@
 const User = require('../models/User');
-const bcrypt = require('bcrypt')
-
-// exports.SignUp = async (req, res) => {
-//     try {
-//         const { user_name, password, email, role, manager_id, organization_id } = req.body
-
-//         if (!user_name || !password) {
-//             return res.status(400).json({ message: 'All fields are required' })
-//         }
-//         const existingUser = await User.findOne({ email });
-//         if (existingUser) {
-//           return res.status(400).json({ message: 'This email already exists in the system' });
-//         }
-//         const duplicate = await User.findOne({ user_name: user_name }).lean()
-//         if (duplicate) {
-//             return res.status(409).json({ message: "Duplicate username" })
-//         }
-//         const hashedPwd = await bcrypt.hash(password, 10)
-//         const userObject = { user_name, password: hashedPwd, email, role, manager_id, organization_id }
-//         const user = await User.create(userObject)
-//         if (user) {
-//             return res.status(201).json(user,{
-//                 message: `New user ${user.user_name}
-//             created` })
-            
-//         } else {
-//             return res.status(400).json({ message: 'Invalid user received' })
-//         }
-//     } catch (error) {
-//         console.error('Failed to add user:', error);
-//         res.status(500).json({ message: 'Failed to add user', error: error.message });
-//     }
-// };
+const bcrypt = require('bcrypt');
+// const User = require('../models/User');
+// const Role = require('../models/Role'); 
 
 exports.AllUsers = async (req, res) => {
     try {
@@ -86,7 +56,6 @@ exports.UpdateUser = async (req, res) => {
     }
 };
 
-
 exports.getTeamLeaders = async (req, res) => {
   const { managerId } = req.params;
 
@@ -98,12 +67,12 @@ exports.getTeamLeaders = async (req, res) => {
     const teamLeaders = await User.find({
       role: "team_leader",
       manager_id: managerId,
-    }).select("_id name"); 
+    }).select("_id user_name "); 
 
     return res.json(
       teamLeaders.map((tl) => ({
         _id: tl._id,
-        name: tl.name || tl.email,
+        name: tl.user_name  || tl.email,
       }))
     );
   } catch (error) {
@@ -111,3 +80,4 @@ exports.getTeamLeaders = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
