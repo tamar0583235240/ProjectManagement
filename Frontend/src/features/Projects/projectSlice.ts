@@ -3,13 +3,13 @@ import type { Project } from '../../types/Project'
 
 
 interface ProjectsState {
-  items: Project[]
+  projects: Project[]
   isLoading: boolean
   error: string | null
 }
 
 const initialState: ProjectsState = {
-  items: [],
+  projects: [],
   isLoading: false,
   error: null,
 }
@@ -19,7 +19,7 @@ const projectsSlice = createSlice({
   initialState,
   reducers: {
     setProjects: (state, action: PayloadAction<Project[]>) => {
-      state.items = action.payload
+      state.projects = action.payload
       state.isLoading = false
       state.error = null
     },

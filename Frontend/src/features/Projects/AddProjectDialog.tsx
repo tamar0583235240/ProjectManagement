@@ -202,7 +202,7 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({ open, onClose, onAd
       projectName: "",
       description: "",
       manager: "",
-      status: "NOT_STARTED",
+      status: Role.NOT_STARTED,
       startDate: today,
       deadline: today,
       authorizedUsers: [],

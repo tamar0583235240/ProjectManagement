@@ -1,32 +1,29 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { selectCurrentManagerId } from "../features/auth/userSlice";
-import { useDispatch } from "react-redux";
 import { setError, setLoading, setProjects } from "../features/Projects/projectSlice";
-import { projectApi, useGetProjectsByManagerIdQuery } from "../features/Projects/projectApi";
+import { useGetProjectsByManagerIdQuery } from "../features/Projects/projectApi";
 
-const useLoadProjectsOnInit = async () => {
-    const currentManagerId = useSelector(selectCurrentManagerId)
-    console.log('currentManagerId', currentManagerId);
-    const dispatch = useDispatch()
+const useLoadProjectsOnInit = () => {
+  const dispatch = useDispatch();
+  const currentManagerId = useSelector(selectCurrentManagerId);
+  const {
+    data: projects,
+    error,
+    isLoading,
+  } = useGetProjectsByManagerIdQuery(currentManagerId, {
+    skip: !currentManagerId, 
+  });
 
-    dispatch(setLoading())
-    try {
-
-        // const response = await dispatch(
-        //     useGetProjectsByManagerIdQuery(currentManagerId as string)
-        // ).unwrap(); // unwrap כדי לקבל רק את ה-data
-
-        // dispatch(setProjects(response));
-        const result = await dispatch(
-          projectApi.endpoints.getProjectsByManagerId.initiate(currentManagerId)
-        ).unwrap(); // unwrap מחלץ את הנתונים (data) או זורק שגיאה
-
-        dispatch(setProjects(result));
-
-    } catch (error) {
-        dispatch(setError('Failed to load projects'))
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(setLoading());
+    } else if (projects) {
+      dispatch(setProjects(projects));
+    } else if (error) {
+      dispatch(setError("Failed to load projects"));
     }
+  }, [isLoading, projects, error, dispatch]);
+};
 
-}
-
-export default useLoadProjectsOnInit
+export default useLoadProjectsOnInit;

@@ -18,7 +18,7 @@ export const addProjectSchema = z.object({
   manager: z.string().min(1, "Please select a manager"),
   startDate: z.string().min(1, "Start date is required"),
   deadline: z.string().min(1, "Deadline is required"),
-  status: z.enum(["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "ON_HOLD"]).default("NOT_STARTED"),
+//   status: z.enum([Status]),
   authorizedUsers: z.array(
     z.object({
       id: z.string(),

@@ -1,30 +1,27 @@
 import { useSelector } from 'react-redux'
-// import ProjectShow from '../features/Projects/ProjectShow'
-import { useGetProjectsByManagerIdQuery } from '../features/Projects/projectApi'
+import ProjectsDashboard from '../features/Projects/ProjectsDashboard'
 import { selectCurrentManagerId } from '../features/auth/userSlice'
-import ProjectsDashboard from '../features/Projects/ProjectsDashboard';
+import useLoadProjectsOnInit from '../hooks/useLoadProjectsOnInit' // נניח שההוק יושב כאן
+import type { RootState } from '../app/store'
 
 const Projects = () => {
-  const currentManagerId = useSelector(selectCurrentManagerId)
-  console.log('currentManagerId', currentManagerId);
+  useLoadProjectsOnInit(); // זה הטעינה של הפרויקטים (דרך RTK Query) ודחיפה ל-slice
 
-  const {
-    data: projects,
-    error,
-    isLoading,
-  } = useGetProjectsByManagerIdQuery(currentManagerId as string)
+  const currentManagerId = useSelector(selectCurrentManagerId)
+  const projects = useSelector((state: RootState) => state.projects.projects)
+  const isLoading = useSelector((state: RootState) => state.projects.isLoading)
+  const error = useSelector((state: RootState) => state.projects.error)
 
   if (!currentManagerId) {
     return <div>No current manager</div>
   }
 
   if (isLoading) return <div>Loading projects...</div>
-  if (error) return <div>An error occurred while loading projects</div>
+  if (error) return <div>{error}</div>
 
   return (
     <div>
-      {/* <ProjectShow projects={sampleProjects || []} /> */}
-      <ProjectsDashboard initialProjects={projects|| []} />
+      <ProjectsDashboard initialProjects={projects} />
     </div>
   )
 }

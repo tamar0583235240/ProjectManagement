@@ -27,7 +27,7 @@ export const projectApi = api.injectEndpoints({
       invalidatesTags: ['Project'],
     }),
 
-    getProjectsByManagerId: builder.query<Project[], string>({
+    getProjectsByManagerId: builder.query<Project[], string | null>({
       query: (managerId) => ({
         url: `projects/getProjectsByManagerId/${managerId}`,
         method: 'GET',
