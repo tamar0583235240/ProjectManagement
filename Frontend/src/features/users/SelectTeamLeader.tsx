@@ -3,11 +3,13 @@ import { Controller } from "react-hook-form";
 import { TextField, MenuItem } from "@mui/material";
 import type { Control } from "react-hook-form";
 import { useGetTeamLeadersQuery } from "./userApi";
+import useCurrentUser from "../../hooks/useCurrentUser";
 interface Props {
   control: Control<any>;
 }
-const user = JSON.parse(localStorage.getItem("user") || "{}");
-export const SelectTeamLeader = ({ control }: Props) => {
+
+const SelectTeamLeader = ({ control }: Props) => {
+  const user = useCurrentUser();
   const { data: teamLeaders = [] } = useGetTeamLeadersQuery(user._id);
   return (
     <Controller

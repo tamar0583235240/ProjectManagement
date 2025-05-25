@@ -10,10 +10,13 @@
 //   teamLeaderId?: string;
 //   organizationId?: string;
 // };
+
+import type { Role } from "../enums/role.enum";
+
 // 
 export type AddUserInputs = {
   email: string;
-  role: "team_lead" | "employee";
+  role: Role.TEAM_LEADER | Role.EMPLOYEE;
   teamLeadId?: string;        // ראש צוות (עובד חייב לבחור ראש צוות)
   managerId?: string;         // מנהל (לראש צוות) או ראש צוות (לעובד)
   organizationId: string;

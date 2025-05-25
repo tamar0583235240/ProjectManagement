@@ -4,11 +4,9 @@ import type { User } from "../../types/User";
 interface UserState {
   currentUser: User | null;
 }
-
 const initialState: UserState = {
   currentUser: null,
 };
-
 const userSlice = createSlice({
   name: "user",
   initialState,

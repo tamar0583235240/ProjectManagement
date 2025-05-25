@@ -1,15 +1,19 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { inviteUserSchema } from "../../schemas/inviteUserSchema";
+// import { inviteUserSchema } from "../../schemas/inviteUserSchema";
 import { Button, MenuItem, TextField } from "@mui/material";
 import { useInviteUserMutation, useGetTeamLeadersQuery } from "../users/userApi";
 import type { AddUserInputs } from "../../types/AddUserInputs";
 import type { z } from "zod";
-import { SelectTeamLeader } from "./SelectTeamLeader";
+// import { SelectTeamLeader } from "./SelectTeamLeader";
+import { inviteUserSchema } from "../../schemas/inviteUserSchema";
+import { Role } from "../../enums/role.enum";
+import useCurrentUser from "../../hooks/useCurrentUser";
+import SelectTeamLeader from "./SelectTeamLeader";
 type InviteUserInput = z.infer<typeof inviteUserSchema>;
 const InviteUserForm = () => {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const user = useCurrentUser();
   console.log("user", user);
   const { data: teamLeads = [] } = useGetTeamLeadersQuery(user._id);
   console.log("teamLeads", teamLeads);
@@ -17,17 +21,20 @@ const InviteUserForm = () => {
   const form = useForm<InviteUserInput>({
     resolver: zodResolver(inviteUserSchema),
     defaultValues: {
-      role: "team_lead",
+      role: Role.TEAM_LEADER, // ברירת מחדל לראש צוות
     },
   });
   const role = form.watch("role");
   const onSubmit = async (data: InviteUserInput) => {
-  console.log("data", data);
+    console.log("jjjj");
+    console.log("data", data);
     const payload: AddUserInputs = {
       ...data,
-      managerId: data.role === "employee" ? data.teamLeadId : user._id,
-      organizationId: user.organization,
+      managerId: data.role === Role.EMPLOYEE ? data.teamLeadId : user._id,
+      organizationId: user.organization_id
+      ,
     };
+    console.log("payload", payload);
     try {
       await inviteUser(payload).unwrap();
       // אפשר להוסיף הודעת הצלחה או ניקוי טופס
@@ -53,10 +60,10 @@ const InviteUserForm = () => {
         fullWidth
         margin="normal"
       >
-        <MenuItem value="team_lead">ראש צוות</MenuItem>
-        {teamLeads.length > 0 && <MenuItem value="employee">עובד</MenuItem>}
+        <MenuItem value="TEAM_LEADER">ראש צוות</MenuItem>
+        {teamLeads.length > 0 && <MenuItem value="EMPLOYEE">עובד</MenuItem>}
       </TextField>
-      {role === "employee" && teamLeads.length > 0 && (
+      {role === Role.EMPLOYEE && teamLeads.length > 0 && (
         <SelectTeamLeader control={form.control} />
       )}
       <Button

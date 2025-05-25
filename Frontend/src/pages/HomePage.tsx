@@ -1,18 +1,10 @@
-
-// import useLoadUserFromCookie from '../hooks/useLoadUserFromCookie';
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '../features/auth/userSlice';
-import React from 'react';
+import useCurrentUser from "../hooks/useCurrentUser";
 
 const HomePage = () => {
-  
-  // useLoadUserFromCookie();
-  const user = useSelector(selectCurrentUser);
-  console.log("name"+user?.user_name);
-  return (
-  
+  const user = useCurrentUser();
+  return ( 
     <div>
-      <h1>hello {user?.user_name}</h1>
+      <h1>hello {user.user_name}</h1>
     </div>
   )
 }
