@@ -25,17 +25,17 @@ const InviteUserForm = () => {
     },
   });
   const role = form.watch("role");
-  const onSubmit = async (data: InviteUserInput) => {
-    console.log("jjjj");
+  const onSubmit = async (data: InviteUserInput) => {    
     console.log("data", data);
     const payload: AddUserInputs = {
       ...data,
-      managerId: data.role === Role.EMPLOYEE ? data.teamLeadId : user._id,
-      organizationId: user.organization_id
+      manager_id: data.role === Role.EMPLOYEE ? data.teamLeadId : user._id,
+      organization_id: user.organization_id
       ,
     };
     console.log("payload", payload);
     try {
+      console.log("HI");
       await inviteUser(payload).unwrap();
       // אפשר להוסיף הודעת הצלחה או ניקוי טופס
     } catch (err) {
