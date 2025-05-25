@@ -43,7 +43,7 @@ const jwt = require('jsonwebtoken');
 
 exports.inviteUser = async (req, res) => {
   try {
-    const { email, user_name, role, manager_id, organization_id } = req.body;
+    const { email, role, manager_id, organization_id } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -55,7 +55,6 @@ exports.inviteUser = async (req, res) => {
 
     const newUser = new User({
       email,
-      user_name,
       role,
       manager_id: manager_id || null,
       organization_id,
