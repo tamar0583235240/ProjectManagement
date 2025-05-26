@@ -8,7 +8,7 @@ async function sendInviteEmail(email, token) {
     }
   });
 
-  const url = `${process.env.FRONTEND_URL}/set-password?token=${token}`;
+  const url = `${process.env.FRONTEND_URL}/set-password/:${token}`;
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
