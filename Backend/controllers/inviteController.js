@@ -81,6 +81,12 @@ exports.inviteUser = async (req, res) => {
 exports.setPassword = async (req, res) => {
   try {
     const { token, password ,user_name} = req.body;
+    console.log('token', token);
+    console.log('password', password);
+   console.log('user_name', user_name);
+   if (!token || !password || !user_name) {
+      return res.status(400).json({ message: 'Token, password and user_name are required' });
+    }
 
     // מציאת משתמש לפי הטוקן ותוקפו
     const user = await User.findOne({
