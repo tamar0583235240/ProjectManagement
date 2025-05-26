@@ -30,10 +30,6 @@ const router = createBrowserRouter([
     element: <SetPasswordPage/>
   },
 
-  // {
-  //   path: '/set-password',
-  //   element: <SetPasswordPage/>
-  // },
 
     {
         path: "app", element: <AppLayout />,
