@@ -21,7 +21,7 @@ export const userApi = api.injectEndpoints({
     }),
   setPassword: builder.mutation<string, SetPasswordRequest>({
     query: (body) => ({
-      url: '/setPassword',
+      url: "invite/setPassword",
       method: 'POST',
       body,
     }),
