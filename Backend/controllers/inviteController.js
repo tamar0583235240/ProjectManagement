@@ -107,7 +107,7 @@ exports.setPassword = async (req, res) => {
     user.password_token_expires = null;
     user.user_name = user_name;
 
-    const newUser= await User.UpdateUser(user)
+    const newUser = await user.save();
 
     res.status(200).json({newUser, message: 'Password set successfully' });
   } catch (error) {
