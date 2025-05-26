@@ -202,7 +202,7 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({ open, onClose, onAd
       projectName: "",
       description: "",
       manager: "",
-      status: Role.NOT_STARTED,
+      // status: Role.NOT_STARTED,
       startDate: today,
       deadline: today,
       authorizedUsers: [],
@@ -307,21 +307,6 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({ open, onClose, onAd
                       <MenuItem value="lior">Lior</MenuItem>
                     </Select>
                     {errors.manager && <FormHelperText>{errors.manager.message}</FormHelperText>}
-                  </FormControl>
-                )}
-              />
-              <Controller
-                name="status"
-                control={control}
-                render={({ field }) => (
-                  <FormControl fullWidth variant="outlined" margin="normal" disabled>
-                    <InputLabel>Status</InputLabel>
-                    <Select {...field} label="Status">
-                      <MenuItem value="NOT_STARTED">Not Started</MenuItem>
-                      <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
-                      <MenuItem value="COMPLETED">Completed</MenuItem>
-                      <MenuItem value="ON_HOLD">On Hold</MenuItem>
-                    </Select>
                   </FormControl>
                 )}
               />
