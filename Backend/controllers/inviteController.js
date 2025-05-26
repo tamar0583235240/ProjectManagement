@@ -94,7 +94,7 @@ exports.setPassword = async (req, res) => {
       password_token: token,
       password_token_expires: { $gt: new Date() }
     });
-    
+    console.log(">>> נמצא משתמש עם טוקן ותוקף:", user);
     if (!user) {
       console.log("לא נמצא משתמש עם הטוקן והתוקף");
       const userWithToken = await User.findOne({ password_token: token });
