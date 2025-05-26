@@ -87,16 +87,33 @@ exports.setPassword = async (req, res) => {
    if (!token || !password || !user_name) {
       return res.status(400).json({ message: 'Token, password and user_name are required' });
     }
-
-    // מציאת משתמש לפי הטוקן ותוקפו
+    console.log(">>> בדיקת טוקן:");
+    console.log("token:", token);
+    
     const user = await User.findOne({
       password_token: token,
       password_token_expires: { $gt: new Date() }
     });
-
+    
     if (!user) {
+      console.log("לא נמצא משתמש עם הטוקן והתוקף");
+      const userWithToken = await User.findOne({ password_token: token });
+      console.log("נמצא משתמש עם טוקן בלבד?", userWithToken);
+      if (userWithToken) {
+        console.log("אבל התוקף היה:", userWithToken.password_token_expires);
+        console.log("התאריך הנוכחי הוא:", new Date());
+      }
       return res.status(400).json({ message: 'Invalid or expired token' });
     }
+    
+    // const user = await User.findOne({
+    //   password_token: token,
+    //   password_token_expires: { $gt: new Date() }
+    // });
+
+    // if (!user) {
+    //   return res.status(400).json({ message: 'Invalid or expired token' });
+    // }
 
     // הצפנת הסיסמה
     // if (password) {
