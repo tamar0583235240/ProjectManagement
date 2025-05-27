@@ -98,20 +98,20 @@ const ProjectsDashboard = ({ initialProjects }: { initialProjects: Project[] }) 
 
   const confirmDelete = () => {
     if (selectedProject) {
-      setProjects((prev) => prev.filter((p) => p.id !== selectedProject.id))
+      setProjects((prev) => prev.filter((p) => p._id !== selectedProject._id))
       setSnackbar({ open: true, message: "Project deleted successfully.", severity: "success" })
       setIsDeleteDialogOpen(false)
     }
   }
 
   const saveProjectChanges = (updatedProject: Project) => {
-    setProjects((prev) => prev.map((p) => (p.id === updatedProject.id ? updatedProject : p)))
+    setProjects((prev) => prev.map((p) => (p._id === updatedProject._id ? updatedProject : p)))
     setSnackbar({ open: true, message: "Project updated successfully.", severity: "success" })
     setIsEditDialogOpen(false)
   }
 
   const handleAddProject = (newProject: Project) => {
-    newProject.id = generateId()
+    newProject.status = newProject.status || "Not Started"
     setProjects((prev) => [...prev, newProject])
     setSnackbar({ open: true, message: "Project added successfully.", severity: "success" })
     setIsAddDialogOpen(false)

@@ -1,157 +1,3 @@
-// import {
-//   Button,
-//   Dialog,
-//   DialogActions,
-//   DialogContent,
-//   DialogContentText,
-//   DialogTitle,
-//   FormControl,
-//   InputLabel,
-//   MenuItem,
-//   Select,
-//   Stack,
-//   TextField
-// } from "@mui/material"
-// import { useForm, Controller } from "react-hook-form"
-// import { zodResolver } from "@hookform/resolvers/zod"
-// import { useState } from "react"
-// import { addProjectSchema, type AddProjectFormData } from "../../schemas/SchemaAddProject"
-
-// interface AddProjectDialogProps {
-//   open: boolean
-//   onClose: () => void
-//   onAdd: (data: AddProjectFormData) => void
-// }
-
-// const AddProjectDialog: React.FC<AddProjectDialogProps> = ({ open, onClose, onAdd }) => {
-//   const today = new Date().toISOString().split("T")[0]
-
-//   const {
-//     handleSubmit,
-//     control,
-//     reset,
-//     formState: { errors },
-//   } = useForm<AddProjectFormData>({
-//     resolver: zodResolver(addProjectSchema),
-//     defaultValues: {
-//       projectName: "",
-//       description: "",
-//       manager: "",
-//     //   status:"NOT_STARTED",
-//       startDate: today,
-//       deadline: today,
-//     },
-//   })
-
-//   const onSubmit = (data: AddProjectFormData) => {
-//     onAdd(data)
-//     reset()
-//     onClose()
-//   }
-
-//   return (
-//     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth disableScrollLock>
-//       <DialogTitle>Add New Project</DialogTitle>
-//       <form onSubmit={handleSubmit(onSubmit)}>
-//         <DialogContent>
-//           <DialogContentText sx={{ mb: 2 }}>
-//             Enter the details of the new project
-//           </DialogContentText>
-//           <Stack spacing={2}>
-//             <Controller
-//               name="projectName"
-//               control={control}
-//               render={({ field }) => (
-//                 <TextField
-//                   {...field}
-//                   label="Project Name"
-//                   fullWidth
-//                   required
-//                   variant="outlined"
-//                   margin="normal"
-//                   error={!!errors.projectName}
-//                   helperText={errors.projectName?.message}
-//                 />
-//               )}
-//             />
-//             <Controller
-//               name="description"
-//               control={control}
-//               render={({ field }) => (
-//                 <TextField
-//                   {...field}
-//                   label="Description"
-//                   fullWidth
-//                   multiline
-//                   rows={3}
-//                   variant="outlined"
-//                   margin="normal"
-//                 />
-//               )}
-//             />
-//             <Controller
-//               name="manager"
-//               control={control}
-//               render={({ field }) => (
-//                 <FormControl fullWidth variant="outlined" margin="normal" error={!!errors.manager}>
-//                   <InputLabel>Project Manager</InputLabel>
-//                   <Select {...field} label="Project Manager">
-//                     <MenuItem value=""><em>None</em></MenuItem>
-//                     <MenuItem value="tamar">Tamar</MenuItem>
-//                     <MenuItem value="daniel">Daniel</MenuItem>
-//                     <MenuItem value="lior">Lior</MenuItem>
-//                   </Select>
-//                 </FormControl>
-//               )}
-//             />
-//             <Controller
-//               name="startDate"
-//               control={control}
-//               render={({ field }) => (
-//                 <TextField
-//                   {...field}
-//                   label="Start Date"
-//                   type="date"
-//                   fullWidth
-//                   InputLabelProps={{ shrink: true }}
-//                   variant="outlined"
-//                   margin="normal"
-//                   error={!!errors.startDate}
-//                   helperText={errors.startDate?.message}
-//                 />
-//               )}
-//             />
-//             <Controller
-//               name="deadline"
-//               control={control}
-//               render={({ field }) => (
-//                 <TextField
-//                   {...field}
-//                   label="Deadline"
-//                   type="date"
-//                   fullWidth
-//                   InputLabelProps={{ shrink: true }}
-//                   variant="outlined"
-//                   margin="normal"
-//                   error={!!errors.deadline}
-//                   helperText={errors.deadline?.message}
-//                 />
-//               )}
-//             />
-//           </Stack>
-//         </DialogContent>
-//         <DialogActions>
-//           <Button onClick={onClose}>Cancel</Button>
-//           <Button type="submit" variant="contained" color="primary">
-//             Add Project
-//           </Button>
-//         </DialogActions>
-//       </form>
-//     </Dialog>
-//   )
-// }
-
-// export default AddProjectDialog
 
 import {
   Button,
@@ -170,13 +16,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { useForm, Controller } from "react-hook-form"
+import { useForm, Controller, type SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { addProjectSchema, type AddProjectFormData, type AuthorizedUser } from "../../schemas/SchemaAddProject"
 import { v4 as uuidv4 } from "uuid"
 import AuthorizedUsersList from "./AuthorizedUsersList"
 import AddAuthorizedUserForm from "./AddAuthorizedUserForm"
+import { useAddProjectMutation } from "./projectApi"
+import { useDispatch } from "react-redux"
+import { setProjects } from "./projectSlice"
+import { useSelector } from "react-redux"
 
 interface AddProjectDialogProps {
   open: boolean
@@ -188,7 +38,11 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({ open, onClose, onAd
   const today = new Date().toISOString().split("T")[0]
   const [userFormOpen, setUserFormOpen] = useState(false)
   const [editingUser, setEditingUser] = useState<AuthorizedUser | undefined>(undefined)
-  
+
+  const [addProject, { isLoading, isError }] = useAddProjectMutation();
+
+  const dispatch = useDispatch();
+  const projectsFromState = useSelector((state) => state.projects.projects)
   const {
     handleSubmit,
     control,
@@ -202,7 +56,6 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({ open, onClose, onAd
       projectName: "",
       description: "",
       manager: "",
-      // status: Role.NOT_STARTED,
       startDate: today,
       deadline: today,
       authorizedUsers: [],
@@ -221,8 +74,8 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({ open, onClose, onAd
 
   const handleEditUser = (userData: { name: string; email: string }) => {
     if (!editingUser) return
-    
-    const updatedUsers = authorizedUsers.map(user => 
+
+    const updatedUsers = authorizedUsers.map(user =>
       user.id === editingUser.id ? { ...user, ...userData } : user
     )
     setValue("authorizedUsers", updatedUsers)
@@ -245,12 +98,18 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({ open, onClose, onAd
     setEditingUser(user)
     setUserFormOpen(true)
   }
-
-  const onSubmit = (data: AddProjectFormData) => {
-    console.log("Project data:", data)
-    onAdd(data)
-    reset()
-    onClose()
+  const onSubmit: SubmitHandler<AddProjectFormData> = async (data) => {
+    try {
+      const addedProject = await addProject(data).unwrap()
+      dispatch(setProjects([...projectsFromState, addedProject]))
+      const response = await addProject(data).unwrap();
+      console.log("Project created:", response);
+      onAdd(response);
+      reset();
+      onClose();
+    } catch (err) {
+      console.error("Failed to add project:", err);
+    }
   }
 
   return (
@@ -346,24 +205,24 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({ open, onClose, onAd
                   )}
                 />
               </Stack>
-              
+
               <Divider sx={{ my: 1 }} />
-              
+
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography variant="subtitle1">Authorized Users</Typography>
-                <Button 
-                  variant="outlined" 
-                  size="small" 
+                <Button
+                  variant="outlined"
+                  size="small"
                   onClick={openUserForm}
                 >
                   Add User
                 </Button>
               </Stack>
-              
+
               <AuthorizedUsersList
-                users={authorizedUsers} 
-                onEdit={startEditUser} 
-                onDelete={handleDeleteUser} 
+                users={authorizedUsers}
+                onEdit={startEditUser}
+                onDelete={handleDeleteUser}
               />
             </Stack>
           </DialogContent>
@@ -375,7 +234,7 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({ open, onClose, onAd
           </DialogActions>
         </form>
       </Dialog>
-      
+
       <AddAuthorizedUserForm
         open={userFormOpen}
         onClose={() => setUserFormOpen(false)}
