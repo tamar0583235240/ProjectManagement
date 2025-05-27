@@ -22,21 +22,18 @@ interface ProjectChartsProps {
 }
 
 const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
-  // Calculate statistics
-  const completedProjects = projects.filter((p) => p.status === "COMPLETED").length
-  const delayedProjects = projects.filter((p) => p.status === "DELAYED").length
-  const inProgressProjects = projects.filter((p) => p.status === "IN_PROGRESS").length
-  const notStartedProjects = projects.filter((p) => p.status === "NOT_STARTED").length
+  const completed = projects.filter((p) => p.status === "COMPLETED").length
+  const delayed = projects.filter((p) => p.status === "DELAYED").length
+  const inProgress = projects.filter((p) => p.status === "IN_PROGRESS").length
+  const notStarted = projects.filter((p) => p.status === "NOT_STARTED").length
 
-  // Data for pie chart
   const pieChartData = [
-    { name: "In Progress", value: inProgressProjects, color: "#00bcd4" },
-    { name: "Completed", value: completedProjects, color: "#4caf50" },
-    { name: "Delayed", value: delayedProjects, color: "#f44336" },
-    { name: "Not Started", value: notStartedProjects, color: "#ffc107" },
+    { name: "In Progress", value: inProgress, color: "#00bcd4" },
+    { name: "Completed", value: completed, color: "#4caf50" },
+    { name: "Delayed", value: delayed, color: "#f44336" },
+    { name: "Not Started", value: notStarted, color: "#ffc107" },
   ].filter((item) => item.value > 0)
 
-  // Data for bar chart by deadline month
   const getMonthData = () => {
     const monthCounts: Record<string, number> = {}
 
@@ -45,23 +42,20 @@ const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
         try {
           const month = format(new Date(project.deadline), "MMM", { locale: enUS })
           monthCounts[month] = (monthCounts[month] || 0) + 1
-        } catch (error) {
+        } catch {
           console.warn("Invalid date format:", project.deadline)
         }
       }
     })
 
-    return Object.entries(monthCounts).map(([month, count]) => ({
-      month,
-      count,
-    }))
+    return Object.entries(monthCounts).map(([month, count]) => ({ month, count }))
   }
 
   const barChartData = getMonthData()
 
   return (
     <Grid container spacing={3}>
-      <Grid xs={12} md={6}>
+      <Grid item xs={12} md={6}>
         <Card elevation={2} sx={{ height: "100%" }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
@@ -74,7 +68,6 @@ const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
                     data={pieChartData}
                     cx="50%"
                     cy="50%"
-                    labelLine={true}
                     outerRadius={100}
                     fill="#8884d8"
                     dataKey="value"
@@ -92,7 +85,7 @@ const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
           </CardContent>
         </Card>
       </Grid>
-      <Grid xs={12} md={6}>
+      <Grid item xs={12} md={6}>
         <Card elevation={2} sx={{ height: "100%" }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>

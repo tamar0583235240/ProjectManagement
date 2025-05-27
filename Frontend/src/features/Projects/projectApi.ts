@@ -32,12 +32,19 @@ export const projectApi = api.injectEndpoints({
         url: `projects/getProjectsByManagerId/${managerId}`,
         method: 'GET',
       }),
+    }),
+
+    deleteProject: builder.query<Project[], string | null>({
+      query: (managerId) => ({
+        url: `projects/DeleteProject/${managerId}`,
+        method: 'DELETE',
+      }),
     })
   }),
 });
 export const {
   useGetProjectsByManagerIdQuery,
   useGetProjectManagersQuery,
-  // useSearchUserByEmailQuery,
+  useDeleteProjectQuery,
   useAddProjectMutation
 } = projectApi;
