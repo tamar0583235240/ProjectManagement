@@ -5,7 +5,7 @@ export const userApi = api.injectEndpoints({
     endpoints: (builder) => ({
         validateUser: builder.mutation<{ _id: string } | null, { username: string; email: string }>({
             query: ({ username, email }) => ({
-                url: "auth/validate-user",
+                url: "Users/validate-user",
                 method: "POST",
                 body: { username, email },
             }),
