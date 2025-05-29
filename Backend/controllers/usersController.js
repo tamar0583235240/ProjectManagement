@@ -136,3 +136,36 @@ exports.validateUser = async (req, res) => {
     res.status(500).json({ message: 'Server error during user validation' });
   }
 };
+
+
+exports.getAllTeamMembersUnderManager = async (req, res) => {
+  const { managerId } = req.params;
+
+  if (!managerId) {
+    return res.status(400).json({ message: "managerId is required" });
+  }
+
+  try {
+
+    const teamLeaders = await User.find({
+      role: 'team_leader',
+      manager_id: managerId
+    }).lean();
+
+    const teamLeaderIds = teamLeaders.map(tl => tl._id);
+    const employees = await User.find({
+      role: 'employee',
+      manager_id: { $in: teamLeaderIds }
+    }).lean();
+
+    return res.json({
+      teamLeaders,
+      employees
+    });
+
+  } catch (error) {
+    console.error("Error fetching team members under manager:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
