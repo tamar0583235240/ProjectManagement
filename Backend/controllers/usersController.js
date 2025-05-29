@@ -161,6 +161,7 @@ exports.getAllTeamMembersUnderManager = async (req, res) => {
     return res.json({
       teamLeaders,
       employees
+
     });
 
   } catch (error) {
