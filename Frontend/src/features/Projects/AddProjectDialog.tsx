@@ -283,7 +283,7 @@ import {
 import {
   useAddProjectMutation,
   useGetProjectManagersQuery,
-  useGetAllTeamMembersUnderManagerQuery, // <-- הייבוא החדש
+  useGetAllTeamMembersUnderManagerQuery,
 } from "./projectApi";
 import { setProjects } from "./projectSlice";
 import AuthorizedUsersList from "./AuthorizedUsersList";
@@ -337,13 +337,11 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
   const selectedManagerId = watch("project_manager_id");
 
   // קריאה לשרת לקבלת חברי הצוות של מנהל הפרויקט הנבחר
-  const {
-    data: teamMembersData,
-    isLoading: isLoadingTeamMembers,
-    error: teamMembersError,
-  } = useGetAllTeamMembersUnderManagerQuery(selectedManagerId ?? "", {
-    skip: !selectedManagerId,
-  });
+ const {
+  data: teamMembersData,
+  isLoading: isLoadingTeamMembers,
+  error: teamMembersError,
+} = useGetAllTeamMembersUnderManagerQuery(currentUser._id);
 
   const authorizedUsers = watch("authorized_Users") || [];
 
