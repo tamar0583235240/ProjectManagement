@@ -48,6 +48,7 @@ export const addProjectSchema = z.object({
       return deadlineDate >= today;
     }, { message: "תאריך היעד חייב להיות היום או בעתיד" }),
   project_manager_id: z.string().min(1, { message: "מנהל פרויקט הוא שדה חובה" }),
+  status: z.enum(["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "DELAYED"]).default("NOT_STARTED"),
   organization_id: z.string().min(1, { message: "ארגון הוא שדה חובה" }),
   authorized_Users: z.array(authorizedUserSchema).default([]),
 });

@@ -327,6 +327,7 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
       organization_id: currentUser?.organization_id || "",
       start_date: today,
       deadline: today,
+      status: "NOT_STARTED",
       authorized_Users: [],
     },
   });
@@ -337,6 +338,7 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
     if (currentUser?.organization_id) {
       setValue("organization_id", currentUser.organization_id);
     }
+    setValue("status", "NOT_STARTED");
   }, [currentUser, setValue]);
 
   const handleAddUser = useCallback((userData: { user_name: string; email: string; _id?: string }) => {
