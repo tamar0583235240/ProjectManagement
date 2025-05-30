@@ -9,7 +9,7 @@ router.delete('/DeleteUser/:user_id',verifyJWT, DeleteUser);
 router.put('/UpdateUser/:user_id',verifyJWT, UpdateUser);
 // router.post('/validate-user',verifyJWT, validateUser);
 router.post('/validate-user', validateUser);
-router.get('/team-members/:managerId', verifyJWT, getAllTeamMembersUnderManager);
+router.get('/getAllTeamMembersUnderManager/:managerId', verifyJWT, getAllTeamMembersUnderManager);
 
 // router.get('/invite',verifyJWT, inviteUser);
 // router.post('/signIn',signIn);
