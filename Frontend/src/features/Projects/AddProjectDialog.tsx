@@ -266,6 +266,9 @@ import {
   CircularProgress,
   Alert,
 } from "@mui/material";
+import {
+  // ... שאר הייבוא
+} from "@mui/material";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useEffect, useCallback, useMemo } from "react";
@@ -280,8 +283,7 @@ import {
 import {
   useAddProjectMutation,
   useGetProjectManagersQuery,
-  useGetProjectsByManagerIdQuery,
-  // useGetOrganizationsQuery,
+  useGetAllTeamMembersUnderManagerQuery, // <-- הייבוא החדש
 } from "./projectApi";
 import { setProjects } from "./projectSlice";
 import AuthorizedUsersList from "./AuthorizedUsersList";
@@ -308,9 +310,9 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
   const currentUser = useCurrentUser();
 
   const [addProject, { isLoading: isAddingProject, error: addProjectError }] = useAddProjectMutation();
-  const { data: projectManagers = [], isLoading: isLoadingManagers, error: managersError } = useGetProjectsByManagerIdQuery(currentUser?._id);
-  // const { data: organizations = [], isLoading: isLoadingOrganizations, error: organizationsError } = useGetOrganizationsQuery();
+  const { data: projectManagers = [], isLoading: isLoadingManagers, error: managersError } = useGetProjectManagersQuery();
 
+  // צופים בבחירת מנהל פרויקט בטופס
   const {
     handleSubmit,
     control,
@@ -332,6 +334,17 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
     },
   });
 
+  const selectedManagerId = watch("project_manager_id");
+
+  // קריאה לשרת לקבלת חברי הצוות של מנהל הפרויקט הנבחר
+  const {
+    data: teamMembersData,
+    isLoading: isLoadingTeamMembers,
+    error: teamMembersError,
+  } = useGetAllTeamMembersUnderManagerQuery(selectedManagerId ?? "", {
+    skip: !selectedManagerId,
+  });
+
   const authorizedUsers = watch("authorized_Users") || [];
 
   useEffect(() => {
@@ -341,27 +354,36 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
     setValue("status", "NOT_STARTED");
   }, [currentUser, setValue]);
 
-  const handleAddUser = useCallback((userData: { user_name: string; email: string; _id?: string }) => {
-    const newUser: AuthorizedUserFormData = {
-      id: uuidv4(),
-      ...userData,
-    };
-    setValue("authorized_Users", [...authorizedUsers, newUser]);
-  }, [authorizedUsers, setValue]);
+  const handleAddUser = useCallback(
+    (userData: { user_name: string; email: string; _id?: string }) => {
+      const newUser: AuthorizedUserFormData = {
+        id: uuidv4(),
+        ...userData,
+      };
+      setValue("authorized_Users", [...authorizedUsers, newUser]);
+    },
+    [authorizedUsers, setValue]
+  );
 
-  const handleEditUser = useCallback((userData: { user_name: string; email: string; _id?: string }) => {
-    if (!editingUser) return;
+  const handleEditUser = useCallback(
+    (userData: { user_name: string; email: string; _id?: string }) => {
+      if (!editingUser) return;
 
-    const updatedUsers = authorizedUsers.map(user =>
-      user.id === editingUser.id ? { ...user, ...userData } : user
-    );
-    setValue("authorized_Users", updatedUsers);
-    setEditingUser(undefined);
-  }, [authorizedUsers, editingUser, setValue]);
+      const updatedUsers = authorizedUsers.map((user) =>
+        user.id === editingUser.id ? { ...user, ...userData } : user
+      );
+      setValue("authorized_Users", updatedUsers);
+      setEditingUser(undefined);
+    },
+    [authorizedUsers, editingUser, setValue]
+  );
 
-  const handleDeleteUser = useCallback((userId: string) => {
-    setValue("authorized_Users", authorizedUsers.filter(user => user.id !== userId));
-  }, [authorizedUsers, setValue]);
+  const handleDeleteUser = useCallback(
+    (userId: string) => {
+      setValue("authorized_Users", authorizedUsers.filter((user) => user.id !== userId));
+    },
+    [authorizedUsers, setValue]
+  );
 
   const handleOpenUserForm = () => {
     setEditingUser(undefined);
@@ -390,8 +412,7 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
     }
   };
 
-  const isLoading = isLoadingManagers 
-  // || isLoadingOrganizations;
+  const isLoading = isLoadingManagers || isLoadingTeamMembers;
 
   if (isLoading) {
     return (
@@ -416,9 +437,7 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
               הזן את פרטי הפרויקט החדש
             </DialogContentText>
 
-            {(addProjectError || managersError
-            //  || organizationsError
-          ) && (
+            {(addProjectError || managersError || teamMembersError) && (
               <Alert severity="error" sx={{ mb: 2 }}>
                 שגיאה בטעינת הנתונים. אנא נסה שוב.
               </Alert>
@@ -532,25 +551,57 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
                 onEdit={handleStartEditUser}
                 onDelete={handleDeleteUser}
               />
+
+              {userFormOpen && (
+                <AddAuthorizedUserForm
+                  open={userFormOpen}
+                  onClose={() => setUserFormOpen(false)}
+                  onSubmit={editingUser ? handleEditUser : handleAddUser}
+                  defaultValues={editingUser}
+                />
+              )}
+
+              {selectedManagerId && teamMembersData && (
+                <Box sx={{ mt: 2 }}>
+                  <Typography variant="subtitle2" gutterBottom>
+                    חברי צוות תחת מנהל הפרויקט שנבחר
+                  </Typography>
+                  <Typography variant="body2">
+                    ראשי צוות: {teamMembersData.teamLeaders.map(tl => tl.user_name).join(", ") || "אין"}
+                  </Typography>
+                  <Typography variant="body2">
+                    עובדים: {teamMembersData.employees.map(emp => emp.user_name).join(", ") || "אין"}
+                  </Typography>
+                </Box>
+              )}
+
+              <FormControl fullWidth variant="outlined" margin="normal" error={!!errors.status}>
+                <InputLabel>סטטוס פרויקט</InputLabel>
+                <Controller
+                  name="status"
+                  control={control}
+                  render={({ field }) => (
+                    <Select {...field} label="סטטוס פרויקט">
+                      <MenuItem value="NOT_STARTED">לא התחיל</MenuItem>
+                      <MenuItem value="IN_PROGRESS">בתהליך</MenuItem>
+                      <MenuItem value="COMPLETED">הושלם</MenuItem>
+                    </Select>
+                  )}
+                />
+                <FormHelperText>{errors.status?.message}</FormHelperText>
+              </FormControl>
             </Stack>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} disabled={isAddingProject}>
+            <Button onClick={handleClose} color="inherit" disabled={isAddingProject}>
               ביטול
             </Button>
-            <Button type="submit" variant="contained" color="primary" disabled={isAddingProject}>
-              {isAddingProject ? <CircularProgress size={20} /> : "הוסף פרויקט"}
+            <Button type="submit" variant="contained" disabled={isAddingProject}>
+              הוסף פרויקט
             </Button>
           </DialogActions>
         </form>
       </Dialog>
-
-      <AddAuthorizedUserForm
-        open={userFormOpen}
-        onClose={() => setUserFormOpen(false)}
-        onSave={editingUser ? handleEditUser : handleAddUser}
-        editUser={editingUser}
-      />
     </>
   );
 };

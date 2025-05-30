@@ -1,6 +1,7 @@
 // src/services/api/projectApi.ts - RTK Query APIs
 import type { Project } from '../../types/Project';
 import { api } from '../../app/api';
+import type { User } from '../../types/User';
 
 export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -76,6 +77,13 @@ export const projectApi = api.injectEndpoints({
       }),
       invalidatesTags: ['Project'],
     }),
+    getAllTeamMembersUnderManager: builder.query<{
+      teamLeaders: User[],
+      employees: User[]
+    }, string>({
+      query: (managerId) => `users/getAllTeamMembersUnderManager/${managerId}`,
+      providesTags: ['User'],
+    }),
   }),
 });
 
@@ -88,4 +96,5 @@ export const {
   useUpdateProjectStatusMutation,
   useAddAuthorizedUserMutation,
   useRemoveAuthorizedUserMutation,
+  useGetAllTeamMembersUnderManagerQuery,
 } = projectApi;
