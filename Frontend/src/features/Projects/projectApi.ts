@@ -13,7 +13,7 @@ export const projectApi = api.injectEndpoints({
     // הוספת פרויקט חדש
     addProject: builder.mutation<Project, Project>({
       query: (project) => ({
-        url: 'projects',
+        url: 'projects/addProject',
         method: 'POST',
         body: project,
       }),

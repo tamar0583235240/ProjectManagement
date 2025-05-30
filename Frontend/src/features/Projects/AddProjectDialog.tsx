@@ -280,11 +280,13 @@ import {
 import {
   useAddProjectMutation,
   useGetProjectManagersQuery,
+  useGetProjectsByManagerIdQuery,
   // useGetOrganizationsQuery,
 } from "./projectApi";
 import { setProjects } from "./projectSlice";
 import AuthorizedUsersList from "./AuthorizedUsersList";
 import AddAuthorizedUserForm from "./AddAuthorizedUserForm";
+import useCurrentUser from "../../hooks/useCurrentUser";
 
 interface AddProjectDialogProps {
   open: boolean;
@@ -303,11 +305,11 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
 
   const dispatch = useDispatch();
   const projectsFromState = useSelector((state: any) => state.projects.projects);
-  const currentUser = useSelector((state: any) => state.auth.user);
+  const currentUser = useCurrentUser();
 
   const [addProject, { isLoading: isAddingProject, error: addProjectError }] = useAddProjectMutation();
-  const { data: projectManagers = [], isLoading: isLoadingManagers, error: managersError } = useGetProjectManagersQuery();
-  const { data: organizations = [], isLoading: isLoadingOrganizations, error: organizationsError } = useGetOrganizationsQuery();
+  const { data: projectManagers = [], isLoading: isLoadingManagers, error: managersError } = useGetProjectsByManagerIdQuery(currentUser?._id);
+  // const { data: organizations = [], isLoading: isLoadingOrganizations, error: organizationsError } = useGetOrganizationsQuery();
 
   const {
     handleSubmit,
@@ -386,7 +388,8 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
     }
   };
 
-  const isLoading = isLoadingManagers || isLoadingOrganizations;
+  const isLoading = isLoadingManagers 
+  // || isLoadingOrganizations;
 
   if (isLoading) {
     return (
@@ -411,7 +414,9 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
               הזן את פרטי הפרויקט החדש
             </DialogContentText>
 
-            {(addProjectError || managersError || organizationsError) && (
+            {(addProjectError || managersError
+            //  || organizationsError
+          ) && (
               <Alert severity="error" sx={{ mb: 2 }}>
                 שגיאה בטעינת הנתונים. אנא נסה שוב.
               </Alert>
@@ -450,27 +455,6 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
                     error={!!errors.description}
                     helperText={errors.description?.message}
                   />
-                )}
-              />
-
-              <Controller
-                name="organization_id"
-                control={control}
-                render={({ field }) => (
-                  <FormControl fullWidth variant="outlined" margin="normal" error={!!errors.organization_id}>
-                    <InputLabel>ארגון</InputLabel>
-                    <Select {...field} label="ארגון">
-                      <MenuItem value="">
-                        <em>בחר ארגון</em>
-                      </MenuItem>
-                      {organizations.map((org) => (
-                        <MenuItem key={org._id} value={org._id}>
-                          {org.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    <FormHelperText>{errors.organization_id?.message}</FormHelperText>
-                  </FormControl>
                 )}
               />
 
