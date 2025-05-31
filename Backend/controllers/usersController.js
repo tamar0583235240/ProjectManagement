@@ -171,3 +171,29 @@ exports.getAllTeamMembersUnderManager = async (req, res) => {
   }
 };
 
+
+exports.getTopManagerOfEmployee = async (req, res) => {
+  try {
+    const { employeeId } = req.params;
+
+    const employee = await User.findById(employeeId);
+    if (!employee) {
+      return res.status(404).json({ message: 'Employee not found' });
+    }
+
+    const teamLeader = await User.findById(employee.manager_id);
+    if (!teamLeader) {
+      return res.status(404).json({ message: 'Team leader not found' });
+    }
+
+    const topManagerId = teamLeader.manager_id;
+    if (!topManagerId) {
+      return res.status(404).json({ message: 'Top manager not found' });
+    }
+
+    return res.status(200).json({ topManagerId });
+  } catch (err) {
+    console.error('Error fetching top manager:', err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
