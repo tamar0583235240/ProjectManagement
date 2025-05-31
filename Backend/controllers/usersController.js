@@ -1,3 +1,4 @@
+const Role = require('../enums/role.enum');
 const User = require('../models/User');
 const bcrypt = require('bcrypt')
 
@@ -96,7 +97,7 @@ exports.getTeamLeaders = async (req, res) => {
 
   try {
     const teamLeaders = await User.find({
-      role: "team_leader",
+      role: Role.TeamLeader,
       manager_id: managerId,
     }).select("_id name");
 
@@ -148,13 +149,13 @@ exports.getAllTeamMembersUnderManager = async (req, res) => {
   try {
 
     const teamLeaders = await User.find({
-      role: 'team_leader',
+      role: Role.TeamLeader,
       manager_id: managerId
     }).lean();
 
     const teamLeaderIds = teamLeaders.map(tl => tl._id);
     const employees = await User.find({
-      role: 'employee',
+      role: Role.Employee,
       manager_id: { $in: teamLeaderIds }
     }).lean();
 
