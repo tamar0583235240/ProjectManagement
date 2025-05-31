@@ -1,11 +1,9 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../../app/store'
 import useCurrentUser from '../../hooks/useCurrentUser'
-import { Role } from '../../types/Role'
 import useGetManager from '../../hooks/useGetManager'
 
-// טיפוס של ה-state במודול המשתמש
-interface UserState {
+interface UserState{
   role: string | null
   currentManager: string | null
 }
