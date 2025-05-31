@@ -5,14 +5,14 @@ const jwt = require('jsonwebtoken')
 
 
 exports.SignUp = async (req, res) => {
-    
+
     try {
-      
+
         const { user_name, password, email, role, manager_id, organization_id } = req.body
-        if (!user_name || !password || !email || !role|| !organization_id) {
+        if (!user_name || !password || !email || !role || !organization_id) {
             return res.status(400).json({ message: 'All fields are required' });
         }
-       
+
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -21,30 +21,31 @@ exports.SignUp = async (req, res) => {
         const hashedPwd = await bcrypt.hash(password, 10)
         const userObject = { user_name, password: hashedPwd, email, role, manager_id, organization_id }
         const user = await User.create(userObject)
-        if(!user){
+        if (!user) {
             return res.status(400).json({ message: 'User creation failed' })
         }
-     
-     
-            const accessToken = jwt.sign(
-                {
-                    userId: user._id,
-                    role: user.role,
-                    organization_id: user.organization_id,
-                    manager_id: user.manager_id,
-                    user_name: user.user_name,
-                },
-                process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: '1h' }
-            );        
-          return res.status(201).json({  accessToken,user });
+
+
+        const accessToken = jwt.sign(
+            {
+                userId: user._id,
+                role: user.role,
+                organization_id: user.organization_id,
+                manager_id: user.manager_id,
+                user_name: user.user_name,
+            },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '1h' }
+        );
+        return res.status(201).json({ accessToken, user });
     }
 
-     catch (error) {
-    console.error('Failed to add user:', error);
-    res.status(500).json({ message: 'Failed to add user', error: error.message });
-}
+    catch (error) {
+        console.error('Failed to add user:', error);
+        res.status(500).json({ message: 'Failed to add user', error: error.message });
+    }
 };
+
 exports.SignIn = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -74,7 +75,7 @@ exports.SignIn = async (req, res) => {
             { expiresIn: '1h' }
 
         );
-        res.json({ accessToken: accessToken , user: user})
+        res.json({ accessToken: accessToken, user: user })
 
     } catch (err) {
         console.error('Login error:', err);
