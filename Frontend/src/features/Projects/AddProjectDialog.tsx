@@ -605,6 +605,7 @@
 // };
 
 // export default AddProjectDialog;
+// imports
 import {
   Alert,
   Box,
@@ -638,7 +639,6 @@ import {
 } from "../../schemas/SchemaAddProject";
 import {
   useAddProjectMutation,
-  useGetProjectManagersQuery,
   useGetAllTeamMembersUnderManagerQuery,
 } from "./projectApi";
 import { setProjects } from "./projectSlice";
@@ -667,11 +667,12 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
 
   const [addProject, { isLoading: isAddingProject, error: addProjectError }] =
     useAddProjectMutation();
+
   const {
-    data: projectManagers = [],
-    isLoading: isLoadingManagers,
-    error: managersError,
-  } = useGetProjectManagersQuery(currentUser?._id || "");
+    data: teamMembersData,
+    isLoading: isLoadingTeamMembers,
+    error: teamMembersError,
+  } = useGetAllTeamMembersUnderManagerQuery(currentUser?._id || "");
 
   const {
     handleSubmit,
@@ -695,13 +696,6 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
   });
 
   const selectedManagerId = watch("project_manager_id");
-
-  const {
-    data: teamMembersData,
-    isLoading: isLoadingTeamMembers,
-    error: teamMembersError,
-  } = useGetAllTeamMembersUnderManagerQuery(currentUser);
-
   const authorizedUsers = watch("authorized_Users") || [];
 
   useEffect(() => {
@@ -772,7 +766,7 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
     }
   };
 
-  const isLoading = isLoadingManagers || isLoadingTeamMembers;
+  const isLoading = isLoadingTeamMembers;
 
   if (isLoading) {
     return (
@@ -796,7 +790,7 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
             הזן את פרטי הפרויקט החדש
           </DialogContentText>
 
-          {(addProjectError || managersError || teamMembersError) && (
+          {(addProjectError || teamMembersError) && (
             <Alert severity="error" sx={{ mb: 2 }}>
               שגיאה בטעינת הנתונים. אנא נסה שוב.
             </Alert>
@@ -848,7 +842,7 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
                     <MenuItem value="">
                       <em>בחר מנהל פרויקט</em>
                     </MenuItem>
-                    {projectManagers.map((manager) => (
+                    {teamMembersData?.teamLeaders?.map((manager) => (
                       <MenuItem key={manager._id} value={manager._id}>
                         {manager.user_name} - {manager.email}
                       </MenuItem>
@@ -965,3 +959,4 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
 };
 
 export default AddProjectDialog;
+
