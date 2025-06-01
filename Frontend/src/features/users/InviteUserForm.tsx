@@ -14,14 +14,16 @@ import SelectTeamLeader from "./SelectTeamLeader";
 type InviteUserInput = z.infer<typeof inviteUserSchema>;
 const InviteUserForm = () => {
   const user = useCurrentUser();
-  console.log("user", user);
-  const { data: teamLeads = [] } = useGetTeamLeadersQuery(user._id);
+const userId = user?._id;
+const { data: teamLeads = [] } = useGetTeamLeadersQuery(userId, {
+  skip: !userId,
+});
   console.log("teamLeads", teamLeads);
   const [inviteUser, { isLoading }] = useInviteUserMutation();
   const form = useForm<InviteUserInput>({
     resolver: zodResolver(inviteUserSchema),
     defaultValues: {
-      role: Role.TEAM_LEADER, // ברירת מחדל לראש צוות
+      role: Role.TEAM_LEADER,
     },
   });
   const role = form.watch("role");
@@ -29,17 +31,16 @@ const InviteUserForm = () => {
     console.log("data", data);
     const payload: AddUserInputs = {
       ...data,
-      manager_id: data.role === Role.EMPLOYEE ? data.teamLeadId : user._id,
-      organization_id: user.organization_id
+      managerId: data.role === Role.EMPLOYEE ? data.teamLeadId : user._id,
+      organizationId: user.organization_id
       ,
     };
     console.log("payload", payload);
     try {
       console.log("HI");
       await inviteUser(payload).unwrap();
-      // אפשר להוסיף הודעת הצלחה או ניקוי טופס
+      form.reset();
     } catch (err) {
-      // הצגת שגיאה למשתמש
       console.error("שגיאה בשליחת ההזמנה:", err);
     }
   };
@@ -59,10 +60,10 @@ const InviteUserForm = () => {
         {...form.register("role")}
         fullWidth
         margin="normal"
-      >
-        <MenuItem value="TEAM_LEADER">ראש צוות</MenuItem>
-        {teamLeads.length > 0 && <MenuItem value="EMPLOYEE">עובד</MenuItem>}
-      </TextField>
+      />
+      <MenuItem value={Role.TEAM_LEADER}>ראש צוות</MenuItem>
+      {teamLeads.length > 0 && <MenuItem value={Role.EMPLOYEE}>עובד</MenuItem>}
+
       {role === Role.EMPLOYEE && teamLeads.length > 0 && (
         <SelectTeamLeader control={form.control} />
       )}
