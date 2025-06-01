@@ -1,3 +1,4 @@
+import { useGetTopManagerOfEmployeeQuery } from "../features/User/userApi";
 import { Role } from "../types/Role";
 import useCurrentUser from "./useCurrentUser";
 
@@ -7,7 +8,7 @@ const useGetManager = () => {
         return storedUser.organization_id
     if(storedUser.role === Role.TEAMLEADER)
         return storedUser.currentManager 
-    return null;
+    return useGetTopManagerOfEmployeeQuery(storedUser._id);
 }
 
 export default useGetManager

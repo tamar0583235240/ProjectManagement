@@ -645,6 +645,7 @@ import { setProjects } from "./projectSlice";
 import AuthorizedUsersList from "./AuthorizedUsersList";
 import AddAuthorizedUserForm from "./AddAuthorizedUserForm";
 import useCurrentUser from "../../hooks/useCurrentUser";
+import { selectCurrentManagerId } from "../auth/userSlice";
 
 interface AddProjectDialogProps {
   open: boolean;
@@ -664,6 +665,7 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
   const dispatch = useDispatch();
   const projectsFromState = useSelector((state: any) => state.projects.projects);
   const currentUser = useCurrentUser();
+  const currentManagerId = useSelector(selectCurrentManagerId);
 
   const [addProject, { isLoading: isAddingProject, error: addProjectError }] =
     useAddProjectMutation();
@@ -686,7 +688,7 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
     defaultValues: {
       project_name: "",
       description: "",
-      project_manager_id: "",
+      project_manager_id: currentManagerId || "",
       organization_id: currentUser?.organization_id || "",
       start_date: today,
       deadline: today,
@@ -702,8 +704,11 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
     if (currentUser?.organization_id) {
       setValue("organization_id", currentUser.organization_id);
     }
+    if (currentManagerId) {
+      setValue("project_manager_id", currentManagerId);
+    }
     setValue("status", "NOT_STARTED");
-  }, [currentUser, setValue]);
+  }, [currentUser, currentManagerId, setValue]);
 
   const handleAddUser = useCallback(
     (userData: { user_name: string; email: string; _id?: string }) => {
@@ -959,4 +964,3 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
 };
 
 export default AddProjectDialog;
-

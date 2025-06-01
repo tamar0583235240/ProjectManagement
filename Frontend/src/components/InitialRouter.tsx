@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
 import { useEffect } from 'react'
+import useCurrentUser from '../hooks/useCurrentUser'
 
 const InitialRouter = () => {
   const [cookies] = useCookies(['token'])
