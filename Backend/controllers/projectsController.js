@@ -55,32 +55,54 @@ exports.DeleteProject = async (req, res) => {
     }
 };
 
-exports.UpdateProject = async (req, res) => {
-    const projectId = req.params.project_id;
-    const { project_name, description, start_date, deadline, status, project_manager_id, organization_id } = req.body;
+// exports.UpdateProject = async (req, res) => {
+//     const projectId = req.params.project_id;
+//     const { project_name, description, start_date, deadline, status, project_manager_id, organization_id } = req.body;
 
-    try {
-        const updatedProject = await Projects.findOneAndUpdate(
-            { _id: projectId },
-            {
-                project_name: project_name,
-                description: description,
-                start_date: start_date,
-                deadline: deadline,
-                status: status,
-                project_manager_id: project_manager_id,
-                organization_id: organization_id,
-            },
-            { new: true, runValidators: true }
-        ).populate('status project_manager_id organization_id');
+//     try {
+//         const updatedProject = await Projects.findOneAndUpdate(
+//             { _id: projectId },
+//             {
+//                 project_name: project_name,
+//                 description: description,
+//                 start_date: start_date,
+//                 deadline: deadline,
+//                 status: status,
+//                 project_manager_id: project_manager_id,
+//                 organization_id: organization_id,
+//             },
+//             { new: true, runValidators: true }
+//         ).populate('status project_manager_id organization_id');
 
-        if (!updatedProject) {
-            return res.status(404).json({ message: 'Project not found' });
-        }
+//         if (!updatedProject) {
+//             return res.status(404).json({ message: 'Project not found' });
+//         }
 
-        res.json(updatedProject);
-    } catch (error) {
-        console.error('Failed to update project:', error);
-        res.status(500).json({ message: 'Failed to update project', error: error.message });
+//         res.json(updatedProject);
+//     } catch (error) {
+//         console.error('Failed to update project:', error);
+//         res.status(500).json({ message: 'Failed to update project', error: error.message });
+//     }
+// };
+
+
+exports.updateProject = async (req, res) => {
+  const { id } = req.params
+  const updateData = req.body
+
+  try {
+    const updatedProject = await ProjectModel.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    })
+
+    if (!updatedProject) {
+      return res.status(404).json({ message: "Project not found" })
     }
-};
+
+    res.status(200).json(updatedProject)
+  } catch (error) {
+    console.error("Error updating project:", error)
+    res.status(500).json({ message: "Failed to update project", error })
+  }
+}

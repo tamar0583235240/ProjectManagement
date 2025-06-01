@@ -5,7 +5,8 @@ const { AddProject, AllProjects, DeleteProject, UpdateProject, getProjectsByMana
 router.get('/AllProjects', AllProjects);
 router.post('/AddProject', AddProject);
 router.delete('/DeleteProject/:project_id', DeleteProject);
-router.put('/UpdateProject/:project_id', UpdateProject);
+// router.put('/UpdateProject/:project_id', UpdateProject);
 router.get('/getProjectsByManagerId/:manager_id', getProjectsByManagerId);
+router.put("/updateProject/:id", updateProject)
 
 module.exports = router;
