@@ -1,12 +1,10 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { inviteUserSchema } from "../../schemas/inviteUserSchema";
 import { Button, MenuItem, TextField } from "@mui/material";
 import { useInviteUserMutation, useGetTeamLeadersQuery } from "../users/userApi";
 import type { AddUserInputs } from "../../types/AddUserInputs";
 import type { z } from "zod";
-// import { SelectTeamLeader } from "./SelectTeamLeader";
 import { inviteUserSchema } from "../../schemas/inviteUserSchema";
 import { Role } from "../../enums/role.enum";
 import useCurrentUser from "../../hooks/useCurrentUser";
