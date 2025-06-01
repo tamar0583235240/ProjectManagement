@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { AddProject, AllProjects, DeleteProject, UpdateProject, getProjectsByManagerId } = require('../controllers/projectsController');
+const { AddProject, AllProjects, DeleteProject, getProjectsByManagerId, updateProject } = require('../controllers/projectsController');
 
 router.get('/AllProjects', AllProjects);
 router.post('/AddProject', AddProject);
