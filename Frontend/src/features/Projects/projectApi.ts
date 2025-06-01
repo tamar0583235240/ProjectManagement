@@ -42,7 +42,7 @@ export const projectApi = api.injectEndpoints({
     // עדכון פרויקט
     updateProject: builder.mutation<Project, Project>({
       query: (project) => ({
-        url: `projects/${project._id}`,
+        url: `projects/updateProject/${project._id}`,
         method: 'PUT',
         body: { project },
       }),
