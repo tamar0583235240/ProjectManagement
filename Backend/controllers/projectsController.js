@@ -91,7 +91,7 @@ exports.updateProject = async (req, res) => {
   const updateData = req.body
 
   try {
-    const updatedProject = await ProjectModel.findByIdAndUpdate(id, updateData, {
+    const updatedProject = await Projects.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
     })
