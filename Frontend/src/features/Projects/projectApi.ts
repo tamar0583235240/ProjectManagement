@@ -44,7 +44,7 @@ export const projectApi = api.injectEndpoints({
       query: (project) => ({
         url: `projects/updateProject/${project._id}`,
         method: 'PUT',
-        body: { project },
+        body: project ,
       }),
       invalidatesTags: ['Project'],
     }),
