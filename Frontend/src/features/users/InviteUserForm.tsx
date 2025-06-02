@@ -12,6 +12,8 @@ import SelectTeamLeader from "./SelectTeamLeader";
 type InviteUserInput = z.infer<typeof inviteUserSchema>;
 const InviteUserForm = () => {
   const user = useCurrentUser();
+  console.log("user",user);
+  
 const userId = user?._id;
 const { data: teamLeads = [] } = useGetTeamLeadersQuery(userId, {
   skip: !userId,
