@@ -565,50 +565,74 @@ const ProjectsDashboard = ({ initialProjects }: { initialProjects: Project[] }) 
   //   }
   // }
 
-//   const saveProjectChanges = async (updatedProject: Project) => {
-//   try {
-//     // לוודא ש-project_manager_id הוא string
-//     const projectToSend = {
-//       ...updatedProject,
-//       project_manager_id:
-//         typeof updatedProject.project_manager_id === "object" && updatedProject.project_manager_id !== null
-//           ? updatedProject.project_manager_id._id
-//           : updatedProject.project_manager_id,
-//     };
+  //   const saveProjectChanges = async (updatedProject: Project) => {
+  //   try {
+  //     // לוודא ש-project_manager_id הוא string
+  //     const projectToSend = {
+  //       ...updatedProject,
+  //       project_manager_id:
+  //         typeof updatedProject.project_manager_id === "object" && updatedProject.project_manager_id !== null
+  //           ? updatedProject.project_manager_id._id
+  //           : updatedProject.project_manager_id,
+  //     };
 
-//     const result = await updateProject(projectToSend).unwrap();
-//     setProjects((prev) => prev.map((p) => (p._id === result._id ? result : p)));
-//     setSnackbar({ open: true, message: "Project updated successfully.", severity: "success" });
-//   } catch {
-//     setSnackbar({ open: true, message: "Failed to update project.", severity: "error" });
-//   } finally {
-//     setIsEditDialogOpen(false);
-//   }
-// };
+  //     const result = await updateProject(projectToSend).unwrap();
+  //     setProjects((prev) => prev.map((p) => (p._id === result._id ? result : p)));
+  //     setSnackbar({ open: true, message: "Project updated successfully.", severity: "success" });
+  //   } catch {
+  //     setSnackbar({ open: true, message: "Failed to update project.", severity: "error" });
+  //   } finally {
+  //     setIsEditDialogOpen(false);
+  //   }
+  // };
 
-const saveProjectChanges = async (updatedProject: Project) => {
-  try {
-    const projectToSend = {
-      ...updatedProject,
-      project_manager_id:
-        typeof updatedProject.project_manager_id === "object" && updatedProject.project_manager_id !== null
-          ? updatedProject.project_manager_id._id
-          : updatedProject.project_manager_id,
-      organization:
-        typeof updatedProject.organization === "object" && updatedProject.organization !== null
-          ? updatedProject.organization._id
-          : updatedProject.organization,
-    };
+  // const saveProjectChanges = async (updatedProject: Project) => {
+  //   try {
+  //     const projectToSend = {
+  //       ...updatedProject,
+  //       project_manager_id:
+  //         typeof updatedProject.project_manager_id === "object" && updatedProject.project_manager_id !== null
+  //           ? updatedProject.project_manager_id._id
+  //           : updatedProject.project_manager_id,
+  //       organization:
+  //         typeof updatedProject.organization === "object" && updatedProject.organization !== null
+  //           ? updatedProject.organization._id
+  //           : updatedProject.organization,
+  //     };
 
-    const result = await updateProject(projectToSend).unwrap();
-    setProjects((prev) => prev.map((p) => (p._id === result._id ? result : p)));
-    setSnackbar({ open: true, message: "Project updated successfully.", severity: "success" });
-  } catch {
-    setSnackbar({ open: true, message: "Failed to update project.", severity: "error" });
-  } finally {
-    setIsEditDialogOpen(false);
-  }
-};
+  //     const result = await updateProject(projectToSend).unwrap();
+  //     setProjects((prev) => prev.map((p) => (p._id === result._id ? result : p)));
+  //     setSnackbar({ open: true, message: "Project updated successfully.", severity: "success" });
+  //   } catch {
+  //     setSnackbar({ open: true, message: "Failed to update project.", severity: "error" });
+  //   } finally {
+  //     setIsEditDialogOpen(false);
+  //   }
+  // };
+  // פונקציית השמירה בקומפוננטה
+  const saveProjectChanges = async (updatedProject: Project) => {
+    try {
+      const projectToSend = {
+        ...updatedProject,
+        project_manager_id:
+          typeof updatedProject.project_manager_id === 'object' && updatedProject.project_manager_id !== null
+            ? updatedProject.project_manager_id._id
+            : updatedProject.project_manager_id,
+        organization_id: // ← כאן היה לך organization
+          typeof updatedProject.organization === 'object' && updatedProject.organization !== null
+            ? updatedProject.organization._id
+            : updatedProject.organization_id, // ← ופה תוודאי שזה `organization_id`
+      };
+
+      const result = await updateProject({ project: projectToSend }).unwrap(); // שימי לב ל־{ project: ... }
+      setProjects((prev) => prev.map((p) => (p._id === result._id ? result : p)));
+      setSnackbar({ open: true, message: 'Project updated successfully.', severity: 'success' });
+    } catch {
+      setSnackbar({ open: true, message: 'Failed to update project.', severity: 'error' });
+    } finally {
+      setIsEditDialogOpen(false);
+    }
+  };
 
 
 
