@@ -110,7 +110,7 @@ exports.updateProject = async (req, res) => {
     status,
     project_manager_id,
     organization_id
-  } = req.body.project; // ← שימי לב שזה `req.body.project`
+  } = req.body;
 
   console.log('Update data:', {
     project_name,
