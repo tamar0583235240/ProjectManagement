@@ -1,3 +1,4 @@
+const { log } = require('node:console');
 const Projects = require('../models/Projects');
 
 exports.AddProject = async (req, res) => {
@@ -58,6 +59,7 @@ exports.DeleteProject = async (req, res) => {
 exports.updateProject = async (req, res) => {
     const projectId = req.params.project_id;
     console.log('Updating project with ID:', projectId);
+    console.log('Request body:', req.body);
     const { project_name, description, start_date, deadline, status, project_manager_id, organization_id } = req.body;
     console.log('Update data:', {
         project_name,
