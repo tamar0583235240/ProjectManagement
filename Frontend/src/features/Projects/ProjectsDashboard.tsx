@@ -435,6 +435,7 @@
 
 // export default ProjectsDashboard
 
+
 import type React from "react"
 import { useState, useEffect } from "react"
 import {
@@ -498,25 +499,6 @@ function TabPanel({ children, value, index, ...other }: { children: React.ReactN
   )
 }
 
-// פונקציה לנירמול שדות מזהים בתוך אובייקט פרויקט
-function normalizeProjectIds(project: Project): Project {
-  return {
-    ...project,
-    project_manager_id:
-      typeof project.project_manager_id === "object" && project.project_manager_id !== null
-        ? (project.project_manager_id as any)._id
-        : project.project_manager_id,
-    organization_id:
-      typeof project.organization_id === "object" && project.organization_id !== null
-        ? (project.organization_id as any)._id
-        : project.organization_id,
-    // אם יש צורך לנרמל גם authorized_Users, למשל:
-    authorized_Users: project.authorized_Users?.map((user) =>
-      typeof user === "object" && user !== null ? (user as any)._id : user
-    ),
-  }
-}
-
 const ProjectsDashboard = ({ initialProjects }: { initialProjects: Project[] }) => {
   const [projects, setProjects] = useState<Project[]>(initialProjects || [])
   const [filteredProjects, setFilteredProjects] = useState<Project[]>(initialProjects || [])
@@ -539,10 +521,8 @@ const ProjectsDashboard = ({ initialProjects }: { initialProjects: Project[] }) 
   const [deleteProject] = useDeleteProjectMutation()
   const [updateProject] = useUpdateProjectMutation()
 
-  // בעת פתיחת תפריט – ננרמל את הפרויקט שנבחר (מונע בעיות בעריכה)
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, project: Project) => {
-    const normalizedProject = normalizeProjectIds(project)
-    setSelectedProject(normalizedProject)
+    setSelectedProject(project)
     setAnchorEl(event.currentTarget)
   }
 
@@ -573,20 +553,64 @@ const ProjectsDashboard = ({ initialProjects }: { initialProjects: Project[] }) 
     }
   }
 
-  // שמירת שינויים בפרויקט עם נירמול מזהים
-  const saveProjectChanges = async (updatedProject: Project) => {
-    try {
-      const projectToSend = normalizeProjectIds(updatedProject)
+  // const saveProjectChanges = async (updatedProject: Project) => {
+  //   try {
+  //     const result = await updateProject(updatedProject).unwrap()
+  //     setProjects((prev) => prev.map((p) => (p._id === result._id ? result : p)))
+  //     setSnackbar({ open: true, message: "Project updated successfully.", severity: "success" })
+  //   } catch {
+  //     setSnackbar({ open: true, message: "Failed to update project.", severity: "error" })
+  //   } finally {
+  //     setIsEditDialogOpen(false)
+  //   }
+  // }
 
-      const result = await updateProject(projectToSend).unwrap()
-      setProjects((prev) => prev.map((p) => (p._id === result._id ? result : p)))
-      setSnackbar({ open: true, message: "Project updated successfully.", severity: "success" })
-    } catch {
-      setSnackbar({ open: true, message: "Failed to update project.", severity: "error" })
-    } finally {
-      setIsEditDialogOpen(false)
-    }
+//   const saveProjectChanges = async (updatedProject: Project) => {
+//   try {
+//     // לוודא ש-project_manager_id הוא string
+//     const projectToSend = {
+//       ...updatedProject,
+//       project_manager_id:
+//         typeof updatedProject.project_manager_id === "object" && updatedProject.project_manager_id !== null
+//           ? updatedProject.project_manager_id._id
+//           : updatedProject.project_manager_id,
+//     };
+
+//     const result = await updateProject(projectToSend).unwrap();
+//     setProjects((prev) => prev.map((p) => (p._id === result._id ? result : p)));
+//     setSnackbar({ open: true, message: "Project updated successfully.", severity: "success" });
+//   } catch {
+//     setSnackbar({ open: true, message: "Failed to update project.", severity: "error" });
+//   } finally {
+//     setIsEditDialogOpen(false);
+//   }
+// };
+
+const saveProjectChanges = async (updatedProject: Project) => {
+  try {
+    const projectToSend = {
+      ...updatedProject,
+      project_manager_id:
+        typeof updatedProject.project_manager_id === "object" && updatedProject.project_manager_id !== null
+          ? updatedProject.project_manager_id._id
+          : updatedProject.project_manager_id,
+      organization:
+        typeof updatedProject.organization === "object" && updatedProject.organization !== null
+          ? updatedProject.organization._id
+          : updatedProject.organization,
+    };
+
+    const result = await updateProject(projectToSend).unwrap();
+    setProjects((prev) => prev.map((p) => (p._id === result._id ? result : p)));
+    setSnackbar({ open: true, message: "Project updated successfully.", severity: "success" });
+  } catch {
+    setSnackbar({ open: true, message: "Failed to update project.", severity: "error" });
+  } finally {
+    setIsEditDialogOpen(false);
   }
+};
+
+
 
   const handleAddProject = (newProject: Project) => {
     newProject.status = newProject.status || "NOT_STARTED"
@@ -607,7 +631,7 @@ const ProjectsDashboard = ({ initialProjects }: { initialProjects: Project[] }) 
     if (filters.manager) filtered = filtered.filter((p) => p.manager === filters.manager)
     if (filters.startDate && filters.endDate)
       filtered = filtered.filter(
-        (p) => new Date(p.start_date) >= filters.startDate! && new Date(p.deadline) <= filters.endDate!
+        (p) => new Date(p.startDate) >= filters.startDate! && new Date(p.endDate) <= filters.endDate!
       )
     setFilteredProjects(filtered)
   }
@@ -667,31 +691,23 @@ const ProjectsDashboard = ({ initialProjects }: { initialProjects: Project[] }) 
 
         <EditDialog
           open={isEditDialogOpen}
-          onClose={() => setIsEditDialogOpen(false)}
           project={selectedProject}
+          onClose={() => setIsEditDialogOpen(false)}
           onSave={saveProjectChanges}
         />
-
         <DeleteDialog
           open={isDeleteDialogOpen}
           onClose={() => setIsDeleteDialogOpen(false)}
           onConfirm={confirmDelete}
-          projectName={selectedProject?.project_name}
         />
-
         <AddProjectDialog
           open={isAddDialogOpen}
           onClose={() => setIsAddDialogOpen(false)}
           onAdd={handleAddProject}
         />
 
-        <Snackbar
-          open={snackbar.open}
-          autoHideDuration={3000}
-          onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        >
-          <Alert severity={snackbar.severity} sx={{ width: "100%" }}>
+        <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+          <Alert severity={snackbar.severity} sx={{ width: "100%" }} onClose={handleCloseSnackbar}>
             {snackbar.message}
           </Alert>
         </Snackbar>
@@ -701,5 +717,3 @@ const ProjectsDashboard = ({ initialProjects }: { initialProjects: Project[] }) 
 }
 
 export default ProjectsDashboard
-
-
