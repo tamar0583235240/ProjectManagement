@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux'
 import ProjectsDashboard from '../features/Projects/ProjectsDashboard'
 import { selectCurrentManagerId } from '../features/auth/userSlice'
-import useLoadProjectsOnInit from '../hooks/useLoadProjectsOnInit' // נניח שההוק יושב כאן
+import useLoadProjectsOnInit from '../hooks/useLoadProjectsOnInit'
 import type { RootState } from '../app/store'
 
 const Projects = () => {
-  useLoadProjectsOnInit(); // זה הטעינה של הפרויקטים (דרך RTK Query) ודחיפה ל-slice
+  useLoadProjectsOnInit(); 
 
   const currentManagerId = useSelector(selectCurrentManagerId)
   const projects = useSelector((state: RootState) => state.projects.projects)

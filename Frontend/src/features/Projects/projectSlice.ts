@@ -1,7 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type { Project } from '../../types/Project'
 
-
 interface ProjectsState {
   projects: Project[]
   isLoading: boolean

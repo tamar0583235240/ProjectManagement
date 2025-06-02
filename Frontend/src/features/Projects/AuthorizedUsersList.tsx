@@ -2,12 +2,12 @@ import React from "react"
 import {Box, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText,Typography,} from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
 import EditIcon from "@mui/icons-material/Edit"
-import type { AuthorizedUser } from "../../schemas/SchemaAddProject"
+import type { AuthorizedUserFormData } from "../../schemas/SchemaAddProject"
 
 
 interface AuthorizedUsersListProps {
-  users: AuthorizedUser[]
-  onEdit: (user: AuthorizedUser) => void
+  users: AuthorizedUserFormData[]
+  onEdit: (user: AuthorizedUserFormData) => void
   onDelete: (userId: string) => void
 }
 
