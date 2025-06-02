@@ -7,6 +7,6 @@ router.post('/AddProject', AddProject);
 router.delete('/DeleteProject/:project_id', DeleteProject);
 // router.put('/UpdateProject/:project_id', UpdateProject);
 router.get('/getProjectsByManagerId/:manager_id', getProjectsByManagerId);
-router.put("/updateProject/:id", updateProject)
+router.put("/updateProject/:project_id", updateProject)
 
 module.exports = router;
