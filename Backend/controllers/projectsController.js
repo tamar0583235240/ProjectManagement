@@ -57,7 +57,17 @@ exports.DeleteProject = async (req, res) => {
 
 exports.updateProject = async (req, res) => {
     const projectId = req.params.project_id;
+    console.log('Updating project with ID:', projectId);
     const { project_name, description, start_date, deadline, status, project_manager_id, organization_id } = req.body;
+    console.log('Update data:', {
+        project_name,
+        description,
+        start_date,
+        deadline,
+        status,
+        project_manager_id,
+        organization_id
+    });
 
     try {
         const updatedProject = await Projects.findOneAndUpdate(
