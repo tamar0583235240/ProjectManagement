@@ -56,45 +56,96 @@ exports.DeleteProject = async (req, res) => {
     }
 };
 
+// exports.updateProject = async (req, res) => {
+//     const projectId = req.params.project_id;
+//     console.log('Updating project with ID:', projectId);
+//     console.log('Request body:', req.body);
+//     const { project_name, description, start_date, deadline, status, project_manager_id, organization_id } = req.body;
+//     console.log('Update data:', {
+//         project_name,
+//         description,
+//         start_date,
+//         deadline,
+//         status,
+//         project_manager_id,
+//         organization_id
+//     });
+
+//     try {
+//         const updatedProject = await Projects.findOneAndUpdate(
+//             { _id: projectId },
+//             {
+//                 project_name: project_name,
+//                 description: description,
+//                 start_date: start_date,
+//                 deadline: deadline,
+//                 status: status,
+//                 project_manager_id: project_manager_id,
+//                 organization_id: organization_id,
+//             },
+//             { new: true, runValidators: true }
+//         ).populate('status project_manager_id organization_id');
+
+//         if (!updatedProject) {
+//             return res.status(404).json({ message: 'Project not found' });
+//         }
+
+//         res.json(updatedProject);
+//     } catch (error) {
+//         console.error('Failed to update project:', error);
+//         res.status(500).json({ message: 'Failed to update project', error: error.message });
+//     }
+// };
+
 exports.updateProject = async (req, res) => {
-    const projectId = req.params.project_id;
-    console.log('Updating project with ID:', projectId);
-    console.log('Request body:', req.body);
-    const { project_name, description, start_date, deadline, status, project_manager_id, organization_id } = req.body;
-    console.log('Update data:', {
+  const projectId = req.params.project_id;
+  console.log('Updating project with ID:', projectId);
+  console.log('Request body:', req.body);
+
+  const {
+    project_name,
+    description,
+    start_date,
+    deadline,
+    status,
+    project_manager_id,
+    organization_id
+  } = req.body.project; // ← שימי לב שזה `req.body.project`
+
+  console.log('Update data:', {
+    project_name,
+    description,
+    start_date,
+    deadline,
+    status,
+    project_manager_id,
+    organization_id,
+  });
+
+  try {
+    const updatedProject = await Projects.findOneAndUpdate(
+      { _id: projectId },
+      {
         project_name,
         description,
         start_date,
         deadline,
         status,
         project_manager_id,
-        organization_id
-    });
+        organization_id,
+      },
+      { new: true, runValidators: true }
+    ).populate('status project_manager_id organization_id');
 
-    try {
-        const updatedProject = await Projects.findOneAndUpdate(
-            { _id: projectId },
-            {
-                project_name: project_name,
-                description: description,
-                start_date: start_date,
-                deadline: deadline,
-                status: status,
-                project_manager_id: project_manager_id,
-                organization_id: organization_id,
-            },
-            { new: true, runValidators: true }
-        ).populate('status project_manager_id organization_id');
-
-        if (!updatedProject) {
-            return res.status(404).json({ message: 'Project not found' });
-        }
-
-        res.json(updatedProject);
-    } catch (error) {
-        console.error('Failed to update project:', error);
-        res.status(500).json({ message: 'Failed to update project', error: error.message });
+    if (!updatedProject) {
+      return res.status(404).json({ message: 'Project not found' });
     }
+
+    res.json(updatedProject);
+  } catch (error) {
+    console.error('Failed to update project:', error);
+    res.status(500).json({ message: 'Failed to update project', error: error.message });
+  }
 };
 
 
