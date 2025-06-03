@@ -17,8 +17,8 @@ import type { Role } from "../enums/role.enum";
 export type AddUserInputs = {
   email: string;
   role: Role.TEAM_LEADER | Role.EMPLOYEE;
-  teamLeadId?: string;        // ראש צוות (עובד חייב לבחור ראש צוות)
-  managerId?: string;         // מנהל (לראש צוות) או ראש צוות (לעובד)
+  teamLead_id?: string;        // ראש צוות (עובד חייב לבחור ראש צוות)
+  manager_id?: string;         // מנהל (לראש צוות) או ראש צוות (לעובד)
   organizationId: string;
 };
 

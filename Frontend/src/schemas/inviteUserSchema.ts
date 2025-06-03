@@ -26,7 +26,6 @@
 // });
 import { z } from "zod";
 import { Role } from "../enums/role.enum";
-// import { Role } from "./enums";
 
 export const inviteUserSchema = z.object({
   email: z.string().email({ message: "כתובת אימייל לא תקינה" }),
