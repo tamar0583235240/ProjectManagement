@@ -417,10 +417,14 @@ const ProjectDetails: React.FC = () => {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
 
-  const project = useSelector((state: RootState) => selectProjectById(state, projectId || ''));
+  const project = useSelector((state: RootState) => selectProjectById(state, projectId));
 
     // נתונים מדומים למשימות
-    const mockTasks: 
+    const mockTasks: Task[] = [
+        { _id: 't1', title: 'Design DB Schema', status: 'COMPLETED' },
+        { _id: 't2', title: 'Implement Auth', status: 'IN_PROGRESS' },
+        { _id: 't3', title: 'Write Documentation', status: 'NOT_STARTED' },
+    ];
 
 
     // הערה: כשנחזיר קריאה ל-API, נחליף את mockTasks בקריאה אמיתית
