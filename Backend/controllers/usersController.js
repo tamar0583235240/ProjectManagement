@@ -197,3 +197,20 @@ exports.getTopManagerOfEmployee = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+
+
+exports.getEmployeesByOrganization = async (req, res) => {
+  const { orgId } = req.params;
+
+  try {
+    const employees = await User.find({
+      organization_id: orgId,
+    }).select('_id user_name email');
+
+    res.status(200).json(employees);
+  } catch (error) {
+    console.error('Failed to get employees by organization:', error);
+    res.status(500).json({ message: 'Failed to fetch employees' });
+  }
+};
