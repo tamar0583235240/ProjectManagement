@@ -1,7 +1,6 @@
 const Role = {
-  Admin: 'TEAM_LEADER',
   Manager: 'MANAGER',
+  teamLeader: 'TEAM_LEADER',
   Employee: 'EMPLOYEE'
 };
-
 module.exports = Role;

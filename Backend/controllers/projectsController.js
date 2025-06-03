@@ -1,5 +1,4 @@
 const Projects = require('../models/Projects');
-
 exports.AddProject = async (req, res) => {
     try {
         const project = await Projects.create(req.body);
@@ -9,7 +8,6 @@ exports.AddProject = async (req, res) => {
         res.status(500).json({ message: 'Failed to add project', error: error.message });
     }
 };
-
 exports.AllProjects = async (req, res) => {
     try {
         const projects = await Projects.find().populate('status project_manager_id organization_id');
@@ -19,7 +17,6 @@ exports.AllProjects = async (req, res) => {
         res.status(500).json({ message: 'Failed to get projects', error: error.message });
     }
 };
-
 exports.DeleteProject = async (req, res) => {
     const projectId = req.params.project_id;
     try {
@@ -33,11 +30,9 @@ exports.DeleteProject = async (req, res) => {
         res.status(500).json({ message: 'Failed to delete project', error: error.message });
     }
 };
-
 exports.UpdateProject = async (req, res) => {
     const projectId = req.params.project_id;
     const { project_name, description, start_date, deadline, status, project_manager_id, organization_id } = req.body;
-
     try {
         const updatedProject = await Projects.findOneAndUpdate(
             { _id: projectId },
