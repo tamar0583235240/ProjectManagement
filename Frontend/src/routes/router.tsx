@@ -22,7 +22,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/set-password/:token',
-    element: <SetPasswordPage/>
+    element: <ResetPasswordPage/>  // זה העמוד האמיתי שמטפל בזה
   },
     {
         path: "app", element: <AppLayout />,
