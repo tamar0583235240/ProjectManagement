@@ -27,7 +27,7 @@ exports.inviteUser = async (req, res) => {
                   <p>קיבלת הזמנה להצטרף למערכת. לחץ/י על הקישור כדי לבחור סיסמה:</p>
                   <a href="${url}">${url}</a>
                   <p>הקישור תקף ל-48 שעות בלבד!.</p>`;
-    await sendInviteEmail(email, html, 'הזמנה להצטרף למערכת');
+    await sendInviteEmail(email,password_token, html, 'הזמנה להצטרף למערכת');
     res.status(201).json({
       user,
       message: 'Invitation sent successfully'
