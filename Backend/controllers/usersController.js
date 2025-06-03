@@ -65,7 +65,7 @@ exports.getTeamLeaders = async (req, res) => {
 
   try {
     const teamLeaders = await User.find({
-      role: "team_leader",
+      role: "TEAM_LEADER",
       manager_id: managerId,
     }).select("_id user_name "); 
 
