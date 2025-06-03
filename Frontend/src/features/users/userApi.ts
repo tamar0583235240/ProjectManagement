@@ -1,7 +1,7 @@
 
-import { api } from "../../app/api"; // הבסיס של RTK Query שלך
+import { api } from "../../app/api"; 
 import type { AddUserInputs } from "../../types/AddUserInputs";
-import type { SetPasswordRequest } from "../../types/SetPasswordRequest"; // סוג הבקשה לעדכון סיסמה
+import type { SetPasswordRequest } from "../../types/SetPasswordRequest"; 
 import type { User } from "../../types/User";
 export const userApi = api.injectEndpoints({
   endpoints: (builder) => ({

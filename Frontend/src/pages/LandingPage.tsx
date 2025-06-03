@@ -351,7 +351,6 @@ const LandingPage = () => {
                 onClose={handleCloseSignInDialog}
                 onSuccess={handleSuccessfulSignIn}
             />
-
             <SignUp
                 open={openSignUpDialog}
                 onClose={handleCloseSignUpDialog}
@@ -360,5 +359,4 @@ const LandingPage = () => {
         </div>
     )
 }
-
 export default LandingPage

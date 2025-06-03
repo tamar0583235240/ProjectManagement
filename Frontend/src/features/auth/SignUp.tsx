@@ -12,11 +12,11 @@ import Button from "@mui/material/Button"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Grid from "@mui/material/Grid"
+// import { Grid } from '@mui/material';
+
 import Divider from "@mui/material/Divider"
 import { SchemaSignUp, type FormData } from "../../schemas/SchemaSignUp"
 import SignUpOrganization from "../organizations/SignUpOrganization"
-// import { SchemaSignUp } from "../../schemas/SchemaSignUp"
-
 interface SignUpDialogProps {
     open: boolean
     onClose: () => void
@@ -25,7 +25,6 @@ interface SignUpDialogProps {
 const SignUp: React.FC<SignUpDialogProps> = ({ open, onClose, onSuccess }) => {
     const [openOrgDialog, setOpenOrgDialog] = useState(false)
     const [userData, setUserData] = useState<FormData | null>(null)
-
     const {  register,handleSubmit,formState: { errors },  reset} = useForm<FormData>({
         resolver: zodResolver(SchemaSignUp),
         defaultValues: {
@@ -38,33 +37,27 @@ const SignUp: React.FC<SignUpDialogProps> = ({ open, onClose, onSuccess }) => {
             cvv: "",
         },
     })
-
     const onSubmit = (data: FormData) => {
         console.log("User registration data:", data)
         setUserData(data)
         setOpenOrgDialog(true)
     }
-
     const handleCloseOrgDialog = () => {
         onClose()
         setOpenOrgDialog(false)
         reset()
-        // קריאה לפונקציה onSuccess אם היא הועברה
         if (onSuccess) {
             onSuccess()
         }
     }
-
     return (
         <>
             <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
                 <DialogTitle sx={{ fontWeight: "bold", color: "#0d9488", fontSize: "1.25rem" }}>Admin Registration</DialogTitle>
-
                 <DialogContent>
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                         Fill in the form below to register as an admin.
                     </Typography>
-
                     <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
@@ -76,7 +69,6 @@ const SignUp: React.FC<SignUpDialogProps> = ({ open, onClose, onSuccess }) => {
                             error={!!errors.username}
                             helperText={errors.username?.message}
                         />
-
                         <TextField
                             margin="normal"
                             fullWidth
@@ -88,7 +80,6 @@ const SignUp: React.FC<SignUpDialogProps> = ({ open, onClose, onSuccess }) => {
                             error={!!errors.email}
                             helperText={errors.email?.message}
                         />
-
                         <TextField
                             margin="normal"
                             fullWidth
@@ -100,13 +91,10 @@ const SignUp: React.FC<SignUpDialogProps> = ({ open, onClose, onSuccess }) => {
                             error={!!errors.password}
                             helperText={errors.password?.message}
                         />
-
                         <Divider sx={{ my: 2 }} />
-
                         <Typography variant="subtitle1" sx={{ fontWeight: "medium", color: "#0d9488", mb: 1 }}>
                             Payment Information
                         </Typography>
-
                         <TextField
                             margin="normal"
                             fullWidth
@@ -117,7 +105,6 @@ const SignUp: React.FC<SignUpDialogProps> = ({ open, onClose, onSuccess }) => {
                             error={!!errors.creditCard}
                             helperText={errors.creditCard?.message}
                         />
-
                         <Grid container spacing={2} sx={{ mt: 1 }}>
                             <Grid item xs={4}>
                                 <TextField
@@ -131,7 +118,6 @@ const SignUp: React.FC<SignUpDialogProps> = ({ open, onClose, onSuccess }) => {
                                     helperText={errors.expiryMonth?.message}
                                 />
                             </Grid>
-
                             <Grid item xs={4}>
                                 <TextField
                                     fullWidth
@@ -144,7 +130,6 @@ const SignUp: React.FC<SignUpDialogProps> = ({ open, onClose, onSuccess }) => {
                                     helperText={errors.expiryYear?.message}
                                 />
                             </Grid>
-
                             <Grid item xs={4}>
                                 <TextField
                                     fullWidth
@@ -160,7 +145,6 @@ const SignUp: React.FC<SignUpDialogProps> = ({ open, onClose, onSuccess }) => {
                         </Grid>
                     </Box>
                 </DialogContent>
-
                 <DialogActions sx={{ px: 3, pb: 3 }}>
                     <Button onClick={() => { onClose(); reset(); }} color="primary">
                         Cancel
@@ -186,5 +170,4 @@ const SignUp: React.FC<SignUpDialogProps> = ({ open, onClose, onSuccess }) => {
         </>
     )
 }
-
 export default SignUp
