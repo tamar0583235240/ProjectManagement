@@ -63,3 +63,19 @@ exports.UpdateTask = async (req, res) => {
         res.status(500).json({ message: 'Failed to update task', error: error.message });
     }
 };
+
+exports.getTasksByProject = async (req, res) => {
+  const { projectId } = req.params;
+
+  try {
+    const tasks = await Tasks.find({ project_id: projectId })
+      .populate('performed_by', 'user_name email')
+      .populate('created_by', 'user_name email')
+      .exec();
+
+    res.json(tasks);
+  } catch (error) {
+    console.error('Error fetching tasks:', error);
+    res.status(500).json({ error: 'Server error fetching tasks' });
+  }
+};
