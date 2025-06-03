@@ -1,29 +1,52 @@
-import { useSelector } from 'react-redux'
-import ProjectsDashboard from '../features/Projects/ProjectsDashboard'
-import { selectCurrentManagerId } from '../features/auth/userSlice'
-import useLoadProjectsOnInit from '../hooks/useLoadProjectsOnInit'
-import type { RootState } from '../app/store'
+import { useSelector } from 'react-redux';
+import { Box, Typography, CircularProgress, Alert, Paper } from '@mui/material';
+import { selectCurrentManagerId } from '../features/auth/userSlice';
+import useLoadProjectsOnInit from '../hooks/useLoadProjectsOnInit';
+import type { RootState } from '../app/store';
+import ProjectsDashboard from '../features/Project/ProjectsDashboard';
 
 const Projects = () => {
-  useLoadProjectsOnInit(); 
+  useLoadProjectsOnInit();
 
-  const currentManagerId = useSelector(selectCurrentManagerId)
-  const projects = useSelector((state: RootState) => state.projects.projects)
-  const isLoading = useSelector((state: RootState) => state.projects.isLoading)
-  const error = useSelector((state: RootState) => state.projects.error)
+  const currentManagerId = useSelector(selectCurrentManagerId);
+  const projects = useSelector((state: RootState) => state.projects.projects);
+  const isLoading = useSelector((state: RootState) => state.projects.isLoading);
+  const error = useSelector((state: RootState) => state.projects.error);
 
   if (!currentManagerId) {
-    return <div>No current manager</div>
+    return (
+      <Box mt={4} display="flex" justifyContent="center">
+        <Alert severity="warning">No current manager</Alert>
+      </Box>
+    );
   }
 
-  if (isLoading) return <div>Loading projects...</div>
-  if (error) return <div>{error}</div>
+  if (isLoading) {
+    return (
+      <Box mt={4} display="flex" justifyContent="center">
+        <CircularProgress color="primary" />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box mt={4} display="flex" justifyContent="center">
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
+  }
 
   return (
-    <div>
-      <ProjectsDashboard initialProjects={projects} />
-    </div>
-  )
-}
+    <Box p={3}>
+      <Typography variant="h2" gutterBottom>
+        Projects
+      </Typography>
+      <Paper elevation={1} sx={{ p: 2 }}>
+        <ProjectsDashboard initialProjects={projects || []} />
+      </Paper>
+    </Box>
+  );
+};
 
-export default Projects
+export default Projects;

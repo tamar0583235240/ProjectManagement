@@ -4,10 +4,10 @@ const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#1976d2',
+      main: 'rgb(0, 188, 212)',
     },
     secondary: {
-      main: '#1565c0',
+      main: '#4caf50',
     },
     background: {
       default: '#f5f7fa',
@@ -30,6 +30,7 @@ const theme = createTheme({
       main: '#0288d1',
     },
   },
+  spacing: 8,
   typography: {
     fontFamily: 'Roboto, Arial, sans-serif',
     h1: {
@@ -59,7 +60,7 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: 6,
           padding: '6px 16px',
           boxShadow: 'none',
         },
@@ -71,7 +72,7 @@ const theme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
+          borderRadius: 6,
           boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
         },
       },
@@ -80,7 +81,7 @@ const theme = createTheme({
       styleOverrides: {
         paper: {
           padding: '16px',
-          borderRadius: 16,
+          borderRadius: 8,
         },
       },
     },
@@ -94,9 +95,16 @@ const theme = createTheme({
         },
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+        },
+      },
+    },
   },
   shape: {
-    borderRadius: 12,
+    borderRadius: 6,
   },
 });
 

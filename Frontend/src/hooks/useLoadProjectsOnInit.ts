@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { selectCurrentManagerId } from "../features/auth/userSlice";
-import { setError, setLoading, setProjects } from "../features/Projects/projectSlice";
-import { useGetProjectsByManagerIdQuery } from "../features/Projects/projectApi";
+import { setError, setLoading, setProjects } from "../features/Project/projectSlice";
+import { useGetProjectsByManagerIdQuery } from "../features/Project/projectApi";
 
 const useLoadProjectsOnInit = () => {
   const dispatch = useDispatch();

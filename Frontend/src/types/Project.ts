@@ -127,3 +127,9 @@ export interface EditProjectFormData {
   status: Status;
   deadline: string;
 }
+
+export interface AuthorizedUser {
+  id: string;
+  name: string;
+  email: string;
+}

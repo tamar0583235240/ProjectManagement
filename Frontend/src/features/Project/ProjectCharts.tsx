@@ -21,6 +21,11 @@ interface ProjectChartsProps {
   projects: Project[]
 }
 
+const ALL_MONTHS = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+]
+
 const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
   const completed = projects.filter((p) => p.status === "COMPLETED").length
   const delayed = projects.filter((p) => p.status === "DELAYED").length
@@ -37,24 +42,31 @@ const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
   const getMonthData = () => {
     const monthCounts: Record<string, number> = {}
 
+    // אתחל כל החודשים עם 0
+    ALL_MONTHS.forEach((month) => {
+      monthCounts[month] = 0
+    })
+
     projects.forEach((project) => {
       if (project.deadline) {
         try {
           const month = format(new Date(project.deadline), "MMM", { locale: enUS })
-          monthCounts[month] = (monthCounts[month] || 0) + 1
+          if (monthCounts.hasOwnProperty(month)) {
+            monthCounts[month] += 1
+          }
         } catch {
           console.warn("Invalid date format:", project.deadline)
         }
       }
     })
 
-    return Object.entries(monthCounts).map(([month, count]) => ({ month, count }))
+    return ALL_MONTHS.map((month) => ({ month, count: monthCounts[month] }))
   }
 
   const barChartData = getMonthData()
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={3} sx={{ width: "100%" }}>
       <Grid item xs={12} md={6}>
         <Card elevation={2} sx={{ height: "100%" }}>
           <CardContent>
@@ -86,21 +98,33 @@ const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
         </Card>
       </Grid>
       <Grid item xs={12} md={6}>
-        <Card elevation={2} sx={{ height: "100%" }}>
+        <Card elevation={2} sx={{ height: 400 }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
               Projects by Deadline Month
             </Typography>
-            <Box sx={{ height: 300 }}>
+            <Box sx={{ height: 320 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={barChartData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="month" />
-                  <YAxis />
+                  <YAxis allowDecimals={false} />
                   <Tooltip />
                   <Bar dataKey="count" fill="#00bcd4" />
                 </BarChart>
               </ResponsiveContainer>
+            </Box>
+            <Box
+              mt={2}
+              display="flex"
+              justifyContent="space-between"
+              flexWrap="wrap"
+              sx={{ fontSize: 14 }}
+            >
+              {barChartData.map(({ month, count }) => (
+                <Box key={month} sx={{ minWidth: 40, textAlign: "center" }}>
+                </Box>
+              ))}
             </Box>
           </CardContent>
         </Card>
@@ -110,3 +134,4 @@ const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
 }
 
 export default ProjectCharts
+

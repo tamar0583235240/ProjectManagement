@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import {
   Button,
   Dialog,
@@ -8,66 +8,95 @@ import {
   Stack,
   TextField,
   CircularProgress,
-} from "@mui/material"
-import { useForm, Controller } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { useValidateUserMutation } from "../User/userApi"
-import type { AuthorizedUserFormData } from "../../schemas/SchemaAddProject"
+  Alert,
+} from "@mui/material";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useValidateUserMutation } from "../User/userApi";
 
 const userSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
-})
+});
 
-type UserFormData = z.infer<typeof userSchema>
+type UserFormData = z.infer<typeof userSchema>;
+
+interface ValidatedUser {
+  _id: string;
+  user_name: string;
+  email: string;
+}
 
 interface AddAuthorizedUserFormProps {
-  open: boolean
-  onClose: () => void
-  onSave: (user: UserFormData) => void
-  editUser?: AuthorizedUserFormData
+  open: boolean;
+  onClose: () => void;
+  onSave: (user: ValidatedUser) => void;
+  editUser?: ValidatedUser;
 }
 
 const FormComponent: React.FC<{
-  editUser?: AuthorizedUserFormData
-  onSave: (user: UserFormData) => void
-  onClose: () => void
+  editUser?: ValidatedUser;
+  onSave: (user: ValidatedUser) => void;
+  onClose: () => void;
 }> = ({ editUser, onSave, onClose }) => {
-  const [validateUser, { isLoading }] = useValidateUserMutation()
+  const [validateUser, { isLoading, error }] = useValidateUserMutation();
 
   const {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      name: editUser?.name || "",
+      name: editUser?.user_name || "",
       email: editUser?.email || "",
     },
-  })
+  });
 
   const onSubmit = async (data: UserFormData) => {
     try {
-      const result = await validateUser({ username: data.name, email: data.email }).unwrap()
+      // Validate user with the API
+      const result = await validateUser({ 
+        username: data.name, 
+        email: data.email 
+      }).unwrap();
 
       if (!result || !result._id) {
-        alert("User is invalid or already exists.")
-        return
+        // User validation failed
+        return;
       }
 
-      onSave(data)
-      onClose()
-    } catch (err) {
-      console.error("Server validation error:", err)
-      alert("Failed to validate user. Please try again.")
+      // User is valid, pass the validated user data with _id
+      const validatedUser: ValidatedUser = {
+        _id: result._id,
+        user_name: data.name,
+        email: data.email,
+      };
+
+      onSave(validatedUser);
+      reset();
+      onClose();
+    } catch (err: any) {
+      console.error("Server validation error:", err);
     }
-  }
+  };
+
+  const handleCancel = () => {
+    reset();
+    onClose();
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <DialogContent>
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {(error as any)?.data?.message || "User validation failed. Please check the details and try again."}
+          </Alert>
+        )}
+        
         <Stack spacing={2}>
           <Controller
             name="name"
@@ -82,6 +111,7 @@ const FormComponent: React.FC<{
                 helperText={errors.name?.message}
                 margin="dense"
                 autoFocus
+                disabled={isSubmitting || isLoading}
               />
             )}
           />
@@ -97,22 +127,30 @@ const FormComponent: React.FC<{
                 error={!!errors.email}
                 helperText={errors.email?.message}
                 margin="dense"
+                disabled={isSubmitting || isLoading}
               />
             )}
           />
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} disabled={isSubmitting || isLoading}>
+        <Button onClick={handleCancel} disabled={isSubmitting || isLoading}>
           Cancel
         </Button>
-        <Button type="submit" variant="contained" disabled={isSubmitting || isLoading}>
-          {(isSubmitting || isLoading) ? <CircularProgress size={20} /> : editUser ? "Update" : "Add"}
+        <Button 
+          type="submit" 
+          variant="contained" 
+          disabled={isSubmitting || isLoading}
+          startIcon={
+            (isSubmitting || isLoading) ? <CircularProgress size={16} /> : undefined
+          }
+        >
+          {editUser ? "Update" : "Add"}
         </Button>
       </DialogActions>
     </form>
-  )
-}
+  );
+};
 
 const AddAuthorizedUserForm: React.FC<AddAuthorizedUserFormProps> = ({
   open,
@@ -124,14 +162,13 @@ const AddAuthorizedUserForm: React.FC<AddAuthorizedUserFormProps> = ({
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
       <DialogTitle>{editUser ? "Edit User" : "Add Authorized User"}</DialogTitle>
       <FormComponent
-        key={editUser?.email ?? "new"}
+        key={editUser?._id || "new"} // Use _id instead of id
         editUser={editUser}
         onSave={onSave}
         onClose={onClose}
       />
     </Dialog>
-  )
-}
+  );
+};
 
-export default AddAuthorizedUserForm
-
+export default AddAuthorizedUserForm;

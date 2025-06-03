@@ -1,4 +1,4 @@
-import type React from "react"
+import React from "react"
 import {
   Grid,
   Card,
@@ -12,6 +12,7 @@ import {
 } from "@mui/material"
 import { MoreVert, CalendarToday, AccessTime, Person } from "@mui/icons-material"
 import { format, differenceInDays } from "date-fns"
+import { useNavigate } from "react-router-dom"
 import { type Project, getStatusInfo, getRandomProgress } from "../../types/Project"
 
 interface ProjectsGridViewProps {
@@ -20,13 +21,14 @@ interface ProjectsGridViewProps {
 }
 
 const ProjectsGridView: React.FC<ProjectsGridViewProps> = ({ projects, onMenuOpen }) => {
+  const navigate = useNavigate()
+
   const getDaysRemaining = (deadline: string) => {
     try {
       const today = new Date()
       const deadlineDate = new Date(deadline)
       return differenceInDays(deadlineDate, today)
-    } catch (error) {
-      console.warn("Invalid date format:", deadline)
+    } catch {
       return 0
     }
   }
@@ -42,24 +44,22 @@ const ProjectsGridView: React.FC<ProjectsGridViewProps> = ({ projects, onMenuOpe
           <Grid item xs={12} sm={6} md={4} lg={3} key={project._id}>
             <Card
               elevation={3}
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-              }}
+              sx={{ height: "100%", display: "flex", flexDirection: "column", cursor: "pointer" }}
+              onClick={() => navigate(`/app/projects/${project._id}`)}
             >
               <CardContent sx={{ pb: 1 }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                  <Typography
-                    variant="h6"
-                    component="h3"
-                    noWrap
-                    sx={{ maxWidth: "80%" }}
-                    title={project.project_name}
-                  >
+                  <Typography variant="h6" component="h3" noWrap sx={{ maxWidth: "80%" }} title={project.project_name}>
                     {project.project_name}
                   </Typography>
-                  <IconButton size="small" onClick={(e) => onMenuOpen(e, project)} aria-label="More actions">
+                  <IconButton
+                    size="small"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onMenuOpen(e, project)
+                    }}
+                    aria-label="More actions"
+                  >
                     <MoreVert />
                   </IconButton>
                 </Box>
@@ -83,10 +83,7 @@ const ProjectsGridView: React.FC<ProjectsGridViewProps> = ({ projects, onMenuOpe
                 <Box sx={{ mb: 2 }}>
                   <Chip
                     label={statusInfo.label}
-                    sx={{
-                      bgcolor: statusInfo.color,
-                      color: "white",
-                    }}
+                    sx={{ bgcolor: statusInfo.color, color: "white" }}
                     size="small"
                   />
                 </Box>
@@ -130,7 +127,11 @@ const ProjectsGridView: React.FC<ProjectsGridViewProps> = ({ projects, onMenuOpe
                     <Typography variant="body2">Progress:</Typography>
                     <Typography variant="body2">{progress}%</Typography>
                   </Box>
-                  <LinearProgress variant="determinate" value={progress} sx={{ height: 6, borderRadius: 1 }} />
+                  <LinearProgress
+                    variant="determinate"
+                    value={progress}
+                    sx={{ height: 6, borderRadius: 1 }}
+                  />
                 </Box>
               </CardContent>
             </Card>

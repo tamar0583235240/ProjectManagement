@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { api } from './api'
 import userReducer from '../features/auth/userSlice'
-import projectsReducer from '../features/Projects/projectSlice'
+import projectsReducer from '../features/Project/projectSlice'
 
 export const store = configureStore({
   reducer: {
