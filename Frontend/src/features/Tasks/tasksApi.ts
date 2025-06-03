@@ -1,4 +1,5 @@
 import { api } from "../../app/api";
+import type { Status } from "../../types/Status";
 
 export interface User {
     _id: string;
@@ -11,7 +12,7 @@ export interface Task {
     task_name: string;
     description: string;
     deadline: string;
-    status: string;
+    status: Status;
     project_id: string;
     performed_by?: User;
     created_by: User;
@@ -23,7 +24,7 @@ export interface CreateTaskRequest {
     task_name: string;
     description: string;
     deadline: string;
-    status: string;
+    status: Status;
     project_id: string;
     performed_by?: string | null;
 }
@@ -64,17 +65,13 @@ export const tasksApi = api.injectEndpoints({
             ],
         }),
 
-        // Create new task
-        createTask: builder.mutation<Task, CreateTaskRequest>({
+        addTask: builder.mutation<Task, CreateTaskRequest>({
             query: (newTask) => ({
-                url: 'tasks',
+                url: 'tasks/addTask',
                 method: 'POST',
                 body: newTask,
             }),
-            invalidatesTags: (result, error, { project_id }) => [
-                'Task',
-                { type: 'Task', id: `project-${project_id}` },
-            ],
+            invalidatesTags: ['Task'],
         }),
 
         // Update task
@@ -148,7 +145,7 @@ export const {
     useGetTaskByIdQuery,
     useGetTasksByProjectQuery,
     useGetTasksByUserQuery,
-    useCreateTaskMutation,
+    useAddTaskMutation,
     useUpdateTaskMutation,
     useDeleteTaskMutation,
     useUpdateTaskStatusMutation,

@@ -1,3 +1,185 @@
+// import React from 'react';
+// import {
+//   Dialog,
+//   DialogTitle,
+//   DialogContent,
+//   DialogActions,
+//   Button,
+//   TextField,
+//   MenuItem,
+// } from '@mui/material';
+// import { useForm, Controller } from 'react-hook-form';
+// import { Status } from '../../types/Status';
+// import useCurrentUser from '../../hooks/useCurrentUser';
+// import { useAddTaskMutation } from './tasksApi';
+
+
+
+// type AddTaskDialogProps = {
+//   open: boolean;
+//   onClose: () => void;
+//   projectId: string;
+// };
+
+// type TaskFormValues = {
+//   task_name: string;
+//   description: string;
+//   deadline: string;
+//   status: Status;
+//   performed_by: string;
+// };
+
+// const AddTaskDialog: React.FC<AddTaskDialogProps> = ({
+//   open,
+//   onClose,
+//   projectId,
+// }) => {
+//   const user = useCurrentUser();
+//   const [addTask, { isLoading }] = useAddTaskMutation();
+
+//   const {
+//     control,
+//     handleSubmit,
+//     reset,
+//     formState: { errors },
+//   } = useForm<TaskFormValues>({
+//     defaultValues: {
+//       task_name: '',
+//       description: '',
+//       deadline: '',
+//       status: Status.NOT_STARTED,
+//       performed_by: user?._id ?? '',
+//     },
+//   });
+
+//   const handleClose = () => {
+//     reset();
+//     onClose();
+//   };
+
+//   const onSubmit = async (data: TaskFormValues) => {
+//     try {
+//       const newTask = {
+//         task_name: data.task_name,
+//         description: data.description,
+//         deadline: new Date(data.deadline).toISOString(),
+//         status: data.status,
+//         project_id: projectId,
+//         performed_by: data.performed_by || user?._id,
+//         created_by: user?._id,
+//       };
+
+//       await addTask(newTask).unwrap();
+//       handleClose();
+//     } catch (error) {
+//       console.error('Failed to create task:', error);
+//     }
+//   };
+
+//   return (
+//     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+//       <DialogTitle>Add New Task</DialogTitle>
+//       <DialogContent>
+//         <form id="add-task-form" onSubmit={handleSubmit(onSubmit)}>
+//           <Controller
+//             name="task_name"
+//             control={control}
+//             rules={{ required: 'Task name is required' }}
+//             render={({ field }) => (
+//               <TextField
+//                 {...field}
+//                 label="Task Name"
+//                 fullWidth
+//                 margin="normal"
+//                 error={!!errors.task_name}
+//                 helperText={errors.task_name?.message}
+//               />
+//             )}
+//           />
+//           <Controller
+//             name="description"
+//             control={control}
+//             render={({ field }) => (
+//               <TextField
+//                 {...field}
+//                 label="Description"
+//                 fullWidth
+//                 margin="normal"
+//                 multiline
+//                 rows={3}
+//               />
+//             )}
+//           />
+//           <Controller
+//             name="deadline"
+//             control={control}
+//             rules={{ required: 'Deadline is required' }}
+//             render={({ field }) => (
+//               <TextField
+//                 {...field}
+//                 label="Deadline"
+//                 type="date"
+//                 fullWidth
+//                 margin="normal"
+//                 InputLabelProps={{ shrink: true }}
+//                 error={!!errors.deadline}
+//                 helperText={errors.deadline?.message}
+//               />
+//             )}
+//           />
+//           <Controller
+//             name="status"
+//             control={control}
+//             render={({ field }) => (
+//               <TextField
+//                 {...field}
+//                 label="Status"
+//                 select
+//                 fullWidth
+//                 margin="normal"
+//               >
+//                 {Object.values(Status).map((status) => (
+//                   <MenuItem key={status} value={status}>
+//                     {status.replace('_', ' ')}
+//                   </MenuItem>
+//                 ))}
+//               </TextField>
+//             )}
+//           />
+//           <Controller
+//             name="performed_by"
+//             control={control}
+//             render={({ field }) => (
+//               <TextField
+//                 {...field}
+//                 label="Performed By (User ID)"
+//                 fullWidth
+//                 margin="normal"
+//                 disabled // או הסתר לגמרי אם תמיד זה user._id
+//               />
+//             )}
+//           />
+//         </form>
+//       </DialogContent>
+//       <DialogActions>
+//         <Button onClick={handleClose} disabled={isLoading}>
+//           Cancel
+//         </Button>
+//         <Button
+//           form="add-task-form"
+//           type="submit"
+//           variant="contained"
+//           disabled={isLoading}
+//         >
+//           {isLoading ? 'Saving...' : 'Add Task'}
+//         </Button>
+//       </DialogActions>
+//     </Dialog>
+//   );
+// };
+
+// export default AddTaskDialog;
+
 import React from 'react';
 import {
   Dialog,
@@ -7,33 +189,37 @@ import {
   Button,
   TextField,
   MenuItem,
-  Box,
-  Typography,
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
-import { useCreateTaskMutation } from './tasksApi';
+import { useAddTaskMutation } from './tasksApi';
+import useCurrentUser from '../../hooks/useCurrentUser';
+import { useGetEmployeesByOrgQuery } from '../users/usersApi'; // דוגמה – שנה בהתאם למיקום שלך
 import { Status } from '../../types/Status';
 
-interface AddTaskDialogProps {
+type AddTaskDialogProps = {
   open: boolean;
-  projectId: string;
   onClose: () => void;
-}
+  projectId: string;
+};
 
-interface TaskFormValues {
+type TaskFormValues = {
   task_name: string;
   description: string;
   deadline: string;
-  status: string;
-  performed_by?: string;
-}
+  performed_by: string;
+};
 
 const AddTaskDialog: React.FC<AddTaskDialogProps> = ({
   open,
-  projectId,
   onClose,
+  projectId,
 }) => {
-  const [createTask, { isLoading }] = useCreateTaskMutation();
+  const user = useCurrentUser();
+  const [addTask, { isLoading }] = useAddTaskMutation();
+  const { data: employees = [], isLoading: isEmployeesLoading } =
+    useGetEmployeesByOrgQuery(user?.organization_id!, {
+      skip: !user?.organization_id,
+    });
 
   const {
     control,
@@ -45,8 +231,7 @@ const AddTaskDialog: React.FC<AddTaskDialogProps> = ({
       task_name: '',
       description: '',
       deadline: '',
-      status: Status.NOT_STARTED,
-      performed_by: '',
+      performed_by: user?._id ?? '',
     },
   });
 
@@ -58,14 +243,16 @@ const AddTaskDialog: React.FC<AddTaskDialogProps> = ({
   const onSubmit = async (data: TaskFormValues) => {
     try {
       const newTask = {
-        ...data,
-        project_id: projectId,
+        task_name: data.task_name,
+        description: data.description,
         deadline: new Date(data.deadline).toISOString(),
-        performed_by: data.performed_by || null,
-        // created_by יתמלא בשרת בהתאם למשתמש המחובר
+        status: Status.NOT_STARTED, // לא מהטופס - קבוע
+        project_id: projectId,
+        performed_by: data.performed_by,
+        created_by: user?._id,
       };
 
-      await createTask(newTask).unwrap();
+      await addTask(newTask).unwrap();
       handleClose();
     } catch (error) {
       console.error('Failed to create task:', error);
@@ -73,127 +260,92 @@ const AddTaskDialog: React.FC<AddTaskDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-      <DialogTitle>
-        <Typography variant="h6">Add New Task</Typography>
-      </DialogTitle>
-      
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 1 }}>
-            <Controller
-              name="task_name"
-              control={control}
-              rules={{ 
-                required: 'Task name is required',
-                minLength: { value: 3, message: 'Task name must be at least 3 characters' }
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Task Name"
-                  fullWidth
-                  error={!!errors.task_name}
-                  helperText={errors.task_name?.message}
-                  placeholder="Enter a descriptive task name"
-                />
-              )}
-            />
-
-            <Controller
-              name="description"
-              control={control}
-              rules={{ 
-                required: 'Description is required',
-                minLength: { value: 10, message: 'Description must be at least 10 characters' }
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Description"
-                  fullWidth
-                  multiline
-                  rows={4}
-                  error={!!errors.description}
-                  helperText={errors.description?.message}
-                  placeholder="Provide detailed description of the task"
-                />
-              )}
-            />
-
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Controller
-                name="deadline"
-                control={control}
-                rules={{ required: 'Deadline is required' }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Deadline"
-                    type="date"
-                    fullWidth
-                    InputLabelProps={{ shrink: true }}
-                    error={!!errors.deadline}
-                    helperText={errors.deadline?.message}
-                    inputProps={{
-                      min: new Date().toISOString().split('T')[0], // מונע בחירת תאריך עבר
-                    }}
-                  />
-                )}
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+      <DialogTitle>Add New Task</DialogTitle>
+      <DialogContent>
+        <form id="add-task-form" onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            name="task_name"
+            control={control}
+            rules={{ required: 'Task name is required' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Task Name"
+                fullWidth
+                margin="normal"
+                error={!!errors.task_name}
+                helperText={errors.task_name?.message}
               />
-
-              <Controller
-                name="status"
-                control={control}
-                rules={{ required: 'Status is required' }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    select
-                    label="Status"
-                    fullWidth
-                    error={!!errors.status}
-                    helperText={errors.status?.message}
-                  >
-                    <MenuItem value={Status.NOT_STARTED}>Not Started</MenuItem>
-                    <MenuItem value={Status.IN_PROGRESS}>In Progress</MenuItem>
-                    <MenuItem value={Status.COMPLETED}>Completed</MenuItem>
-                    <MenuItem value={Status.DELAYED}>Delayed</MenuItem>
-                  </TextField>
-                )}
+            )}
+          />
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Description"
+                fullWidth
+                margin="normal"
+                multiline
+                rows={3}
               />
-            </Box>
+            )}
+          />
+          <Controller
+            name="deadline"
+            control={control}
+            rules={{ required: 'Deadline is required' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Deadline"
+                type="date"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{ shrink: true }}
+                error={!!errors.deadline}
+                helperText={errors.deadline?.message}
+              />
+            )}
+          />
 
-            <Controller
-              name="performed_by"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Assigned To (Optional)"
-                  fullWidth
-                  placeholder="User ID or leave empty for unassigned"
-                  helperText="Leave empty if not assigning to anyone yet"
-                />
-              )}
-            />
-          </Box>
-        </DialogContent>
-
-        <DialogActions sx={{ p: 3, pt: 2 }}>
-          <Button onClick={handleClose} disabled={isLoading}>
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={isLoading}
-            sx={{ minWidth: 120 }}
-          >
-            {isLoading ? 'Creating...' : 'Create Task'}
-          </Button>
-        </DialogActions>
-      </form>
+          <Controller
+            name="performed_by"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Assign To"
+                select
+                fullWidth
+                margin="normal"
+                disabled={isEmployeesLoading}
+              >
+                {employees.map((emp: any) => (
+                  <MenuItem key={emp._id} value={emp._id}>
+                    {emp.full_name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          />
+        </form>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} disabled={isLoading}>
+          Cancel
+        </Button>
+        <Button
+          form="add-task-form"
+          type="submit"
+          variant="contained"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Saving...' : 'Add Task'}
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };
