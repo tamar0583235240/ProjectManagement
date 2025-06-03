@@ -9,7 +9,7 @@ const express = require("express")
 
  router.post("/SignIn", SignIn)
  router.post("/SignUp", SignUp)
- router.post("/forgot-password", forgotPassword); // חדש
+ router.post("/forgot-password", forgotPassword); 
 router.post("/reset-password/:token", resetPassword); 
 
 

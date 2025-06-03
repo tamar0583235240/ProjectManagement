@@ -34,7 +34,9 @@ exports.inviteUser = async (req, res) => {
                   <a href="${url}">${url}</a>
                   <p>הקישור תקף ל-48 שעות בלבד!.</p>`;
     
-    await sendEmail(email, html, 'הזמנה להצטרף למערכת');
+    // await sendEmail(email, html, 'הזמנה להצטרף למערכת');
+    await sendInviteEmail(email, html, 'הזמנה להצטרף למערכת');
+
 
     res.status(201).json({
       user,

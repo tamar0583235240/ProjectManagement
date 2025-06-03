@@ -1,4 +1,4 @@
-// const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 // async function sendInviteEmail(email, token) {
 //   const transporter = nodemailer.createTransport({
 //     service: 'gmail',
@@ -30,7 +30,7 @@
 
 // module.exports = sendInviteEmail;
 
-async function sendInviteEmail(email, token, customHtml, subject = 'הזמנה להצטרף למערכת') {
+const sendInviteEmail=async (email, token, customHtml, subject = 'הזמנה להצטרף למערכת')=> {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -53,4 +53,5 @@ async function sendInviteEmail(email, token, customHtml, subject = 'הזמנה �
     console.error("Error sending email:", error);
   }
 }
+// exports.sendInviteEmail = sendInviteEmail;
 module.exports = sendInviteEmail;
