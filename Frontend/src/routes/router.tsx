@@ -11,6 +11,7 @@ import { Children } from "react";
 import SetPasswordPage from "../pages/SetPasswordPage";
 import AddUserForm from "../features/users/InviteUserForm";
 import InviteUserForm from "../features/users/InviteUserForm";
+import ResetPasswordPage from "../features/auth/ResetPasswordPage";
 const router = createBrowserRouter([
    {
     path: '/',
@@ -22,8 +23,12 @@ const router = createBrowserRouter([
   },
   {
     path: '/set-password/:token',
-    element: <ResetPasswordPage/>  // זה העמוד האמיתי שמטפל בזה
+    element: <SetPasswordPage/>
   },
+{
+  path: '/reset-password/:token',
+  element: <ResetPasswordPage/>
+}
     {
         path: "app", element: <AppLayout />,
         children: [
