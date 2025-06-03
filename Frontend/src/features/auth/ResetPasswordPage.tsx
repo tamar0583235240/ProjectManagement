@@ -108,7 +108,8 @@ const ResetPasswordPage: React.FC = () => {
     try {
       await resetPassword({ token: token || "", password: data.password }).unwrap();
       alert("Password updated successfully!");
-      navigate("/login");
+      navigate("/landingPage");
+
     } catch (err: any) {
       alert(err?.data?.message || "Reset failed.");
     }
