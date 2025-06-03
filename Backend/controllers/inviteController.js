@@ -27,7 +27,14 @@ exports.inviteUser = async (req, res) => {
 
     const user = await User.create(newUser);
 
-    await sendInviteEmail(email, password_token);
+    const url = `${process.env.FRONTEND_URL}/set-password/${password_token}`;
+
+    const html = `<p>שלום,</p>
+                  <p>קיבלת הזמנה להצטרף למערכת. לחץ/י על הקישור כדי לבחור סיסמה:</p>
+                  <a href="${url}">${url}</a>
+                  <p>הקישור תקף ל-48 שעות בלבד!.</p>`;
+    
+    await sendEmail(email, html, 'הזמנה להצטרף למערכת');
 
     res.status(201).json({
       user,
@@ -37,7 +44,6 @@ exports.inviteUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // 2. בחירת סיסמה דרך הטוקן
 exports.setPassword = async (req, res) => {

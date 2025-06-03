@@ -82,5 +82,61 @@ exports.SignIn = async (req, res) => {
     }
 
 }
-
+exports.forgotPassword = async (req, res) => {
+    const { email } = req.body;
+    try {
+      const user = await User.findOne({ email });
+      if (!user) return res.status(404).json({ message: "User not found" });
+  
+      const token = generatePasswordToken();
+      const expires = Date.now() + 1000 * 60 * 60 * 48; // 48 שעות
+  
+      user.password_token = token;
+      user.password_token_expires = new Date(expires);
+      await user.save();
+  
+      const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${token}`;
+      const html = `
+        <p>קיבלת בקשה לאיפוס סיסמה.</p>
+        <p>לכניסה לעמוד האיפוס לחץ כאן:</p>
+        <a href="${resetUrl}">${resetUrl}</a>
+        <p>אם לא אתה ביקשת, תוכל להתעלם מהמייל.</p>
+      `;
+  
+      await sendInviteEmail(email, token, html, "איפוס סיסמה");
+  
+      res.status(200).json({ message: "Email sent" });
+    } catch (err) {
+      console.error("forgotPassword error:", err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
+  
+  // שלב 2: איפוס הסיסמה עצמה לפי טוקן
+  exports.resetPassword = async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+  
+    try {
+      const user = await User.findOne({
+        password_token: token,
+        password_token_expires: { $gt: Date.now() }
+      });
+  
+      if (!user) {
+        return res.status(400).json({ message: "Invalid or expired token" });
+      }
+  
+      const hashedPwd = await bcrypt.hash(password, 10);
+      user.password = hashedPwd;
+      user.password_token = null;
+      user.password_token_expires = null;
+      await user.save();
+  
+      res.status(200).json({ message: "Password reset successful" });
+    } catch (err) {
+      console.error("resetPassword error:", err);
+      res.status(500).json({ message: "Failed to reset password" });
+    }
+  };
 
