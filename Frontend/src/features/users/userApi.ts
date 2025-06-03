@@ -7,7 +7,7 @@ export const userApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getTeamLeaders: builder.query<User[], string>({
       query: (managerId) => ({
-        url: `user/getTeamLeaderNames/${managerId}`,
+        url: `user/getTeamLeaders/${managerId}`,
         method: 'GET',
       }),
     }),
