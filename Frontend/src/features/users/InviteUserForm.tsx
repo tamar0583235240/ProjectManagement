@@ -13,7 +13,7 @@
 // const InviteUserForm = () => {
 //   const user = useCurrentUser();
 //   console.log("user",user);
-  
+
 // const userId = user?._id;
 // const { data: teamLeads = [] } = useGetTeamLeadersQuery(userId, {
 //   skip: !userId,
@@ -169,6 +169,7 @@ import { useGetTeamLeadersQuery, useInviteUserMutation } from "./userApi";
 import { Role } from "../../enums/role.enum";
 import { inviteUserSchema, type InviteUserInput } from "../../schemas/inviteUserSchema";
 import type { AddUserInputs } from "../../types/AddUserInputs";
+import React from "react";
 
 const InviteUserForm: React.FC = () => {
   const user = useCurrentUser();
@@ -195,17 +196,15 @@ const InviteUserForm: React.FC = () => {
 
   const onSubmit = async (data: InviteUserInput) => {
     if (!user) return;
-  
+
     const payload: AddUserInputs = {
       email: data.email,
       role: data.role,
-      // העברת teamLeadId ל-teamLead_id במידה ויש
       ...(data.teamLeadId ? { teamLead_id: data.teamLeadId } : {}),
-      // manager_id כפי שנדרש
       manager_id: data.role === Role.EMPLOYEE ? data.teamLeadId! : user._id,
-      organizationId: user.organization_id, // לפי הטיפוס organizationId, לא organization_id
+      organizationId: user.organization_id,
     };
-  
+
     try {
       await inviteUser(payload).unwrap();
       form.reset();
@@ -213,7 +212,7 @@ const InviteUserForm: React.FC = () => {
       console.error("שגיאה בשליחת ההזמנה:", error);
     }
   };
-  
+
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
@@ -225,16 +224,12 @@ const InviteUserForm: React.FC = () => {
         error={!!form.formState.errors.email}
         helperText={form.formState.errors.email?.message}
       />
-
       <TextField select label="תפקיד" {...form.register("role")} fullWidth margin="normal">
-        {!hasTeamLeads && <MenuItem value={Role.TEAM_LEADER}>ראש צוות</MenuItem>}
-        {hasTeamLeads && (
-          <>
-            <MenuItem value={Role.TEAM_LEADER}>ראש צוות</MenuItem>
-            <MenuItem value={Role.EMPLOYEE}>עובד</MenuItem>
-          </>
-        )}
+        <MenuItem value={Role.TEAM_LEADER}>ראש צוות</MenuItem>
+        {hasTeamLeads && <MenuItem value={Role.EMPLOYEE}>עובד</MenuItem>}
       </TextField>
+
+
 
       {role === Role.EMPLOYEE && hasTeamLeads && <SelectTeamLeader control={form.control} />}
 
