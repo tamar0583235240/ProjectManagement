@@ -15,13 +15,13 @@ import {
   Close
 } from "@mui/icons-material";
 
-export default function DeleteEmployeeDialog({ 
+const DeleteEmployeeDialog = ({ 
   open, 
   onClose, 
   employee, 
   onConfirm, 
   isLoading 
-}) {
+}) => {
   return (
     <Dialog 
       open={open} 
@@ -87,3 +87,5 @@ export default function DeleteEmployeeDialog({
     </Dialog>
   );
 }
+
+export default DeleteEmployeeDialog;

@@ -145,27 +145,6 @@ export default function EmployeeCard({ employee, onEdit, onDelete, allEmployees 
         </Box>
       </CardContent>
 
-      {/* <CardActions sx={{ justifyContent: 'flex-end', px: 2, pb: 2 }}>
-        <Tooltip title="Edit">
-          <IconButton 
-            onClick={handleEdit}
-            size="small"
-            sx={{ color: '#00bcd4' }}
-          >
-            <Edit fontSize="small" />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Delete">
-          <IconButton 
-            onClick={handleDelete}
-            size="small"
-            sx={{ color: '#f44336' }}
-          >
-            <Delete fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      </CardActions> */}
-
       <Menu
         anchorEl={anchorEl}
         open={open}

@@ -11,8 +11,8 @@ interface UserState {
 const storedUser = useCurrentUser();
 
 const initialState: UserState = {
-  role: storedUser.role || null,
-  currentManager: storedUser.role!==Role.MANAGER? storedUser.manager_id : storedUser._id,
+  role: storedUser?.role || null,
+  currentManager: storedUser?.role !== Role.MANAGER ? storedUser?.manager_id : storedUser?._id,
 }
 
 const userSlice = createSlice({
