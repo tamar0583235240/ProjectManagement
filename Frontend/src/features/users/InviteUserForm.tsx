@@ -8,6 +8,7 @@ import useCurrentUser from "../../hooks/useCurrentUser";
 import { useGetTeamLeadersQuery, useInviteUserMutation } from "./userApi";
 import { inviteUserSchema, type InviteUserInput } from "../../schemas/inviteUserSchema";
 import { Role } from "../../types/Role";
+import { grey } from "@mui/material/colors";
 
 
 // const InviteUserForm: React.FC = () => {
@@ -144,7 +145,7 @@ const InviteUserForm: React.FC<{ onSave: (data: InviteUserInput) => Promise<void
           id="role-select-invite"
           label="Role"
           {...form.register("role")}
-          value={role} // Ensure the select shows the watched value
+          value={role}
           sx={{ mt: 0 }}
         >
           {!hasTeamLeads && <MenuItem value={Role.TEAMLEADER}>Team Leader</MenuItem>}
@@ -160,7 +161,7 @@ const InviteUserForm: React.FC<{ onSave: (data: InviteUserInput) => Promise<void
 
       {role === Role.EMPLOYEE && hasTeamLeads && (
         <SelectTeamLeader
-          control={form.control} // Pass react-hook-form's control
+          control={form.control}
           teamLeads={teamLeads}
           error={!!form.formState.errors.teamLeadId}
           helperText={form.formState.errors.teamLeadId?.message}
@@ -171,9 +172,9 @@ const InviteUserForm: React.FC<{ onSave: (data: InviteUserInput) => Promise<void
         <Button
           type="submit"
           variant="contained"
-          disabled={isSubmitting || inviteLoading} // Combine loading states
+          disabled={isSubmitting || inviteLoading}
           sx={{
-            background: "linear-gradient(135deg, #00BCD4 0%, #26C6DA 100%)", // Teal gradient
+            background: "linear-gradient(135deg, #00BCD4 0%, #26C6DA 100%)", 
             boxShadow: 3,
             px: 3,
             py: 1,

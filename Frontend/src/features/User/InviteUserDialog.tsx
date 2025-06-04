@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import InviteUserForm from "./InviteUserForm";
+import InviteUserForm from "../users/InviteUserForm";
 
 const InviteUserDialog = ({ open, onClose, onSave, isLoading }: { open: boolean, onClose: () => void, onSave: (employeeData: Partial<User>) => Promise<void>, isLoading: boolean }) => {
   return (
