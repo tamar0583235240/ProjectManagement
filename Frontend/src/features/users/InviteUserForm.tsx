@@ -10,73 +10,6 @@ import { inviteUserSchema, type InviteUserInput } from "../../schemas/inviteUser
 import { Role } from "../../types/Role";
 import { grey } from "@mui/material/colors";
 
-
-// const InviteUserForm: React.FC = () => {
-//   const user = useCurrentUser();
-//   const userId = user?._id;
-
-//   const { data: teamLeads = [] } = useGetTeamLeadersQuery(userId, {
-//     skip: !userId,
-//   });
-//   const hasTeamLeads = teamLeads.length > 0;
-
-//   const [inviteUser, { isLoading }] = useInviteUserMutation();
-
-//   const form = useForm<InviteUserInput>({
-//     resolver: zodResolver(inviteUserSchema),
-//     defaultValues: {
-//       role: Role.TEAMLEADER,
-//     },
-//   });
-
-//   const role = form.watch("role");
-
-//   const onSubmit = async (data: InviteUserInput) => {
-//     const payload = {
-//       ...data,
-//       manager_id: data.role === Role.EMPLOYEE ? data.teamLeadId : user._id,
-//       organization_id: user.organization_id,
-//     };
-
-//     try {
-//       await inviteUser(payload).unwrap();
-//       form.reset();
-//     } catch (error) {
-//       console.error("שגיאה בשליחת ההזמנה:", error);
-//     }
-//   };
-
-//   return (
-//     <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-//       <TextField
-//         label="אימייל"
-//         {...form.register("email")}
-//         fullWidth
-//         margin="normal"
-//         error={!!form.formState.errors.email}
-//         helperText={form.formState.errors.email?.message}
-//       />
-
-//       <TextField select label="תפקיד" {...form.register("role")} fullWidth margin="normal">
-//         {!hasTeamLeads && <MenuItem value={Role.TEAMLEADER}>ראש צוות</MenuItem>}
-//         {hasTeamLeads && (
-//           <>
-//             <MenuItem value={Role.TEAMLEADER}>ראש צוות</MenuItem>
-//             <MenuItem value={Role.EMPLOYEE}>עובד</MenuItem>
-//           </>
-//         )}
-//       </TextField>
-
-//       {role === Role.EMPLOYEE && hasTeamLeads && <SelectTeamLeader control={form.control} />}
-
-//       <Button type="submit" variant="contained" color="primary" disabled={isLoading}>
-//         שלח הזמנה
-//       </Button>
-//     </form>
-//   );
-// };
-
-// export default InviteUserForm;
 const InviteUserForm: React.FC<{ onSave: (data: InviteUserInput) => Promise<void>, isLoading: boolean, onClose: () => void }> = ({ onSave, isLoading: isSubmitting, onClose }) => {
   const user = useCurrentUser();
   const userId = user?._id;
@@ -107,13 +40,11 @@ const InviteUserForm: React.FC<{ onSave: (data: InviteUserInput) => Promise<void
     };
 
     try {
-      // Removed .unwrap() as the mock mutation function directly returns a promise
       await inviteUserMutation(payload); 
-      form.reset(); // Reset form after successful submission
-      onClose(); // Close the dialog on success
+      form.reset(); 
+      onClose(); 
     } catch (error) {
       console.error("שגיאה בשליחת ההזמנה:", error);
-      // You can set a form error here if needed
     }
   };
 
