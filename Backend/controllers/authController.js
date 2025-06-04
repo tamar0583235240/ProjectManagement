@@ -52,7 +52,9 @@ exports.SignIn = async (req, res) => {
     }
 
     console.log(user);
-    
+    bcrypt.compare("214787673", "$2b$10$CvTyzzkXlhqXVE7fxdE7D.NXtTqKoABGsnabA1UftRxmv6oZ4mxWW")
+      .then(result => console.log("Password match:", result))
+
     const flag = await bcrypt.compare(password, user.password);
     console.log("Password match:", flag);
     const match = await bcrypt.compare(password, user.password);
