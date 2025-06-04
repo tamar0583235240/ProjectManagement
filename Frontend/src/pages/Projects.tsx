@@ -59,6 +59,10 @@ import type { RootState } from '../app/store';
 import ProjectsDashboard from '../features/Project/ProjectsDashboard';
 import PersonAddIcon from '@mui/icons-material/PersonAdd'; // אתה יכול להחליף לאייקון של פרויקט אם צריך
 import GroupIcon from '@mui/icons-material/Group'; // זה האייקון כמו בתמונה
+import { Add } from '@mui/icons-material';
+import { useState } from 'react';
+import AddProjectDialog from '../features/Project/AddProjectDialog';
+import type { Project } from '../types/Project';
 
 const Projects = () => {
   useLoadProjectsOnInit();
@@ -67,6 +71,18 @@ const Projects = () => {
   const projects = useSelector((state: RootState) => state.projects.projects);
   const isLoading = useSelector((state: RootState) => state.projects.isLoading);
   const error = useSelector((state: RootState) => state.projects.error);
+
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
+    const handleAddProject = (newProject: Project) => {
+    const projectToAdd = {
+      ...newProject,
+      status: Status.NOT_STARTED,
+    }
+    setProjects((prev) => [projectToAdd, ...prev])
+    setFilteredProjects((prev) => [projectToAdd, ...prev])
+    setIsAddDialogOpen(false)
+    setSnackbar({ open: true, message: "Project added successfully.", severity: "success" })
+  }
 
   if (!currentManagerId) {
     return (
@@ -107,14 +123,24 @@ const Projects = () => {
             <Typography variant="body1" color="text.secondary" gutterBottom>
               Start by adding your first project.
             </Typography>
-            <Button variant="contained" startIcon={<PersonAddIcon />} color="primary">
-              Add First Project
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              sx={{ mb: 2 }}
+              onClick={() => setIsAddDialogOpen(true)}
+            >
+              Add Project
             </Button>
           </Box>
         ) : (
           <ProjectsDashboard initialProjects={projects} />
         )}
       </Paper>
+      <AddProjectDialog
+        open={isAddDialogOpen}
+        onClose={() => setIsAddDialogOpen(false)}
+        onAdd={handleAddProject}
+      />
     </Box>
   );
 };
