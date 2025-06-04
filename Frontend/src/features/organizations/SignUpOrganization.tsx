@@ -1,6 +1,3 @@
-     
-
-// import React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
@@ -13,7 +10,6 @@ import Typography from "@mui/material/Typography"
 import { useForm } from "react-hook-form"
 import { useCookies } from "react-cookie"
 import { useNavigate } from "react-router-dom"
-
 import { type FormData } from "../../schemas/SchemaSignUp"
 import { SchemaOrganization, type OrganizationFormData } from "../../schemas/SchemaSignUpOrganization"
 import { useSignUpMutation } from "../auth/authApi"

@@ -1,4 +1,3 @@
-// src/features/auth/ForgotPasswordDialog.tsx
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,9 +14,6 @@ import {
 import { useForgotPasswordMutation } from "../features/auth/authApi";
 import type { ForgotPasswordFormData } from "../types/ForgotPasswordFormData";
 import { SchemaForgotPassword } from "../schemas/SchemaForgotPassword";
-// import type { ForgotPasswordFormData } from "../schemas/SchemaForgotPassword";
-// import { SchemaForgotPassword, ForgotPasswordFormData } from "./schemas/SchemaForgotPassword";
-// import { useForgotPasswordMutation } from "./authApi";
 
 interface ForgotPasswordDialogProps {
   open: boolean;

@@ -28,8 +28,7 @@ import {
 import { Add, Edit, Delete, MoreVert } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import useCurrentUser from '../hooks/useCurrentUser';
-// import { useGetEmployeesByOrganizationQuery } from '../features/User/userApi';
-// import { useGetEmployeesByOrganizationQuery } from '../features/User/userApi';
+import { useGetEmployeesByOrganizationQuery } from '../features/User/userApi';
 
 const EmployeeManagement: React.FC = () => {
   const user = useCurrentUser();

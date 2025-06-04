@@ -1,33 +1,18 @@
-// import { StrictMode } from 'react'
-// import { createRoot } from 'react-dom/client'
-// import './index.css'
-// import App from './App.tsx'
-// import { Provider } from 'react-redux'
-// import { store } from './app/store.ts'
-
-// createRoot(document.getElementById('root')!).render(
-//   <StrictMode>
-//     <Provider store={store}>
-//       <App />
-//     </Provider>
-//   </StrictMode>,
-// )
-
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-
-import './index.css'
-import App from './App.tsx'
-import { CookiesProvider } from 'react-cookie'
+import { CookiesProvider } from 'react-cookie';
+import App from './App';
+import theme from './theme/theme';
+import './index.css';
 
 createRoot(document.getElementById('root')!).render(
-
-  <CookiesProvider>
-    <StrictMode>
+  <StrictMode>
+    <CookiesProvider>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <App />
-   </StrictMode>
-  </CookiesProvider>
-
-)
+      </ThemeProvider>
+    </CookiesProvider>
+  </StrictMode>
+);

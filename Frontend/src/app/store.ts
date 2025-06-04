@@ -1,16 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { api } from './api'
-import userReducer from "../features/auth/userSlice" 
+import userReducer from '../features/auth/userSlice'
+import projectsReducer from '../features/Project/projectSlice'
+
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     user: userReducer,
-    // הוסף כאן רידיוסרים אחרים אם יש לך
+    projects: projectsReducer, 
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
 })
 
-// סוגים:
 export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
