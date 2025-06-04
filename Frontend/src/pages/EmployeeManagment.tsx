@@ -6,36 +6,49 @@ import {
 } from "../features/User/userApi";
 import useCurrentUser from "../hooks/useCurrentUser";
 import type { User } from "../types/User";
-import { Alert, Box, Button, Container, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import { Add } from "@mui/icons-material";
 import EmployeeStatsCards from "../features/User/EmployeeStatsCards";
 import EmployeeFilters from "../features/User/EmployeeFilters";
 import EmployeeGrid from "../features/User/EmployeeGrid";
 import DeleteEmployeeDialog from "../features/User/DeleteEmployeeDialog";
-import EditEmployeeDialog from "../features/User/EditEmployeeDialog";
 import { grey } from "@mui/material/colors";
 import type { InviteUserInput } from "../schemas/inviteUserSchema";
 import { Role } from "../types/Role";
 import InviteUserDialog from "../features/User/InviteUserDialog";
+import EditEmployeeDialog from "../features/User/EditEmployeeDialog"; // הנחה שיש דיאלוג עריכה
 
 const EmployeeManagement = () => {
-  // Get current user information (mocked)
   const user = useCurrentUser();
 
-  // Fetch employees data using the mocked RTK Query hook
-  const { data: employees = [], isLoading, error, refetch } = useGetEmployeesByOrganizationQuery(user.organization_id);
+  const {
+    data: employees = [],
+    isLoading,
+    error,
+    refetch,
+  } = useGetEmployeesByOrganizationQuery(user.organization_id);
 
-  // State for search and filter inputs
+  const [deleteUser] = useDeleteUserMutation();
+  const [updateUser] = useUpdateUserMutation();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
 
-  // Dialog states
-  const [showInviteUserDialog, setShowInviteUserDialog] = useState(false); // Changed from showEmployeeDialog
+  const [showInviteUserDialog, setShowInviteUserDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState<User | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false); // For dialog submission loading
+  const [showEditDialog, setShowEditDialog] = useState(false);
 
-  // Filter employees based on search and role
+  const [selectedEmployee, setSelectedEmployee] = useState<User | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
+
   const filteredEmployees = useMemo(() => {
     let filtered = employees;
 
@@ -54,7 +67,6 @@ const EmployeeManagement = () => {
     return filtered;
   }, [employees, searchTerm, roleFilter]);
 
-  // Calculate statistics about employees
   const stats = useMemo(
     () => ({
       total: employees.length,
@@ -65,18 +77,13 @@ const EmployeeManagement = () => {
     [employees]
   );
 
-  // Handlers for opening dialogs
   const handleAddEmployee = () => {
-    // setSelectedEmployee(null); // No longer needed as InviteUserDialog is only for adding
-    setShowInviteUserDialog(true); // Changed to showInviteUserDialog
+    setShowInviteUserDialog(true);
   };
 
   const handleEditEmployee = (employee: User) => {
-    // This functionality is currently removed as EmployeeDialog is now InviteUserDialog
-    // If editing is still desired, a separate dialog/component would be needed.
     setSelectedEmployee(employee);
-    // setShowEmployeeDialog(true); // This would open the old dialog
-    console.warn("Edit employee functionality is currently not implemented with the new InviteUserForm.");
+    setShowEditDialog(true);
   };
 
   const handleDeleteEmployee = (employee: User) => {
@@ -84,68 +91,96 @@ const EmployeeManagement = () => {
     setShowDeleteDialog(true);
   };
 
-  // Handler for inviting a new employee (replaces old handleSaveEmployee for adding)
   const handleInviteNewEmployee = async (inviteData: InviteUserInput) => {
     setIsSubmitting(true);
     try {
       const payload = {
         ...inviteData,
-        manager_id: inviteData.role === Role.EMPLOYEE ? inviteData.teamLeadId : user._id,
+        manager_id:
+          inviteData.role === Role.EMPLOYEE
+            ? inviteData.teamLeadId
+            : user._id,
         organization_id: user.organization_id,
       };
-      // Call the mock inviteUser mutation
-      // await useInviteUserMutation()[0](payload);
-      refetch(); // Refetch data after successful invitation
+      // await useInviteUserMutation()[0](payload); // Uncomment when invite mutation is ready
+      refetch();
       setShowInviteUserDialog(false);
     } catch (err) {
       console.error("Error inviting employee:", err);
-      // In a real app, you might set a user-facing error state here
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Handler for confirming employee deletion
   const handleConfirmDelete = async (employee: User) => {
     if (!employee._id) return;
 
+    if (employee._id === user._id) {
+      setShowDeleteDialog(false);
+      setErrorSnackbarOpen(true);
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      // Simulate delete operation
-      // await mockDeleteEmployee(employee._id);
-      // After successful mutation, refetch data to update the list
+      await deleteUser(employee._id).unwrap();
       refetch();
       setShowDeleteDialog(false);
     } catch (err) {
       console.error("Error deleting employee:", err);
-      // In a real app, you might set a user-facing error state here
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Display error message if data fetching fails
+  const handleSaveEdit = async (updatedData: Partial<User>) => {
+    if (!selectedEmployee?._id) return;
+
+    setIsSubmitting(true);
+    try {
+      await updateUser({ userId: selectedEmployee._id, data: updatedData }).unwrap();
+      refetch();
+      setShowEditDialog(false);
+      setSelectedEmployee(null);
+    } catch (err) {
+      console.error("Error updating employee:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (error) {
     return (
       <Container maxWidth="xl" sx={{ py: 4 }}>
         <Alert
           severity="error"
           action={
-            <Button color="inherit" size="small" onClick={refetch} sx={{ borderRadius: 1.5 }}> {/* Use refetch here */}
+            <Button
+              color="inherit"
+              size="small"
+              onClick={refetch}
+              sx={{ borderRadius: 1.5 }}
+            >
               Retry
             </Button>
           }
           sx={{ borderRadius: 2 }}
         >
+          Failed to load employee data.
         </Alert>
       </Container>
     );
   }
 
   return (
-    <Box sx={{ minHeight: "100vh", background: "linear-gradient(135deg, #F5F7FA 0%, #E0E6EE 100%)", py: 4 }}> {/* Light grey/off-white background */}
+    <Box
+      sx={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #F5F7FA 0%, #E0E6EE 100%)",
+        py: 4,
+      }}
+    >
       <Container maxWidth="xl">
-        {/* Header Section */}
         <Box sx={{ mb: 4 }}>
           <Box
             sx={{
@@ -157,7 +192,11 @@ const EmployeeManagement = () => {
             }}
           >
             <Box>
-              <Typography variant="h3" component="h1" sx={{ fontWeight: 700, color: grey[900], mb: 1 }}>
+              <Typography
+                variant="h3"
+                component="h1"
+                sx={{ fontWeight: 700, color: grey[900], mb: 1 }}
+              >
                 Employee Management
               </Typography>
               <Typography variant="h6" color="text.secondary">
@@ -170,13 +209,14 @@ const EmployeeManagement = () => {
               onClick={handleAddEmployee}
               size="large"
               sx={{
-                background: "linear-gradient(135deg, #00BCD4 0%, #26C6DA 100%)", // Teal gradient
+                background: "linear-gradient(135deg, #00BCD4 0%, #26C6DA 100%)",
                 boxShadow: 3,
                 px: 3,
                 py: 1.5,
                 borderRadius: 2,
                 "&:hover": {
-                  background: "linear-gradient(135deg, #0097A7 0%, #00ACC1 100%)",
+                  background:
+                    "linear-gradient(135deg, #0097A7 0%, #00ACC1 100%)",
                   boxShadow: 6,
                 },
               }}
@@ -186,18 +226,15 @@ const EmployeeManagement = () => {
           </Box>
         </Box>
 
-        {/* Stats Cards */}
         <EmployeeStatsCards stats={stats} />
 
-        {/* Filters Section */}
-        <EmployeeFilters
+        {/* <EmployeeFilters
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           roleFilter={roleFilter}
           setRoleFilter={setRoleFilter}
-        />
+        /> */}
 
-        {/* Employees Grid */}
         <EmployeeGrid
           filteredEmployees={filteredEmployees}
           isLoading={isLoading}
@@ -208,11 +245,10 @@ const EmployeeManagement = () => {
         />
       </Container>
 
-      {/* Dialogs */}
-      <InviteUserDialog // Changed to InviteUserDialog
-        open={showInviteUserDialog} // Changed state variable
-        onClose={() => setShowInviteUserDialog(false)} // Changed state variable
-        onSave={handleInviteNewEmployee} // New handler for inviting
+      <InviteUserDialog
+        open={showInviteUserDialog}
+        onClose={() => setShowInviteUserDialog(false)}
+        onSave={handleInviteNewEmployee}
         isLoading={isSubmitting}
       />
 
@@ -223,6 +259,32 @@ const EmployeeManagement = () => {
         onConfirm={handleConfirmDelete}
         isLoading={isSubmitting}
       />
+
+      <EditEmployeeDialog
+        open={showEditDialog}
+        onClose={() => {
+          setShowEditDialog(false);
+          setSelectedEmployee(null);
+        }}
+        employee={selectedEmployee}
+        onSave={handleSaveEdit}
+        isLoading={isSubmitting}
+      />
+
+      <Snackbar
+        open={errorSnackbarOpen}
+        autoHideDuration={4000}
+        onClose={() => setErrorSnackbarOpen(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          severity="error"
+          onClose={() => setErrorSnackbarOpen(false)}
+          sx={{ width: "100%" }}
+        >
+          You cannot delete your own account.
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

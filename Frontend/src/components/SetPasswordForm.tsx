@@ -30,7 +30,7 @@ const SetPasswordForm = ({ token }: Props) => {
   const onSubmit = async (data: SetPasswordData) => {
     try {
       await setPassword({ token, ...data }).unwrap();
-      navigate("/landing"); // ✅ ניווט מיידי לדף הנחיתה
+      navigate("/landingPage");
     } catch (err: any) {
       setError(err?.data?.message || "שגיאה בשמירת הסיסמה");
     }
