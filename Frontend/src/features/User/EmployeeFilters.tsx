@@ -4,8 +4,8 @@ import { Box, Chip, FormControl, Grid, InputAdornment, InputLabel, MenuItem, Pap
 const EmployeeFilters = ({ searchTerm, setSearchTerm, roleFilter, setRoleFilter }: { searchTerm: string, setSearchTerm: (term: string) => void, roleFilter: string, setRoleFilter: (role: string) => void }) => (
   <Paper sx={{ p: { xs: 2, md: 3 }, mb: 4, background: "white", boxShadow: 3, borderRadius: 2 }}>
     <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
-      <FilterList sx={{ color: grey[600], fontSize: 28 }} />
-      <Typography variant="h6" sx={{ fontWeight: 600, color: grey[900] }}>
+      <FilterList sx={{ color: "rgb(0, 188, 212)", fontSize: 28 }} />
+      <Typography variant="h6" sx={{ fontWeight: 600, color: "#4caf50" }}>
         Filter & Search
       </Typography>
     </Box>
@@ -20,7 +20,7 @@ const EmployeeFilters = ({ searchTerm, setSearchTerm, roleFilter, setRoleFilter 
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Search sx={{ color: grey[600] }} />
+                <Search sx={{ color: "#4caf50" }} />
               </InputAdornment>
             ),
           }}
@@ -68,3 +68,5 @@ const EmployeeFilters = ({ searchTerm, setSearchTerm, roleFilter, setRoleFilter 
     )}
   </Paper>
 );
+
+export default EmployeeFilters

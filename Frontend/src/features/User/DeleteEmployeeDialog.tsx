@@ -210,3 +210,5 @@ const DeleteEmployeeDialog = ({ open, onClose, employee, onConfirm, isLoading }:
     </Dialog>
   );
 };
+
+export default DeleteEmployeeDialog

@@ -197,7 +197,7 @@ interface EmployeeCardProps {
   allEmployees?: User[]
 }
 
-export default function EmployeeCard({ employee, onEdit, onDelete, allEmployees = [] }: EmployeeCardProps) {
+const EmployeeCard = ({ employee, onEdit, onDelete, allEmployees = [] }: EmployeeCardProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -345,3 +345,5 @@ export default function EmployeeCard({ employee, onEdit, onDelete, allEmployees 
     </Card>
   )
 }
+
+export default EmployeeCard

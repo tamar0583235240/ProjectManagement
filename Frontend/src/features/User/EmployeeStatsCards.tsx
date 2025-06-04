@@ -18,7 +18,7 @@ const EmployeeStatsCards = ({ stats }: { stats: { total: number, managers: numbe
               <Typography color="text.secondary" variant="body2" sx={{ fontWeight: 500 }}>
                 Total Employees
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 700, color: grey[900] }}>
+              <Typography variant="h4" sx={{ fontWeight: 700, color:"rgb(0, 188, 212)" }}>
                 {stats.total}
               </Typography>
             </Box>
@@ -152,3 +152,5 @@ const EmployeeStatsCards = ({ stats }: { stats: { total: number, managers: numbe
     </Grid>
   </Grid>
 );
+
+export default EmployeeStatsCards;
