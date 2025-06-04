@@ -12,12 +12,8 @@ const organizationsRoutes = require('./routes/organizationsRoutes');
 const authRoutes = require('./routes/authRoutes');
 const inviteRoutes = require('./routes/inviteRoutes');
 
-
-
 const PORT = process.env.PORT || 7001;
 const app = express();
-
-
 connectDB();
 
 app.use(cors(corsOptions));
