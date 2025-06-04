@@ -20,13 +20,17 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import './index.css'
 import App from './App.tsx'
 import { CookiesProvider } from 'react-cookie'
+import theme from './theme/theme.ts';
 
 createRoot(document.getElementById('root')!).render(
 
   <CookiesProvider>
+    
     <StrictMode>
         <CssBaseline />
+        <ThemeProvider theme={theme}>
         <App />
+        </ThemeProvider>
    </StrictMode>
   </CookiesProvider>
 
