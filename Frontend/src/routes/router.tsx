@@ -8,6 +8,9 @@ import InitialRouter from "../components/InitialRouter";
 import LandingPage from "../pages/LandingPage";
 import ProjectDetails from "../features/Project/ProjectDetails";
 import EmployeeManagement from "../pages/EmployeeManagement";
+import SetPasswordPage from "../pages/SetPasswordPage";
+import ResetPasswordPage from "../features/auth/ResetPasswordPage";
+import InviteUserForm from "../features/User/InviteUserForm";
 
 const router = createBrowserRouter([
   {
@@ -38,10 +41,6 @@ const router = createBrowserRouter([
               path: "employeemanagement",
               element: <EmployeeManagement />,
               children: [
-                {
-                  index: true,
-                  element: <InviteUserForm />
-                },
                 {
                   path: "invite",
                   element: <InviteUserForm />

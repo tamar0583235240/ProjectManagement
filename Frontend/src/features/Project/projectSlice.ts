@@ -37,4 +37,8 @@ const projectSlice = createSlice({
 export const { setProjects, setLoading, setError } = projectSlice.actions
 export const selectProjectById = (state: RootState, id: string) =>
   state.projects.projects.find((project) => project._id === id);
+  // features/Project/projectSlice.ts
+export const selectAllProjects = (state: RootState) => state.projects.projects;
+export const selectProjectsCount = (state: RootState) => state.projects.projects.length;
+
 export default projectSlice.reducer

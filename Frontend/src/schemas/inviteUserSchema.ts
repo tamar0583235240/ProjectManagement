@@ -25,11 +25,12 @@
 //   path: ["teamLeadId"],
 // });
 import { z } from "zod";
-import { Role } from "../enums/role.enum";
+import { Role } from "../types/Role";
+// import { Role } from "../enums/role.enum";
 
 export const inviteUserSchema = z.object({
   email: z.string().email({ message: "כתובת אימייל לא תקינה" }),
-  role: z.enum([Role.TEAM_LEADER, Role.EMPLOYEE]),
+  role: z.enum([Role.TEAMLEADER, Role.EMPLOYEE]),
   teamLeadId: z.string().optional(),
 }).refine((data) => {
   if (data.role === Role.EMPLOYEE) {
