@@ -7,7 +7,7 @@ const formatDate = (date: string | Date | null | undefined): string => {
 
   if (!isValid(parsedDate)) return 'N/A'
 
-  return format(parsedDate, 'dd/MM/yyyy') // שימי לב: אפשר לשנות פורמט
+  return format(parsedDate, 'dd/MM/yyyy')
 }
 
 export default formatDate

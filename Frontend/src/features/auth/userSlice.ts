@@ -3,7 +3,6 @@ import type { RootState } from '../../app/store'
 import useCurrentUser from '../../hooks/useCurrentUser'
 import { Role } from '../../types/Role'
 
-// טיפוס של ה-state במודול המשתמש
 interface UserState {
   role: Role | null
   currentManager: string | null

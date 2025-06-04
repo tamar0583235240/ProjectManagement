@@ -13,7 +13,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import PersonIcon from "@mui/icons-material/Person";
 
-// Interface for validated user data (matches what we store)
 interface ValidatedUser {
   _id: string;
   user_name: string;

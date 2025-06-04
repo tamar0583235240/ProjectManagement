@@ -20,9 +20,6 @@ export const projectSchema = z.object({
 
 export type ProjectFormData = z.infer<typeof projectSchema>;
 
-
-import { z } from "zod";
-
 export const authorizedUserSchema = z.object({
   id: z.string().uuid(),
   user_name: z.string().min(1, "Name is required"),

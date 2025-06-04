@@ -844,5 +844,153 @@
       gap: 2rem;
     }
   }
+  :root {
+  --primary-color: #29ABB8;
+  --secondary-color: #F17B45;
+  --accent1-color: #FFB14C;
+  --accent2-color: #f8f9fa;
+  --accent3-color: #e8f6f8;
+  --dark-color: #2d3748;
+  --light-color: #fefefe;
+  --gray-color: #e9ecef;
+  --white-color: #ffffff;
+
+  --manager-color: #29ABB8;
+  --team-lead-color: #F17B45;
+  --employee-color: #FFB14C;
+
+  --radius: 1rem;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s ease-in-out;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--light-color);
+  color: var(--dark-color);
+  line-height: 1.7;
+  font-size: 1rem;
+  text-align: right;
+  direction: rtl;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+button, .cta-btn, .secondary-btn {
+  font-family: inherit;
+  transition: var(--transition);
+  border-radius: var(--radius);
+}
+
+.cta-btn {
+  background: linear-gradient(135deg, var(--secondary-color), #f95e23);
+  color: var(--white-color);
+  box-shadow: 0 5px 20px rgba(241, 123, 69, 0.3);
+  padding: 0.9rem 2.2rem;
+}
+
+.cta-btn:hover {
+  background: linear-gradient(135deg, #f95e23, var(--secondary-color));
+  transform: scale(1.03) translateY(-3px);
+}
+
+.secondary-btn {
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  background-color: transparent;
+}
+
+.secondary-btn:hover {
+  background-color: rgba(41, 171, 184, 0.08);
+  transform: translateY(-3px);
+}
+
+/* Hero Section */
+.hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  padding: 6rem 5%;
+  background: linear-gradient(180deg, #e8f6f8 0%, #fefefe 100%);
+  position: relative;
+}
+
+.hero-content h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  color: var(--dark-color);
+}
+
+.hero-content p {
+  font-size: 1.125rem;
+  margin-top: 1rem;
+  color: #4a5568;
+}
+
+/* Role Cards */
+.role-cards {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin-top: 3rem;
+}
+
+.role-card {
+  background-color: var(--white-color);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.role-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 6px;
+  width: 100%;
+}
+
+.role-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.role-card.manager::before {
+  background: linear-gradient(90deg, var(--manager-color), #a2e1e8);
+}
+.role-card.team-lead::before {
+  background: linear-gradient(90deg, var(--team-lead-color), #ffaf84);
+}
+.role-card.employee::before {
+  background: linear-gradient(90deg, var(--employee-color), #ffe2b0);
+}
+
+.role-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.5rem;
+}
+
+.role-card.manager .role-icon {
+  background: linear-gradient(135deg, var(--manager-color), #70cdd7);
+}
+.role-card.team-lead .role-icon {
+  background: linear-gradient(135deg, var(--team-lead-color), #ff9a6e);
+}
+.role-card.employee .role-icon {
+  background: linear-gradient(135deg, var(--employee-color), #ffe29c);
+}
+
   
   

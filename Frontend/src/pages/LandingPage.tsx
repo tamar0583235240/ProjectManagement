@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import { ClipboardList, Users, LayoutDashboard, Shield, UserCog, Bell, BarChart3, CheckSquare, ChevronRight } from 'lucide-react';// import { Heebo } from 'next/font/google'
@@ -7,37 +7,39 @@ import "../style/LandingPage.css"
 import PicManagementSystem from '../assets/PicManagementSystem.jpg';
 import PicSmartAndIntuitiveDashboard from '../assets/PicSmartAndIntuitiveDashboard.jpg';
 import PicEasyAndSecureLogin from '../assets/PicEasyAndSecureLogin.jpg';
-import SignIn from '../features/auth/SignIn';
-import SignUp from '../features/auth/SignUp';
+import { SignUp } from '../features/auth/SignUp';
+import { SignIn } from '../features/auth/SignIn';
+// import SignIn from '../features/auth/SignIn';
+// import SignUp from '../features/auth/SignUp';
 const LandingPage = () => {
     const navigate = useNavigate();
     const [openSignUpDialog, setOpenSignUpDialog] = React.useState(false)
     const [openSignInDialog, setOpenSignInDialog] = React.useState(false)
-    
+
     const handleSignUpClick = () => {
         setOpenSignUpDialog(true)
     }
-    
+
     const handleCloseSignUpDialog = () => {
         setOpenSignUpDialog(false)
     }
-    
+
     const handleSignInClick = () => {
         setOpenSignInDialog(true)
     }
-    
+
     const handleCloseSignInDialog = () => {
         setOpenSignInDialog(false)
     }
-    
+
     const handleSuccessfulSignIn = () => {
         navigate('/app');
     }
-    
+
     const handleSuccessfulSignUp = () => {
         navigate('/app');
     }
-    
+
     return (
         <div className="landing-page">
             <main>
@@ -345,20 +347,18 @@ const LandingPage = () => {
                     <p>© {new Date().getFullYear()} All rights reserved to Hierarchical Task Management System</p>
                 </div>
             </footer>
-            
-            <SignIn 
-                open={openSignInDialog} 
-                onClose={handleCloseSignInDialog} 
-                onSuccess={handleSuccessfulSignIn} 
+
+            <SignIn
+                open={openSignInDialog}
+                onClose={handleCloseSignInDialog}
+                onSuccess={handleSuccessfulSignIn}
             />
-            
-            <SignUp 
-                open={openSignUpDialog} 
-                onClose={handleCloseSignUpDialog} 
-                onSuccess={handleSuccessfulSignUp} 
+            <SignUp
+                open={openSignUpDialog}
+                onClose={handleCloseSignUpDialog}
+                onSuccess={handleSuccessfulSignUp}
             />
         </div>
     )
 }
-
 export default LandingPage

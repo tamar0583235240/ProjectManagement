@@ -15,21 +15,41 @@ const router = createBrowserRouter([
     element: <InitialRouter />,
   },
   {
-    path: '/landing',
-    element: <LandingPage />,
+
+    path: '/landingPage',
+    element: <LandingPage/>
   },
   {
-    path: '/app',
-    element: <AppLayout />,
-    children: [
-      { index: true, element: <HomePage /> },
-      { path: 'projects', element: <Projects /> },
-       { path: 'projects/:projectId', element: <ProjectDetails /> },
-      { path: 'tasks', element: <Tasks /> },
-      { path: 'employee-management', element: <EmployeeManagement /> },
-      { path: '*', element: <NotFound /> },
-    ],
+    path: '/set-password/:token',
+    element: <SetPasswordPage/>
   },
+{
+  path: '/reset-password/:token',
+  element: <ResetPasswordPage/>
+},
+    {
+        path: "app", element: <AppLayout />,
+        children: [
+            { element: <HomePage />, index: true },
+            { path: "projects", element: <Projects /> },
+              { path: 'projects/:projectId', element: <ProjectDetails /> },
+            { path: "tasks", element: <Tasks /> },
+            {
+              path: "employeemanagement",
+              element: <EmployeeManagement />,
+              children: [
+                {
+                  index: true,
+                  element: <InviteUserForm />
+                },
+                {
+                  path: "invite",
+                  element: <InviteUserForm />
+                }
+              ]
+            },
+          ]
+    },
+      { path: '*', element: <NotFound /> },
 ]);
-
 export default router;

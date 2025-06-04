@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useSelector } from 'react-redux';
 import { Box, Typography, CircularProgress, Alert, Paper } from '@mui/material';
 import { selectCurrentManagerId } from '../features/auth/userSlice';
@@ -7,6 +8,19 @@ import ProjectsDashboard from '../features/Project/ProjectsDashboard';
 
 const Projects = () => {
   useLoadProjectsOnInit();
+=======
+import React from 'react'
+
+
+const Projects = () => {
+  return (
+    <>
+    <h1>Projects</h1>
+
+    </>
+  )
+}
+>>>>>>> cd97ccf5a0bdab67928cc5508c8ea56f6be13008
 
   const currentManagerId = useSelector(selectCurrentManagerId);
   const projects = useSelector((state: RootState) => state.projects.projects);
