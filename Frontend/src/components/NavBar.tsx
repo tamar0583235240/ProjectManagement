@@ -16,7 +16,7 @@ import { Link, useNavigate } from "react-router-dom"
 import LockIcon from "@mui/icons-material/Lock"
 
 const NavBar = () => {
-    const pages = ["HomePage", "Projects", "Tasks", "EmployeeManagement"]
+    const pages = ["HomePage", "Projects", "Tasks", "employee-management"]
     const settings = ["Profile"]
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)

@@ -8,7 +8,9 @@ import InitialRouter from "../components/InitialRouter";
 import SetPasswordPage from "../pages/SetPasswordPage";
 import InviteUserForm from "../features/users/InviteUserForm";
 import ResetPasswordPage from "../features/auth/ResetPasswordPage";
-import EmployeeManagement from "../pages/EmployeeManagement";
+import ProjectDetails from "../features/Project/ProjectDetails";
+import NotFound from "../pages/NotFound";
+import EmployeeManagement from "../pages/EmployeeManagment";
 
 const router = createBrowserRouter([
   {
@@ -17,37 +19,39 @@ const router = createBrowserRouter([
   },
   {
     path: '/landingPage',
-    element: <LandingPage/>
+    element: <LandingPage />
   },
   {
     path: '/set-password/:token',
-    element: <SetPasswordPage/>
+    element: <SetPasswordPage />
   },
-{
-  path: '/reset-password/:token',
-  element: <ResetPasswordPage/>
-},
-    {
-        path: "app", element: <AppLayout />,
+  {
+    path: '/reset-password/:token',
+    element: <ResetPasswordPage />
+  },
+  {
+    path: "app", element: <AppLayout />,
+    children: [
+      { element: <HomePage />, index: true },
+      { path: "projects", element: <Projects /> },
+      { path: 'projects/:projectId', element: <ProjectDetails /> },
+      { path: "tasks", element: <Tasks /> },
+      {
+        path: "employee-management",
+        element: <EmployeeManagement />,
         children: [
-            { element: <HomePage />, index: true },
-            { path: "projects", element: <Projects /> },
-            { path: "tasks", element: <Tasks /> },
-            {
-              path: "employee-management",
-              element: <EmployeeManagement />,
-              children: [
-                {
-                  index: true, 
-                  element: <InviteUserForm /> 
-                },
-                {
-                  path: "invite",
-                  element: <InviteUserForm />
-                }
-              ]
-            },
-          ]
-    },
+          {
+            index: true,
+            element: <InviteUserForm />
+          },
+          {
+            path: "invite",
+            element: <InviteUserForm />
+          }
+        ]
+      },
+    ]
+  },
+  { path: '*', element: <NotFound /> },
 ]);
 export default router;

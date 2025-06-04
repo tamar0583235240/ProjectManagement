@@ -1,4 +1,5 @@
 import { api } from "../../app/api";
+import type { User } from "../../types/User";
 
 export const userApi = api.injectEndpoints({
     endpoints: (builder) => ({
@@ -17,12 +18,14 @@ export const userApi = api.injectEndpoints({
             }),
         }),
 
-        getEmployeesByOrganization: builder.query<{ _id: string; user_name: string; email: string }[], string>({
+        getEmployeesByOrganization: builder.query<User[], string>({
             query: (orgId) => ({
                 url: `Users/getEmployeesByOrg/${orgId}`,
                 method: "GET",
             }),
         }),
+
+
     }),
     overrideExisting: false,
 });

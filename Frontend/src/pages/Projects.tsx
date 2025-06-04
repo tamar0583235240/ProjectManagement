@@ -1,16 +1,4 @@
-<<<<<<< HEAD
-import React from 'react'
 
-
-const Projects = () => {
-  return (
-    <>
-    <h1>Projects</h1>
-
-    </>
-  )
-}
-=======
 import { useSelector } from 'react-redux';
 import { Box, Typography, CircularProgress, Alert, Paper } from '@mui/material';
 import { selectCurrentManagerId } from '../features/auth/userSlice';
@@ -20,7 +8,6 @@ import ProjectsDashboard from '../features/Project/ProjectsDashboard';
 
 const Projects = () => {
   useLoadProjectsOnInit();
->>>>>>> Frontend/Projects
 
   const currentManagerId = useSelector(selectCurrentManagerId);
   const projects = useSelector((state: RootState) => state.projects.projects);

@@ -6,8 +6,8 @@ import { Button, MenuItem, TextField } from "@mui/material";
 import SelectTeamLeader from "./SelectTeamLeader";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { useGetTeamLeadersQuery, useInviteUserMutation } from "./userApi";
-import { Role } from "../../enums/role.enum";
 import { inviteUserSchema, type InviteUserInput } from "../../schemas/inviteUserSchema";
+import { Role } from "../../types/Role";
 
 
 const InviteUserForm: React.FC = () => {
@@ -24,7 +24,7 @@ const InviteUserForm: React.FC = () => {
   const form = useForm<InviteUserInput>({
     resolver: zodResolver(inviteUserSchema),
     defaultValues: {
-      role: Role.TEAM_LEADER,
+      role: Role.TEAMLEADER,
     },
   });
 
@@ -57,10 +57,10 @@ const InviteUserForm: React.FC = () => {
       />
 
       <TextField select label="תפקיד" {...form.register("role")} fullWidth margin="normal">
-        {!hasTeamLeads && <MenuItem value={Role.TEAM_LEADER}>ראש צוות</MenuItem>}
+        {!hasTeamLeads && <MenuItem value={Role.TEAMLEADER}>ראש צוות</MenuItem>}
         {hasTeamLeads && (
           <>
-            <MenuItem value={Role.TEAM_LEADER}>ראש צוות</MenuItem>
+            <MenuItem value={Role.TEAMLEADER}>ראש צוות</MenuItem>
             <MenuItem value={Role.EMPLOYEE}>עובד</MenuItem>
           </>
         )}
