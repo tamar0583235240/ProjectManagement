@@ -4,7 +4,7 @@ const { AddOrganization, AllOrganization, DeleteOrganization, UpdateOrganization
 const verifyJWT = require('../middleware/verifyJWT');
 
 router.post('/AllOrganization',verifyJWT, AllOrganization);
-router.post('/AddOrganization',verifyJWT, AddOrganization);
+router.post('/AddOrganization',AddOrganization);
 router.delete('/DeleteOrganization/:organization_id',verifyJWT, DeleteOrganization);
 router.put('/UpdateOrganization/:organization_id',verifyJWT, UpdateOrganization);
 
