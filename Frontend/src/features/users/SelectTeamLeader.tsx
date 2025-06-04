@@ -3,13 +3,9 @@ import { Controller, type Control } from "react-hook-form";
 import { MenuItem, TextField, CircularProgress } from "@mui/material";
 import { useGetTeamLeadersQuery } from "./userApi";
 import useCurrentUser from "../../hooks/useCurrentUser";
-// import { InviteUserInput } from "../../schemas/inviteUserSchema";
-import React from "react";
-
 interface SelectTeamLeaderProps {
   control: Control<any>;
 }
-
 const SelectTeamLeader = ({ control }: SelectTeamLeaderProps) => {
   const user = useCurrentUser();
   const userId = user?._id;

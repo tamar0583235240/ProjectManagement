@@ -1,15 +1,12 @@
-import { createBrowserRouter, useNavigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import AppLayout from "../components/AppLayout";
 import HomePage from "../pages/HomePage";
 import Projects from "../pages/Projects";
 import Tasks from "../pages/Tasks";
 import EmployeeManagment from "../pages/EmployeeManagment";
-import NotFound from "../pages/NotFound";
 import LandingPage from "../pages/LandingPage";
 import InitialRouter from "../components/InitialRouter";
-import { Children } from "react";
 import SetPasswordPage from "../pages/SetPasswordPage";
-import AddUserForm from "../features/users/InviteUserForm";
 import InviteUserForm from "../features/users/InviteUserForm";
 import ResetPasswordPage from "../features/auth/ResetPasswordPage";
 const router = createBrowserRouter([
@@ -40,8 +37,8 @@ const router = createBrowserRouter([
               element: <EmployeeManagment />,
               children: [
                 {
-                  index: true,  // ברירת מחדל בכניסה לנתיב הזה
-                  element: <InviteUserForm />  // במקום InitialRouter
+                  index: true,
+                  element: <InviteUserForm /> 
                 },
                 {
                   path: "invite",
