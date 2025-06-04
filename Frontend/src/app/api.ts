@@ -19,7 +19,7 @@ export const api = createApi({
 
 
 
-const getCookie = (name: string): string | null => {
+export const getCookie = (name: string): string | null => {
   const cookies = document.cookie.split(';');
   for (let cookie of cookies) {
     const [key, value] = cookie.trim().split('=');
@@ -29,3 +29,4 @@ const getCookie = (name: string): string | null => {
   }
   return null;
 }
+

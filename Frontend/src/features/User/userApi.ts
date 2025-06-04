@@ -35,22 +35,14 @@ export const userApi = api.injectEndpoints({
     }),
 
     // עדכון משתמש
-updateUser: builder.mutation<User, { userId: string; data: Partial<User> }>(
-  {
-    query: ({ userId, data }) => {
-      const token = getCookie('token');
-      return {
+    updateUser: builder.mutation<User, { userId: string; data: Partial<User> }>({
+      query: ({ userId, data }) => ({
         url: `/users/UpdateUser/${userId}`,
         method: 'PUT',
         body: data,
-        headers: token
-          ? { Authorization: `Bearer ${token}` }
-          : {},
-      };
-    },
-    invalidatesTags: ['User'],
-  }
-),
+      }),
+      invalidatesTags: ['User'],
+    }),
 
 
     }),
