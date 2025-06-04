@@ -145,7 +145,7 @@ export default function EmployeeCard({ employee, onEdit, onDelete, allEmployees 
         </Box>
       </CardContent>
 
-      <CardActions sx={{ justifyContent: 'flex-end', px: 2, pb: 2 }}>
+      {/* <CardActions sx={{ justifyContent: 'flex-end', px: 2, pb: 2 }}>
         <Tooltip title="Edit">
           <IconButton 
             onClick={handleEdit}
@@ -164,7 +164,7 @@ export default function EmployeeCard({ employee, onEdit, onDelete, allEmployees 
             <Delete fontSize="small" />
           </IconButton>
         </Tooltip>
-      </CardActions>
+      </CardActions> */}
 
       <Menu
         anchorEl={anchorEl}
