@@ -41,8 +41,8 @@ exports.SignUp = async (req, res) => {
 exports.SignIn = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("email: " ,email,"password: ",password);
-    
+    console.log("email: ", email, "password: ", password);
+
     if (!email || !password) {
       return res.status(400).json({ message: 'Email and password are required' });
     }
@@ -50,6 +50,9 @@ exports.SignIn = async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
+
+    const flag = await bcrypt.compare(password, user.password);
+    console.log("Password match:", flag);
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       return res.status(401).json({ message: 'Invalid email or password' });
