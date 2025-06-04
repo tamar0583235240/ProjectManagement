@@ -1,5 +1,9 @@
 import { useMemo, useState } from "react";
-import { useGetEmployeesByOrganizationQuery } from "../features/User/userApi";
+import {
+  useDeleteUserMutation,
+  useGetEmployeesByOrganizationQuery,
+  useUpdateUserMutation,
+} from "../features/User/userApi";
 import useCurrentUser from "../hooks/useCurrentUser";
 import type { User } from "../types/User";
 import { Alert, Box, Button, Container, Typography } from "@mui/material";
@@ -9,25 +13,24 @@ import EmployeeFilters from "../features/User/EmployeeFilters";
 import EmployeeGrid from "../features/User/EmployeeGrid";
 import DeleteEmployeeDialog from "../features/User/DeleteEmployeeDialog";
 import EditEmployeeDialog from "../features/User/EditEmployeeDialog";
+import { grey } from "@mui/material/colors";
 
 const EmployeeManagement = () => {
-  // Get current user information (mocked)
   const user = useCurrentUser();
 
-  // Fetch employees data using the mocked RTK Query hook
   const { data: employees = [], isLoading, error, refetch } = useGetEmployeesByOrganizationQuery(user.organization_id);
 
-  // State for search and filter inputs
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
 
-  // Dialog states
   const [showEmployeeDialog, setShowEmployeeDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<User | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false); // For dialog submission loading
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Filter employees based on search and role
+  const [updateUser] = useUpdateUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
+
   const filteredEmployees = useMemo(() => {
     let filtered = employees;
 
@@ -46,7 +49,6 @@ const EmployeeManagement = () => {
     return filtered;
   }, [employees, searchTerm, roleFilter]);
 
-  // Calculate statistics about employees
   const stats = useMemo(
     () => ({
       total: employees.length,
@@ -57,9 +59,8 @@ const EmployeeManagement = () => {
     [employees]
   );
 
-  // Handlers for opening dialogs
   const handleAddEmployee = () => {
-    setSelectedEmployee(null); // Clear selected employee for add mode
+    setSelectedEmployee(null);
     setShowEmployeeDialog(true);
   };
 
@@ -73,76 +74,66 @@ const EmployeeManagement = () => {
     setShowDeleteDialog(true);
   };
 
-  // Handler for saving (adding/editing) an employee
   const handleSaveEmployee = async (employeeData: Partial<User>) => {
     setIsSubmitting(true);
     try {
       if (selectedEmployee && selectedEmployee._id) {
-        // Simulate update operation
-        // await mockUpdateEmployee({ ...selectedEmployee, ...employeeData } as User);
+        await updateUser({ userId: selectedEmployee._id, data: employeeData }).unwrap();
       } else {
-        // Simulate add operation
         const newEmployee: User = {
-          _id: Date.now().toString(), // Unique ID for mock
+          _id: Date.now().toString(),
           ...employeeData,
-          organization_id: user.organization_id, // Ensure organization_id is set for new employees
-          // created_date is not in User interface, so not included here
+          organization_id: user.organization_id,
         } as User;
-        // await mockAddEmployee(newEmployee);
+        // ניתן להוסיף כאן קריאה ל- addUser בעתיד
       }
-      // After successful mutation, refetch data to update the list
       refetch();
       setShowEmployeeDialog(false);
     } catch (err) {
       console.error("Error saving employee:", err);
-      // In a real app, you might set a user-facing error state here
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Handler for confirming employee deletion
   const handleConfirmDelete = async (employee: User) => {
     if (!employee._id) return;
 
     setIsSubmitting(true);
     try {
-      // Simulate delete operation
-      // await mockDeleteEmployee(employee._id);
-      // After successful mutation, refetch data to update the list
+      await deleteUser(employee._id).unwrap();
       refetch();
       setShowDeleteDialog(false);
     } catch (err) {
       console.error("Error deleting employee:", err);
-      // In a real app, you might set a user-facing error state here
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Display error message if data fetching fails
   if (error) {
     return (
       <Container maxWidth="xl" sx={{ py: 4 }}>
         <Alert
           severity="error"
           action={
-            <Button color="inherit" size="small" onClick={refetch} sx={{ borderRadius: 1.5 }}> {/* Use refetch here */}
+            <Button color="inherit" size="small" onClick={refetch} sx={{ borderRadius: 1.5 }}>
               Retry
             </Button>
           }
           sx={{ borderRadius: 2 }}
         >
-          {/* {error} */}
+       {error && 'data' in error && (
+  <p>{(error.data as { message?: string })?.message ?? 'An error occurred'}</p>
+)}
         </Alert>
       </Container>
     );
   }
 
   return (
-    <Box sx={{ minHeight: "100vh", background: "linear-gradient(135deg, #F5F7FA 0%, #E0E6EE 100%)", py: 4 }}> {/* Light grey/off-white background */}
+    <Box sx={{ minHeight: "100vh", background: "linear-gradient(135deg, #F5F7FA 0%, #E0E6EE 100%)", py: 4 }}>
       <Container maxWidth="xl">
-        {/* Header Section */}
         <Box sx={{ mb: 4 }}>
           <Box
             sx={{
@@ -154,7 +145,7 @@ const EmployeeManagement = () => {
             }}
           >
             <Box>
-              <Typography variant="h3" component="h1" sx={{ fontWeight: 700, color: "rgb(0, 188, 212)", mb: 1 }}>
+              <Typography variant="h3" component="h1" sx={{ fontWeight: 700, color: grey[900], mb: 1 }}>
                 Employee Management
               </Typography>
               <Typography variant="h6" color="text.secondary">
@@ -167,7 +158,7 @@ const EmployeeManagement = () => {
               onClick={handleAddEmployee}
               size="large"
               sx={{
-                background: "linear-gradient(135deg, #00BCD4 0%, #26C6DA 100%)", // Teal gradient
+                background: "linear-gradient(135deg, #00BCD4 0%, #26C6DA 100%)",
                 boxShadow: 3,
                 px: 3,
                 py: 1.5,
@@ -183,10 +174,8 @@ const EmployeeManagement = () => {
           </Box>
         </Box>
 
-        {/* Stats Cards */}
         <EmployeeStatsCards stats={stats} />
 
-        {/* Filters Section */}
         <EmployeeFilters
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
@@ -194,7 +183,6 @@ const EmployeeManagement = () => {
           setRoleFilter={setRoleFilter}
         />
 
-        {/* Employees Grid */}
         <EmployeeGrid
           filteredEmployees={filteredEmployees}
           isLoading={isLoading}
@@ -205,14 +193,12 @@ const EmployeeManagement = () => {
         />
       </Container>
 
-      {/* Dialogs */}
       <EditEmployeeDialog
         open={showEmployeeDialog}
         onClose={() => setShowEmployeeDialog(false)}
         employee={selectedEmployee}
         onSave={handleSaveEmployee}
         isLoading={isSubmitting}
-        allEmployees={employees} // Pass all employees for manager dropdown (though not used in current User interface)
       />
 
       <DeleteEmployeeDialog
@@ -227,4 +213,3 @@ const EmployeeManagement = () => {
 };
 
 export default EmployeeManagement;
-

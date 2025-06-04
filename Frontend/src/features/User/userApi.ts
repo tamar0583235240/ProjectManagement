@@ -25,7 +25,32 @@ export const userApi = api.injectEndpoints({
             }),
         }),
 
-        
+            // מחיקת משתמש
+    deleteUser: builder.mutation<{ message: string }, string>({
+      query: (userId) => ({
+        url: `/users/DeleteUser/${userId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    // עדכון משתמש
+updateUser: builder.mutation<User, { userId: string; data: Partial<User> }>(
+  {
+    query: ({ userId, data }) => {
+      const token = getCookie('token');
+      return {
+        url: `/users/UpdateUser/${userId}`,
+        method: 'PUT',
+        body: data,
+        headers: token
+          ? { Authorization: `Bearer ${token}` }
+          : {},
+      };
+    },
+    invalidatesTags: ['User'],
+  }
+),
 
 
     }),
@@ -36,4 +61,7 @@ export const {
     useValidateUserMutation,
     useGetTopManagerOfEmployeeQuery,
     useGetEmployeesByOrganizationQuery,
+    useDeleteUserMutation,
+    useUpdateUserMutation
+
 } = userApi;

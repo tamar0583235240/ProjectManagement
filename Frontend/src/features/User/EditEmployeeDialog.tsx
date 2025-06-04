@@ -24,7 +24,7 @@ const EditEmployeeDialog = ({
   onClose,
   employee,
   onSave,
-  isLoading
+  isLoading,
 }: {
   open: boolean;
   onClose: () => void;
@@ -38,14 +38,12 @@ const EditEmployeeDialog = ({
   useEffect(() => {
     if (employee) {
       setFormData(employee);
-      setErrors({});
     }
+    setErrors({});
   }, [employee, open]);
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | { name?: string; value: unknown }
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | { name?: string; value: unknown }>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name as string]: value }));
@@ -53,7 +51,7 @@ const EditEmployeeDialog = ({
   };
 
   const validate = () => {
-    const tempErrors: Record<string, string> = {};
+    let tempErrors: Record<string, string> = {};
     if (!formData.user_name || formData.user_name.trim() === "") tempErrors.user_name = "User Name is required.";
     if (!formData.email) {
       tempErrors.email = "Email is required.";
@@ -72,8 +70,6 @@ const EditEmployeeDialog = ({
     }
   };
 
-  if (!employee) return null; // Don't render if no employee is passed
-
   return (
     <Dialog open={open} onClose={onClose} PaperProps={{ sx: { borderRadius: 3 } }} maxWidth="sm" fullWidth>
       <DialogTitle
@@ -86,7 +82,7 @@ const EditEmployeeDialog = ({
           borderBottom: `1px solid ${grey[200]}`,
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         <Typography variant="h6" component="span" sx={{ fontWeight: 600, color: grey[900] }}>
@@ -99,24 +95,19 @@ const EditEmployeeDialog = ({
             color: grey[500],
             "&:hover": {
               color: grey[700],
-              backgroundColor: grey[100]
+              backgroundColor: grey[100],
             },
-            borderRadius: "50%"
+            borderRadius: "50%",
           }}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-               className="lucide lucide-x">
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ pt: 2, pb: 3, px: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <FormControl fullWidth margin="dense" variant="outlined" sx={{ mb: 2 }}>
-              <InputLabel shrink htmlFor="user-name-input" sx={{ position: "relative", transform: "none", fontSize: "0.8rem", fontWeight: 500, color: grey[700] }}>
+              <InputLabel shrink htmlFor="user-name-input" sx={{ position: 'relative', transform: 'none', fontSize: '0.8rem', fontWeight: 500, color: grey[700] }}>
                 User Name
               </InputLabel>
               <TextField
@@ -131,13 +122,13 @@ const EditEmployeeDialog = ({
                 error={!!errors.user_name}
                 helperText={errors.user_name}
                 InputLabelProps={{ shrink: false }}
-                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 1.5 }, mt: 0 }}
+                sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1.5 }, mt: 0 }}
               />
             </FormControl>
           </Grid>
           <Grid item xs={12}>
             <FormControl fullWidth margin="dense" variant="outlined" sx={{ mb: 2 }}>
-              <InputLabel shrink htmlFor="email-input" sx={{ position: "relative", transform: "none", fontSize: "0.8rem", fontWeight: 500, color: grey[700] }}>
+              <InputLabel shrink htmlFor="email-input" sx={{ position: 'relative', transform: 'none', fontSize: '0.8rem', fontWeight: 500, color: grey[700] }}>
                 Email Address
               </InputLabel>
               <TextField
@@ -152,13 +143,13 @@ const EditEmployeeDialog = ({
                 error={!!errors.email}
                 helperText={errors.email}
                 InputLabelProps={{ shrink: false }}
-                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 1.5 }, mt: 0 }}
+                sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1.5 }, mt: 0 }}
               />
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <FormControl fullWidth margin="dense" variant="outlined" error={!!errors.role} sx={{ "& .MuiOutlinedInput-root": { borderRadius: 1.5 }, mb: 2 }}>
-              <InputLabel shrink htmlFor="role-select" sx={{ position: "relative", transform: "none", fontSize: "0.8rem", fontWeight: 500, color: grey[700] }}>
+            <FormControl fullWidth margin="dense" variant="outlined" error={!!errors.role} sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1.5 }, mb: 2 }}>
+              <InputLabel shrink htmlFor="role-select" sx={{ position: 'relative', transform: 'none', fontSize: '0.8rem', fontWeight: 500, color: grey[700] }}>
                 Role
               </InputLabel>
               <Select
@@ -178,8 +169,8 @@ const EditEmployeeDialog = ({
           </Grid>
         </Grid>
       </DialogContent>
-      <DialogActions sx={{ p: 2, justifyContent: "flex-end", borderTop: `1px solid ${grey[200]}` }}>
-        <Button onClick={onClose} disabled={isLoading} sx={{ borderRadius: 1.5, color: grey[700], "&:hover": { backgroundColor: grey[100] } }}>
+      <DialogActions sx={{ p: 2, justifyContent: 'flex-end', borderTop: `1px solid ${grey[200]}` }}>
+        <Button onClick={onClose} disabled={isLoading} sx={{ borderRadius: 1.5, color: grey[700], '&:hover': { backgroundColor: grey[100] } }}>
           Cancel
         </Button>
         <Button
@@ -194,8 +185,8 @@ const EditEmployeeDialog = ({
             borderRadius: 1.5,
             "&:hover": {
               background: "linear-gradient(135deg, #0097A7 0%, #00ACC1 100%)",
-              boxShadow: 6
-            }
+              boxShadow: 6,
+            },
           }}
         >
           {isLoading ? <CircularProgress size={24} color="inherit" /> : "Save Changes"}
