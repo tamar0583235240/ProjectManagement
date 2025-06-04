@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, MenuItem, TextField } from "@mui/material";
 import useCurrentUser from "../../hooks/useCurrentUser";
-import { Role } from "../../enums/role.enum";
 import { inviteUserSchema, type InviteUserInput } from "../../schemas/inviteUserSchema";
 import { useGetTeamLeadersQuery, useInviteUserMutation } from "./userApi";
 import SelectTeamLeader from "./SelectTeamLeader";
+import { Role } from "../../types/Role";
 const InviteUserForm: React.FC = () => {
   const user = useCurrentUser();
   const userId = user?._id;
@@ -22,7 +22,7 @@ const InviteUserForm: React.FC = () => {
   const form = useForm<InviteUserInput>({
     resolver: zodResolver(inviteUserSchema),
     defaultValues: {
-      role: Role.TEAM_LEADER,
+      role: Role.TEAMLEADER,
     },
   });
 
@@ -55,10 +55,10 @@ const InviteUserForm: React.FC = () => {
       />
 
       <TextField select label="תפקיד" {...form.register("role")} fullWidth margin="normal">
-        {!hasTeamLeads && <MenuItem value={Role.TEAM_LEADER}>ראש צוות</MenuItem>}
+        {!hasTeamLeads && <MenuItem value={Role.TEAMLEADER}>ראש צוות</MenuItem>}
         {hasTeamLeads && (
           <>
-            <MenuItem value={Role.TEAM_LEADER}>ראש צוות</MenuItem>
+            <MenuItem value={Role.TEAMLEADER}>ראש צוות</MenuItem>
             <MenuItem value={Role.EMPLOYEE}>עובד</MenuItem>
           </>
         )}
