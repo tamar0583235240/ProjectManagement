@@ -204,10 +204,7 @@ exports.getEmployeesByOrganization = async (req, res) => {
   const { orgId } = req.params;
 
   try {
-    const employees = await User.find({
-      organization_id: orgId,
-    }).select('_id user_name email');
-
+    const employees = await User.find({organization_id: orgId,});
     res.status(200).json(employees);
   } catch (error) {
     console.error('Failed to get employees by organization:', error);
