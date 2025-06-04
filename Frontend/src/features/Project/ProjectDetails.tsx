@@ -52,26 +52,24 @@ const ProjectDetails: React.FC = () => {
     const { projectId } = useParams<{ projectId: string }>();
     const navigate = useNavigate();
 
-    // State for menu and dialogs
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-    // Snackbar state
+
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: '',
         severity: 'success' as 'success' | 'error'
     });
 
-    // Redux selectors
+
     const project = useSelector((state: RootState) =>
         selectProjectById(state, projectId || '')
     );
 
-    // RTK Query hooks
     const {
         data: tasks = [],
         isLoading,
@@ -82,7 +80,6 @@ const ProjectDetails: React.FC = () => {
     const [updateTask] = useUpdateTaskMutation();
     const [deleteTask] = useDeleteTaskMutation();
 
-    // Get available users from project (assuming they are in project data)
     const availableUsers: User[] = project?.team_members || [];
 
     const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, task: Task) => {
@@ -93,17 +90,17 @@ const ProjectDetails: React.FC = () => {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
-        // Don't clear selectedTask here - let dialogs handle it themselves
+    
     };
 
     const handleEditClick = () => {
         setIsEditDialogOpen(true);
-        setAnchorEl(null); // Only close the menu
+        setAnchorEl(null); 
     };
 
     const handleDeleteClick = () => {
         setIsDeleteDialogOpen(true);
-        setAnchorEl(null); // Only close the menu
+        setAnchorEl(null); 
     };
 
     const handleEditSave = async (updatedTask: UpdateTaskRequest) => {

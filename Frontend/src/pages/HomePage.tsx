@@ -4,7 +4,7 @@ const HomePage = () => {
   const user = useCurrentUser();
   useInitialize();
   return ( 
-  
+
     <div>
       <h1>hello {user.user_name}</h1>
     </div>

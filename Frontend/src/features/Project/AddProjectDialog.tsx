@@ -36,21 +36,16 @@ import AuthorizedUsersList from "./AuthorizedUsersList";
 import AddAuthorizedUserForm from "./AddAuthorizedUserForm";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { selectCurrentManagerId } from "../auth/userSlice";
-import { Status } from "../../types/Status";
-
-// Interface for validated user data (what we get from the API)
 interface ValidatedUser {
   _id: string;
   user_name: string;
   email: string;
 }
-
 interface AddProjectDialogProps {
   open: boolean;
   onClose: () => void;
   onAdd: (data: AddProjectFormData) => void;
 }
-
 const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
   open,
   onClose,
@@ -60,21 +55,17 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
   const [userFormOpen, setUserFormOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<ValidatedUser | undefined>();
   const [authorizedUsers, setAuthorizedUsers] = useState<ValidatedUser[]>([]);
-
   const dispatch = useDispatch();
   const projectsFromState = useSelector((state: any) => state.projects.projects);
   const currentUser = useCurrentUser();
   const currentManagerId = useSelector(selectCurrentManagerId);
-
   const [addProject, { isLoading: isAddingProject, error: addProjectError }] =
     useAddProjectMutation();
-
   const {
     data: teamMembersData,
     isLoading: isLoadingTeamMembers,
     error: teamMembersError,
   } = useGetAllTeamMembersUnderManagerQuery(currentUser?._id || "");
-
   const {
     handleSubmit,
     control,
@@ -98,10 +89,8 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
 
   const selectedManagerId = watch("project_manager_id");
 
-  // Set default project manager after team data is loaded
   useEffect(() => {
     if (teamMembersData?.teamLeaders && teamMembersData.teamLeaders.length > 0 && !selectedManagerId) {
-      // Find current manager in the list or use the first available
       const defaultManager = teamMembersData.teamLeaders.find(
         manager => manager._id === currentManagerId
       ) || teamMembersData.teamLeaders[0];
@@ -111,22 +100,18 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
       }
     }
   }, [teamMembersData, currentManagerId, selectedManagerId, setValue]);
-
-  // Update form's authorized_Users when authorizedUsers state changes
   useEffect(() => {
     setValue("authorized_Users", authorizedUsers.map(user => user._id));
   }, [authorizedUsers, setValue]);
 
   const handleAddUser = useCallback(
     (validatedUser: ValidatedUser) => {
-      // Check if user is already added
       if (!authorizedUsers.find(user => user._id === validatedUser._id)) {
         setAuthorizedUsers(prev => [...prev, validatedUser]);
       }
     },
     [authorizedUsers]
   );
-
   const handleEditUser = useCallback(
     (validatedUser: ValidatedUser) => {
       if (!editingUser) return;
@@ -138,24 +123,20 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
     },
     [authorizedUsers, editingUser]
   );
-
   const handleDeleteUser = useCallback(
     (userId: string) => {
       setAuthorizedUsers(prev => prev.filter(user => user._id !== userId));
     },
     []
   );
-
   const handleOpenUserForm = () => {
     setEditingUser(undefined);
     setUserFormOpen(true);
   };
-
   const handleStartEditUser = (user: ValidatedUser) => {
     setEditingUser(user);
     setUserFormOpen(true);
   };
-
   const handleClose = () => {
     reset();
     setEditingUser(undefined);
@@ -163,18 +144,9 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
     setAuthorizedUsers([]);
     onClose();
   };
-
   const onSubmit: SubmitHandler<AddProjectFormData> = async (data) => {
     console.log("Submitting project data:", data);
     try {
-      // const finalData = {
-      //   ...data,
-      //   project_manager_id: data.project_manager_id || currentManagerId,
-      //   organization_id: currentUser?.organization_id || "",
-      //   authorized_Users: data.authorized_Users, // These are now valid MongoDB ObjectIds
-      //   status: "NOT_STARTED",
-      // };
-
       const finalData = {
         project_name: data.project_name,
         description: data.description,

@@ -8,9 +8,9 @@ import InitialRouter from "../components/InitialRouter";
 import LandingPage from "../pages/LandingPage";
 import ProjectDetails from "../features/Project/ProjectDetails";
 import EmployeeManagement from "../pages/EmployeeManagement";
-import SetPasswordPage from "../pages/SetPasswordPage";
-import ResetPasswordPage from "../features/auth/ResetPasswordPage";
 import InviteUserForm from "../features/User/InviteUserForm";
+import ResetPasswordPage from "../features/auth/ResetPasswordPage";
+import SetPasswordPage from "../pages/SetPasswordPage";
 
 const router = createBrowserRouter([
   {

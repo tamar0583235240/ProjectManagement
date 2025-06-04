@@ -19,17 +19,17 @@ const SelectTeamLeader = ({ control }: SelectTeamLeaderProps) => {
   });
 
   if (isLoading) return <CircularProgress />;
-  if (isError) return <p>שגיאה בטעינת ראשי צוות</p>;
+  if (isError) return <p>Error loading team leaders</p>;
 
   return (
     <Controller
       name="teamLeadId"
       control={control}
-      rules={{ required: "יש לבחור ראש צוות" }}
+      rules={{ required: "A team leader must be chosen" }}
       render={({ field, fieldState }) => (
         <TextField
           select
-          label="בחר ראש צוות"
+          label="Choose a team leader"
           {...field}
           fullWidth
           margin="normal"
