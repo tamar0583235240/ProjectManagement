@@ -30,7 +30,7 @@ exports.getProjectsByManagerId = async (req, res) => {
             }).populate('status project_manager_id organization_id');
 
         if (!projects || projects.length === 0) {
-            return res.status(404).json({ message: 'No projects found for this manager' });
+             res.json([]);
         }
 
         res.json(projects);
