@@ -2,6 +2,7 @@ import { Add, People } from "@mui/icons-material";
 import { Box, Button, Card, CardContent, Grid, Paper, Skeleton, Typography } from "@mui/material";
 import EmployeeCard from "./EmployeeCard";
 import type { User } from "../../types/User";
+import { grey } from "@mui/material/colors";
 
 const EmployeeGrid = ({ filteredEmployees, isLoading, employees, handleEditEmployee, handleDeleteEmployee, handleAddEmployee }: { filteredEmployees: User[], isLoading: boolean, employees: User[], handleEditEmployee: (employee: User) => void, handleDeleteEmployee: (employee: User) => void, handleAddEmployee: () => void }) => (
   <>

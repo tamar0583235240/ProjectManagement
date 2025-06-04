@@ -85,7 +85,6 @@ const EmployeeManagement = () => {
           ...employeeData,
           organization_id: user.organization_id,
         } as User;
-        // ניתן להוסיף כאן קריאה ל- addUser בעתיד
       }
       refetch();
       setShowEmployeeDialog(false);
@@ -98,7 +97,10 @@ const EmployeeManagement = () => {
 
   const handleConfirmDelete = async (employee: User) => {
     if (!employee._id) return;
-
+    if (employee._id==user._id) {
+      alert("You cannot delete your own account. Please contact an administrator for assistance.");
+      return;
+    }
     setIsSubmitting(true);
     try {
       await deleteUser(employee._id).unwrap();
