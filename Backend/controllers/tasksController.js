@@ -1,5 +1,4 @@
 const Tasks = require('../models/Tasks');
-
 exports.AddTask = async (req, res) => {
     try {
         const task = await Tasks.create(req.body);
@@ -9,7 +8,6 @@ exports.AddTask = async (req, res) => {
         res.status(500).json({ message: 'Failed to add task', error: error.message });
     }
 };
-
 exports.AllTasks = async (req, res) => {
     try {
         const tasks = await Tasks.find().populate('project_id performed_by created_by status');
@@ -19,7 +17,6 @@ exports.AllTasks = async (req, res) => {
         res.status(500).json({ message: 'Failed to get tasks', error: error.message });
     }
 };
-
 exports.DeleteTask = async (req, res) => {
     const taskId = req.params.task_id;
     try {
@@ -33,11 +30,9 @@ exports.DeleteTask = async (req, res) => {
         res.status(500).json({ message: 'Failed to delete task', error: error.message });
     }
 };
-
 exports.UpdateTask = async (req, res) => {
     const taskId = req.params.task_id;
     const { project_id, task_name, description, performed_by, created_by, deadline, status } = req.body;
-
     try {
         const updatedTask = await Tasks.findOneAndUpdate(
             { _id: taskId },
@@ -56,7 +51,6 @@ exports.UpdateTask = async (req, res) => {
         if (!updatedTask) {
             return res.status(404).json({ message: 'Task not found' });
         }
-
         res.json(updatedTask);
     } catch (error) {
         console.error('Failed to update task:', error);

@@ -10,12 +10,10 @@ const tasksRoutes = require('./routes/tasksRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 const organizationsRoutes = require('./routes/organizationsRoutes');
 const authRoutes = require('./routes/authRoutes');
-
+const inviteRoutes = require('./routes/inviteRoutes');
 
 const PORT = process.env.PORT || 7001;
 const app = express();
-
-
 connectDB();
 
 app.use(cors(corsOptions));
@@ -27,6 +25,8 @@ app.use("/api/tasks", tasksRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/organizations", organizationsRoutes);
 app.use("/api/auth",authRoutes )
+app.use('/api/invite', inviteRoutes);
+
 
 app.get("/", (req, res) => {
     res.send("this is the home page");

@@ -1,8 +1,10 @@
 
-// const verifyJWT = require("../middleware/verifyJWT")
 const express = require("express")
  const router = express.Router()
- const {SignIn,SignUp} = require("../controllers/authController")
+ const {SignIn,SignUp, forgotPassword, resetPassword} = require("../controllers/authController")
  router.post("/SignIn", SignIn)
  router.post("/SignUp", SignUp)
- module.exports = router
+ router.post("/forgot-password", forgotPassword); 
+router.post("/reset-password/:token", resetPassword);
+module.exports = router;
+

@@ -3,5 +3,4 @@ const Role = {
   Manager: 'MANAGER',
   Employee: 'EMPLOYEE'
 };
-
 module.exports = Role;
