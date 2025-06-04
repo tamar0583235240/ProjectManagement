@@ -77,21 +77,17 @@ export const tasksApi = api.injectEndpoints({
         // Update task
         updateTask: builder.mutation<Task, UpdateTaskRequest>({
             query: ({ _id, ...patch }) => ({
-                url: `tasks/${_id}`,
+                url: `tasks/updateTask/${_id}`,
                 method: 'PUT',
                 body: patch,
             }),
-            invalidatesTags: (result, error, { _id, project_id }) => [
-                { type: 'Task', id: _id },
-                { type: 'Task', id: `project-${project_id}` },
-                'Task',
-            ],
+            invalidatesTags: ['Task'],
         }),
 
         // Delete task
         deleteTask: builder.mutation<{ success: boolean; id: string }, string>({
             query: (id) => ({
-                url: `tasks/${id}`,
+                url: `tasks/deleteTask/${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Task'],

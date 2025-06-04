@@ -16,6 +16,13 @@ export const userApi = api.injectEndpoints({
                 method: "GET",
             }),
         }),
+
+        getEmployeesByOrganization: builder.query<{ _id: string; user_name: string; email: string }[], string>({
+            query: (orgId) => ({
+                url: `Users/getEmployeesByOrg/${orgId}`,
+                method: "GET",
+            }),
+        }),
     }),
     overrideExisting: false,
 });
@@ -23,4 +30,5 @@ export const userApi = api.injectEndpoints({
 export const {
     useValidateUserMutation,
     useGetTopManagerOfEmployeeQuery,
+    useGetEmployeesByOrganizationQuery,
 } = userApi;
