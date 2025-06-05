@@ -14,7 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import LockIcon from "@mui/icons-material/Lock";
 import NavBarStyles from "../style/NavBarStyles";
 const NavBar = () => {
-  const pages = ["HomePage", "Projects", "Tasks", "EmployeeManagement"];
+  const pages = ["HomePage", "Projects", "OrganizationAbout", "EmployeeManagement"];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
