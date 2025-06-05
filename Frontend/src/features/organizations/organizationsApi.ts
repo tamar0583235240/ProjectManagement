@@ -19,4 +19,5 @@ export const organizationsApi = api.injectEndpoints({
 
 export const {
   useAddOrganizationMutation,
+
 } = organizationsApi;
