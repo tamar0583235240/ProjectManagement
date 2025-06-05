@@ -43,7 +43,7 @@ const sendInviteEmail=async (email, token, customHtml, subject = 'הזמנה ל�
     from: process.env.EMAIL_USER,
     to: email,
     subject: subject,
-    html: customHtml // תומך גם ב-הזמנה וגם באיפוס סיסמה
+    html: customHtml 
   };
 
   try {
