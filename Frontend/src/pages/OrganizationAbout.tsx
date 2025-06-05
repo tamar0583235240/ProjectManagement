@@ -1,156 +1,204 @@
 import React from 'react';
-import { Building2, MapPin, Phone, Users, Target, Award, Calendar, Shield, UserCheck, Eye } from 'lucide-react';
+import {
+  Building2,
+  MapPin,
+  Phone,
+  Users,
+  Target,
+  Award,
+  Calendar,
+  Shield,
+  UserCheck,
+  Eye,
+} from 'lucide-react';
+import {
+  Box,
+  Typography,
+  Container,
+  Paper,
+  Grid,
+  Avatar,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Button,
+  Divider,
+} from '@mui/material';
 import { useGetOrganizationByUserIdQuery } from '../features/organizations/organizationsApi';
 import useCurrentUser from '../hooks/useCurrentUser';
 
 const OrganizationAbout = () => {
   const user = useCurrentUser();
-  const organization = useGetOrganizationByUserIdQuery(user._id);
+  const { data: organization, isLoading, error } = useGetOrganizationByUserIdQuery(user._id);
 
   const roleCards = [
     {
-      title: "Manager",
+      title: 'Manager',
       icon: Shield,
-      color: "bg-cyan-500",
+      color: '#06b6d4', // cyan-500
       features: [
-        "Comprehensive project management",
-        "Add team leaders",
-        "Assign tasks to projects",
-        "Full progress tracking",
-        "Generate performance reports",
+        'Comprehensive project management',
+        'Add team leaders',
+        'Assign tasks to projects',
+        'Full progress tracking',
+        'Generate performance reports',
       ],
     },
     {
-      title: "Team Leader",
+      title: 'Team Leader',
       icon: UserCheck,
-      color: "bg-orange-500",
+      color: '#f97316', // orange-500
       features: [
-        "Manage team members",
-        "Assign tasks to team",
-        "Track task execution",
-        "Report progress to manager",
-        "Manage schedules",
+        'Manage team members',
+        'Assign tasks to team',
+        'Track task execution',
+        'Report progress to manager',
+        'Manage schedules',
       ],
     },
     {
-      title: "Employee",
+      title: 'Employee',
       icon: Eye,
-      color: "bg-yellow-500",
+      color: '#eab308', // yellow-500
       features: [
-        "View personal tasks",
-        "Update task status",
-        "Add task notes",
-        "Mark tasks as complete",
-        "Track schedules",
+        'View personal tasks',
+        'Update task status',
+        'Add task notes',
+        'Mark tasks as complete',
+        'Track schedules',
       ],
     },
   ];
 
+  if (isLoading) return <Typography>Loading...</Typography>;
+  if (error || !organization) return <Typography>Error loading organization data.</Typography>;
+
   return (
-    <div className="min-h-screen bg-gray-50" dir="ltr">
-      {/* Header Section */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-6 py-8">
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-              <Building2 className="w-8 h-8 text-gray-600" />
-            </div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-3">
-              {organization.organization_name}
-            </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              {organization.organization_description}
-            </p>
-          </div>
-        </div>
-      </div>
+    <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh' }}>
+      {/* Header */}
+      <Box sx={{ bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider', py: 6 }}>
+        <Container maxWidth="md" sx={{ textAlign: 'center' }}>
+          <Avatar sx={{ bgcolor: 'grey.100', width: 64, height: 64, mx: 'auto', mb: 2 }}>
+            <Building2 size={32} color="#4b5563" />
+          </Avatar>
+          <Typography variant="h4" fontWeight="bold" gutterBottom>
+            {organization.organization_name}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            {organization.organization_description}
+          </Typography>
+        </Container>
+      </Box>
 
-      {/* Role Cards Section */}
-      <div className="container mx-auto px-6 py-12">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-gray-800 mb-3">Designed for Every Role</h2>
-          <p className="text-gray-600">
-            A flexible system that provides custom permissions for each user
-          </p>
-        </div>
+      {/* Role Cards */}
+      <Container maxWidth="lg" sx={{ py: 10 }}>
+        <Typography variant="h5" align="center" fontWeight="bold" gutterBottom>
+          Designed for Every Role
+        </Typography>
+        <Typography variant="body1" color="text.secondary" align="center" mb={6}>
+          A flexible system that provides custom permissions for each user
+        </Typography>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <Grid container spacing={4}>
           {roleCards.map((role, index) => {
-            const IconComponent = role.icon;
+            const Icon = role.icon;
             return (
-              <div
-                key={index}
-                className="bg-white rounded-xl shadow-sm border hover:shadow-md transition-all duration-200"
-              >
-                <div className={`h-2 ${role.color} rounded-t-xl`}></div>
-                <div className="p-6">
-                  <div
-                    className={`inline-flex items-center justify-center w-12 h-12 ${role.color} rounded-full mb-4`}
-                  >
-                    <IconComponent className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">{role.title}</h3>
-                  <ul className="space-y-2">
-                    {role.features.map((feature, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-center text-gray-600 text-sm"
-                      >
-                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full ml-2 flex-shrink-0"></div>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <button className="mt-4 text-cyan-500 text-sm font-medium hover:text-cyan-600">
-                    Learn More →
-                  </button>
-                </div>
-              </div>
+              <Grid item xs={12} md={4} key={index}>
+                <Paper elevation={1} sx={{ borderRadius: 3, overflow: 'hidden' }}>
+                  <Box sx={{ height: 8, bgcolor: role.color }} />
+                  <Box sx={{ p: 3 }}>
+                    <Avatar
+                      sx={{
+                        bgcolor: role.color,
+                        width: 48,
+                        height: 48,
+                        mb: 2,
+                      }}
+                    >
+                      <Icon size={20} color="#fff" />
+                    </Avatar>
+                    <Typography variant="h6" fontWeight="bold" gutterBottom>
+                      {role.title}
+                    </Typography>
+                    <List dense>
+                      {role.features.map((feature, i) => (
+                        <ListItem key={i} disableGutters sx={{ pl: 0 }}>
+                          <ListItemIcon sx={{ minWidth: 20 }}>
+                            <Box
+                              sx={{
+                                width: 6,
+                                height: 6,
+                                borderRadius: '50%',
+                                bgcolor: 'grey.500',
+                              }}
+                            />
+                          </ListItemIcon>
+                          <ListItemText primary={feature} primaryTypographyProps={{ variant: 'body2' }} />
+                        </ListItem>
+                      ))}
+                    </List>
+                    <Button variant="text" size="small" sx={{ mt: 2, color: role.color }}>
+                      Learn More →
+                    </Button>
+                  </Box>
+                </Paper>
+              </Grid>
             );
           })}
-        </div>
-      </div>
+        </Grid>
+      </Container>
 
-      {/* Contact Section */}
-      <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Contact Us</h2>
-            <p className="text-lg text-gray-600 mb-8">
+      {/* Contact Info */}
+      <Container maxWidth="lg" sx={{ py: 10 }}>
+        <Grid container spacing={6} alignItems="center">
+          <Grid item xs={12} md={6}>
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              Contact Us
+            </Typography>
+            <Typography variant="body1" color="text.secondary" mb={4}>
               We’re ready to hear from you and help you achieve your goals. Get in touch today!
-            </p>
+            </Typography>
 
-            <div className="space-y-6">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center justify-center w-10 h-10 bg-cyan-500 rounded-full">
-                  <MapPin className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800">Address</h4>
-                  <p className="text-gray-600">{organization.organization_address}</p>
-                </div>
-              </div>
+            <Box display="flex" alignItems="center" mb={3}>
+              <Avatar sx={{ bgcolor: '#06b6d4', width: 40, height: 40, mr: 2 }}>
+                <MapPin size={20} color="#fff" />
+              </Avatar>
+              <Box>
+                <Typography fontWeight="bold">Address</Typography>
+                <Typography color="text.secondary">{organization.organization_address}</Typography>
+              </Box>
+            </Box>
 
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center justify-center w-10 h-10 bg-orange-500 rounded-full">
-                  <Phone className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800">Phone</h4>
-                  <p className="text-gray-600">{organization.organization_phone}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+            <Box display="flex" alignItems="center">
+              <Avatar sx={{ bgcolor: '#f97316', width: 40, height: 40, mr: 2 }}>
+                <Phone size={20} color="#fff" />
+              </Avatar>
+              <Box>
+                <Typography fontWeight="bold">Phone</Typography>
+                <Typography color="text.secondary">{organization.organization_phone}</Typography>
+              </Box>
+            </Box>
+          </Grid>
 
-          {/* Placeholder or image can go here */}
-          <div className="h-64 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400">
-            {/* Image or Map Placeholder */}
-            Image or Map Placeholder
-          </div>
-        </div>
-      </div>
-    </div>
+          <Grid item xs={12} md={6}>
+            <Box
+              sx={{
+                height: 260,
+                bgcolor: 'grey.100',
+                borderRadius: 3,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'grey.500',
+              }}
+            >
+              Image or Map Placeholder
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
   );
 };
 
