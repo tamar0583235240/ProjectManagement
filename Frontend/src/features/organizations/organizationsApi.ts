@@ -13,7 +13,10 @@ export const organizationsApi = api.injectEndpoints({
     }),
 
     getOrganizationByUserId: builder.query<Organization, string>({
-      query: (userId: string) => `organizations/by-user/${userId}`,
+      query: (userId) => ({
+        url: `organizations/getOrganizationByUserId/${userId}`,
+        method: "GET",
+      }),
     }),
 
   }),
