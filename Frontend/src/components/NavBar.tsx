@@ -1,3 +1,22 @@
+<<<<<<< HEAD
+=======
+import React from "react"
+import AppBar from "@mui/material/AppBar"
+import Box from "@mui/material/Box"
+import Toolbar from "@mui/material/Toolbar"
+import IconButton from "@mui/material/IconButton"
+import Typography from "@mui/material/Typography"
+import Menu from "@mui/material/Menu"
+import MenuIcon from "@mui/icons-material/Menu"
+import Container from "@mui/material/Container"
+import Avatar from "@mui/material/Avatar"
+import Button from "@mui/material/Button"
+import Tooltip from "@mui/material/Tooltip"
+import MenuItem from "@mui/material/MenuItem"
+import { Link, useNavigate } from "react-router-dom"
+
+import LockIcon from "@mui/icons-material/Lock"
+>>>>>>> Frontend/Employees
 
 import React from "react";
 import AppBar from "@mui/material/AppBar";
@@ -14,6 +33,7 @@ import { Link, useNavigate } from "react-router-dom";
 import LockIcon from "@mui/icons-material/Lock";
 import NavBarStyles from "../style/NavBarStyles";
 const NavBar = () => {
+<<<<<<< HEAD
   const pages = ["HomePage", "Projects", "OrganizationAbout", "EmployeeManagement"];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
@@ -47,6 +67,55 @@ const NavBar = () => {
                 textDecoration: "none",
                 "&:hover": { color: "#F17B45" },
               }}
+=======
+    const pages = ["HomePage", "Projects", "Tasks", "employee-management"]
+    const settings = ["Profile"]
+
+    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
+    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
+
+    const navigate = useNavigate()  // מאפשר לנווט לתוך הקוד
+
+    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElNav(event.currentTarget)
+    }
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElUser(event.currentTarget)
+    }
+
+    const handleCloseNavMenu = () => {
+        setAnchorElNav(null)
+    }
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null)
+    }
+
+    // פונקציית יציאה (Logout)
+    const handleLogout = () => {
+        // מחיקת קוקיז - כאן לדוגמה פשוט נמחק cookie בשם "token"
+        document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+
+        // מחיקת כל ה-localStorage (אפשר גם למחוק רק פריטים ספציפיים)
+        localStorage.clear()
+
+        // הפניה לדף הנחיתה
+        navigate("/landingPage")
+    }
+
+    return (
+        <>
+            <AppBar
+                position="fixed"
+                style={{
+                    top: 0,
+                    width: "100%",
+                    zIndex: 100,
+                    backgroundColor: "#ffffff",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+                    height: "70px",
+                }}
+>>>>>>> Frontend/Employees
             >
               PROJECTLY
             </Typography>

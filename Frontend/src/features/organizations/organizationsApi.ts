@@ -24,5 +24,9 @@ export const organizationsApi = api.injectEndpoints({
 });
 export const {
   useAddOrganizationMutation,
+<<<<<<< HEAD
   useGetOrganizationByUserIdQuery
+=======
+
+>>>>>>> Frontend/Employees
 } = organizationsApi;

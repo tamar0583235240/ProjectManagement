@@ -64,6 +64,7 @@
 
 // src/features/User/userApi.ts
 import { api } from "../../app/api";
+<<<<<<< HEAD
 import type { AddUserInputs } from "../../types/AddUserInputs";
 import type { SetPasswordRequest } from "../../types/SetPasswordRequest";
 import type { User } from "../../types/User";
@@ -88,6 +89,54 @@ export const userApi = api.injectEndpoints({
         method: "POST",
         body: { username, email },
       }),
+=======
+import type { User } from "../../types/User";
+
+export const userApi = api.injectEndpoints({
+    endpoints: (builder) => ({
+        validateUser: builder.mutation<{ _id: string } | null, { username: string; email: string }>({
+            query: ({ username, email }) => ({
+                url: "Users/validate-user",
+                method: "POST",
+                body: { username, email },
+            }),
+        }),
+
+        getTopManagerOfEmployee: builder.query<{ topManagerId: string }, string>({
+            query: (employeeId) => ({
+                url: `Users/getTopManagerOfEmployee/${employeeId}`,
+                method: "GET",
+            }),
+        }),
+
+        getEmployeesByOrganization: builder.query<User[], string>({
+            query: (orgId) => ({
+                url: `Users/getEmployeesByOrg/${orgId}`,
+                method: "GET",
+            }),
+        }),
+
+            // מחיקת משתמש
+    deleteUser: builder.mutation<{ message: string }, string>({
+      query: (userId) => ({
+        url: `/users/DeleteUser/${userId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    // עדכון משתמש
+    updateUser: builder.mutation<User, { userId: string; data: Partial<User> }>({
+      query: ({ userId, data }) => ({
+        url: `/users/UpdateUser/${userId}`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+
+>>>>>>> Frontend/Employees
     }),
 
     getTopManagerOfEmployee: builder.query<{ topManagerId: string }, string>({
@@ -163,6 +212,7 @@ export const userApi = api.injectEndpoints({
 });
 
 export const {
+<<<<<<< HEAD
   useValidateUserMutation,
   useGetTopManagerOfEmployeeQuery,
   useGetEmployeesByOrganizationQuery,
@@ -175,3 +225,12 @@ export const {
   useGetOrganizationByIdQuery,
   // useGetUserOrganizationQuery, // If you chose the alternative endpoint above
 } = userApi;
+=======
+    useValidateUserMutation,
+    useGetTopManagerOfEmployeeQuery,
+    useGetEmployeesByOrganizationQuery,
+    useDeleteUserMutation,
+    useUpdateUserMutation
+
+} = userApi;
+>>>>>>> Frontend/Employees

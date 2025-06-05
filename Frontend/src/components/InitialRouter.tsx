@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
 import { useEffect } from 'react'
+<<<<<<< HEAD
 
+=======
+>>>>>>> Frontend/Employees
 
 const InitialRouter = () => {
   const [cookies] = useCookies(['token'])
