@@ -54,8 +54,11 @@ exports.UpdateOrganization = async (req, res) => {
 exports.getOrganizationByUserId = async (req, res) => {
   try {
     const { userId } = req.params;
+    console.log(userId);
+    
     const user = await User.findById(userId).populate('organization_id');
-
+    console.log(user.organization_id);
+    
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
