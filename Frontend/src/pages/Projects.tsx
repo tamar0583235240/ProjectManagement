@@ -53,16 +53,18 @@
 // export default Projects;
 import { useSelector } from 'react-redux';
 import { Box, Typography, CircularProgress, Alert, Paper, Button } from '@mui/material';
-import { selectCurrentManagerId } from '../features/auth/userSlice';
 import useLoadProjectsOnInit from '../hooks/useLoadProjectsOnInit';
 import type { RootState } from '../app/store';
 import ProjectsDashboard from '../features/Project/ProjectsDashboard';
-import PersonAddIcon from '@mui/icons-material/PersonAdd'; // אתה יכול להחליף לאייקון של פרויקט אם צריך
-import GroupIcon from '@mui/icons-material/Group'; // זה האייקון כמו בתמונה
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import GroupIcon from '@mui/icons-material/Group'; 
 import { Add } from '@mui/icons-material';
 import { useState } from 'react';
-import AddProjectDialog from '../features/Project/AddProjectDialog';
+import { selectCurrentManagerId } from '../features/auth/userSlice';
 import type { Project } from '../types/Project';
+import { setProjects } from '../features/Project/projectSlice';
+import { Status } from '../types/Status';
+import AddProjectDialog from '../features/Project/AddProjectDialog';
 
 const Projects = () => {
   useLoadProjectsOnInit();

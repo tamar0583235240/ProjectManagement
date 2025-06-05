@@ -110,20 +110,6 @@ export const userApi = api.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
-
-    // getTopManagerOfEmployee: builder.query<{ topManagerId: string }, string>({
-    //   query: (employeeId) => ({
-    //     url: `Users/getTopManagerOfEmployee/${employeeId}`,
-    //     method: "GET",
-    //   }),
-    // }),
-
-    // getEmployeesByOrganization: builder.query<{ _id: string; user_name: string; email: string }[], string>({
-    //   query: (orgId) => ({
-    //     url: `Users/getEmployeesByOrg/${orgId}`,
-    //     method: "GET",
-    //   }),
-    // }),
     getTeamLeaders: builder.query<User[], string>({
       query: (managerId) => ({
         url: `user/getTeamLeaders/${managerId}`,
