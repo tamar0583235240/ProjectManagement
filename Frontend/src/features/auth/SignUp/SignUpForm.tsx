@@ -1,4 +1,4 @@
-// components/auth/SignUp/SignUpForm.tsx
+
 import React from "react"
 import TextField from "@mui/material/TextField"
 import Divider from "@mui/material/Divider"

@@ -2,33 +2,33 @@ import { z } from 'zod';
 import { Status } from '../types/Status';
 
 export const authorizedUserSchema = z.object({
-  id: z.string().optional(), // Temporary form ID
+  id: z.string().optional(), 
   user_name: z.string().min(1, { message: "Username is required" }),
   email: z.string().email({ message: "Invalid email address" }),
-  _id: z.string().optional(), // Actual database ID
+  _id: z.string().optional(), 
 });
 
-// export type AuthorizedUserFormData = z.infer<typeof authorizedUserSchema>;
+
 
 export const editProjectSchema = z.object({
-  project_name: z.string().min(1, { message: "שם הפרויקט הוא שדה חובה" }),
-  description: z.string().min(1, { message: "תיאור הפרויקט הוא שדה חובה" }),
+  project_name: z.string().min(1, { message: "Project name is a required field" }),
+  description: z.string().min(1, { message: "Project description is a required field" }),
   status: z.nativeEnum(Status, { 
-    required_error: "סטטוס הוא שדה חובה",
-    invalid_type_error: "סטטוס לא תקין"
+    required_error: "Status is a required field",
+    invalid_type_error: "Status is incorrect"
   }),
-  deadline: z.string().min(1, { message: "תאריך יעד הוא שדה חובה" })
+  deadline: z.string().min(1, { message: "Date is a required field" })
     .refine((date) => {
       const deadlineDate = new Date(date);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       return deadlineDate >= today;
-    }, { message: "תאריך היעד חייב להיות היום או בעתיד" }),
+    }, { message: "Date must be today or in the future" }),
 });
 
 export const userValidationSchema = z.object({
-  user_name: z.string().min(1, "שם משתמש נדרש"),
-  email: z.string().email("כתובת אימייל לא תקינה"),
+  user_name: z.string().min(1, "Username required"),
+  email: z.string().email("Invalid email address"),
 });
 
 export const addProjectSchema = z.object({

@@ -1,3 +1,4 @@
+
 import { useSelector } from 'react-redux';
 import { Box, Typography, CircularProgress, Alert, Paper } from '@mui/material';
 import { selectCurrentManagerId } from '../features/auth/userSlice';
@@ -12,7 +13,6 @@ const Projects = () => {
   const projects = useSelector((state: RootState) => state.projects.projects);
   const isLoading = useSelector((state: RootState) => state.projects.isLoading);
   const error = useSelector((state: RootState) => state.projects.error);
-
   if (!currentManagerId) {
     return (
       <Box mt={4} display="flex" justifyContent="center">
@@ -20,7 +20,6 @@ const Projects = () => {
       </Box>
     );
   }
-
   if (isLoading) {
     return (
       <Box mt={4} display="flex" justifyContent="center">
@@ -28,7 +27,6 @@ const Projects = () => {
       </Box>
     );
   }
-
   if (error) {
     return (
       <Box mt={4} display="flex" justifyContent="center">
@@ -36,7 +34,6 @@ const Projects = () => {
       </Box>
     );
   }
-
   return (
     <Box p={3}>
       <Typography variant="h2" gutterBottom>

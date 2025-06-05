@@ -7,7 +7,7 @@ const SetPasswordPage = () => {
   const { token } = useParams<{ token: string }>();
 
   if (!token) {
-    return <Typography color="error">קישור שגוי - אין טוקן.</Typography>;
+    return <Typography color="error">Invalid link - no token.</Typography>;
   }
 
   return (

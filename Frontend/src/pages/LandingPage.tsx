@@ -7,8 +7,11 @@ import "../style/LandingPage.css"
 import PicManagementSystem from '../assets/PicManagementSystem.jpg';
 import PicSmartAndIntuitiveDashboard from '../assets/PicSmartAndIntuitiveDashboard.jpg';
 import PicEasyAndSecureLogin from '../assets/PicEasyAndSecureLogin.jpg';
-import SignIn from '../features/auth/SignIn';
+
 import { SignUp } from '../features/auth/SignUp';
+import { SignIn } from '../features/auth/SignIn';
+// import SignIn from '../features/auth/SignIn';
+// import SignUp from '../features/auth/SignUp';
 const LandingPage = () => {
     const navigate = useNavigate();
     const [openSignUpDialog, setOpenSignUpDialog] = React.useState(false)

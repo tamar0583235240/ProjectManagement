@@ -42,7 +42,7 @@ const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
   const getMonthData = () => {
     const monthCounts: Record<string, number> = {}
 
-    // אתחל כל החודשים עם 0
+
     ALL_MONTHS.forEach((month) => {
       monthCounts[month] = 0
     })

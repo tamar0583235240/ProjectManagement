@@ -1,3 +1,4 @@
+
 import { api } from "../../app/api";
 import type { Status } from "../../types/Status";
 
@@ -35,19 +36,19 @@ export interface UpdateTaskRequest extends Partial<CreateTaskRequest> {
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        // Get all tasks
+
         getTasks: builder.query<Task[], void>({
             query: () => 'tasks',
             providesTags: ['Task'],
         }),
 
-        // Get task by ID
+   
         getTaskById: builder.query<Task, string>({
             query: (id) => `tasks/${id}`,
             providesTags: (result, error, id) => [{ type: 'Task', id }],
         }),
 
-        // Get tasks by project
+   
         getTasksByProject: builder.query<Task[], string>({
             query: (projectId) => ({
                 url: `tasks/getTasksByProject/${projectId}`,
@@ -56,7 +57,6 @@ export const tasksApi = api.injectEndpoints({
             providesTags: ['Task'],
         }),
 
-        // Get tasks by user
         getTasksByUser: builder.query<Task[], string>({
             query: (userId) => `tasks/user/${userId}`,
             providesTags: (result, error, userId) => [
@@ -65,6 +65,16 @@ export const tasksApi = api.injectEndpoints({
             ],
         }),
 
+ 
+        getTasksByManagerId: builder.query<Task[], string>({
+            query: (managerId) => `tasks/manager/${managerId}`,
+            providesTags: (result, error, managerId) => [
+                { type: 'Task', id: `manager-${managerId}` },
+                'Task',
+            ],
+        }),
+
+   
         addTask: builder.mutation<Task, CreateTaskRequest>({
             query: (newTask) => ({
                 url: 'tasks/addTask',
@@ -74,7 +84,6 @@ export const tasksApi = api.injectEndpoints({
             invalidatesTags: ['Task'],
         }),
 
-        // Update task
         updateTask: builder.mutation<Task, UpdateTaskRequest>({
             query: ({ _id, ...patch }) => ({
                 url: `tasks/updateTask/${_id}`,
@@ -84,7 +93,6 @@ export const tasksApi = api.injectEndpoints({
             invalidatesTags: ['Task'],
         }),
 
-        // Delete task
         deleteTask: builder.mutation<{ success: boolean; id: string }, string>({
             query: (id) => ({
                 url: `tasks/deleteTask/${id}`,
@@ -93,7 +101,6 @@ export const tasksApi = api.injectEndpoints({
             invalidatesTags: ['Task'],
         }),
 
-        // Update task status
         updateTaskStatus: builder.mutation<Task, { id: string; status: string }>({
             query: ({ id, status }) => ({
                 url: `tasks/${id}/status`,
@@ -106,7 +113,6 @@ export const tasksApi = api.injectEndpoints({
             ],
         }),
 
-        // Assign task to user
         assignTask: builder.mutation<Task, { taskId: string; userId: string }>({
             query: ({ taskId, userId }) => ({
                 url: `tasks/${taskId}/assign`,
@@ -119,13 +125,12 @@ export const tasksApi = api.injectEndpoints({
             ],
         }),
 
-        // Get overdue tasks
         getOverdueTasks: builder.query<Task[], void>({
             query: () => 'tasks/overdue',
             providesTags: ['Task'],
         }),
 
-        // Get tasks by status
+
         getTasksByStatus: builder.query<Task[], string>({
             query: (status) => `tasks/status/${status}`,
             providesTags: (result, error, status) => [
@@ -141,6 +146,7 @@ export const {
     useGetTaskByIdQuery,
     useGetTasksByProjectQuery,
     useGetTasksByUserQuery,
+    useGetTasksByManagerIdQuery, 
     useAddTaskMutation,
     useUpdateTaskMutation,
     useDeleteTaskMutation,

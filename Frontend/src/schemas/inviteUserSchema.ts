@@ -1,18 +1,17 @@
 import { z } from "zod";
 import { Role } from "../types/Role";
 
-
 export const inviteUserSchema = z.object({
-  email: z.string().email({ message: "כתובת אימייל לא תקינה" }),
+  email: z.string().email({ message: "Invalid email address"}),
   role: z.enum([Role.TEAMLEADER, Role.EMPLOYEE]),
   teamLeadId: z.string().optional(),
 }).refine((data) => {
   if (data.role === Role.EMPLOYEE) {
-    return !!data.teamLeadId;  // עובד חייב לבחור ראש צוות
+    return !!data.teamLeadId;  
   }
-  return true;  // ראש צוות לא חייב
+  return true;  
 }, {
-  message: "יש לבחור ראש צוות עבור עובד",
+  message: "A team leader must be chosen for an employee",
   path: ["teamLeadId"],
 });
 

@@ -25,9 +25,7 @@ const InviteUserForm: React.FC = () => {
       role: Role.TEAMLEADER,
     },
   });
-
   const role = form.watch("role");
-
   const onSubmit = async (data: InviteUserInput) => {
     const payload = {
       ...data,
@@ -39,7 +37,7 @@ const InviteUserForm: React.FC = () => {
       await inviteUser(payload).unwrap();
       form.reset();
     } catch (error) {
-      console.error("שגיאה בשליחת ההזמנה:", error);
+      console.error("Error sending invitation:", error);
     }
   };
 
@@ -54,7 +52,7 @@ const InviteUserForm: React.FC = () => {
         helperText={form.formState.errors.email?.message}
       />
 
-      <TextField select label="תפקיד" {...form.register("role")} fullWidth margin="normal">
+      <TextField select label="role" {...form.register("role")} fullWidth margin="normal">
         {!hasTeamLeads && <MenuItem value={Role.TEAMLEADER}>ראש צוות</MenuItem>}
         {hasTeamLeads && (
           <>

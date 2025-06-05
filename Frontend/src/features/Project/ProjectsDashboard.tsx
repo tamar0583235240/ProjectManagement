@@ -112,7 +112,7 @@ const ProjectsDashboard = ({ initialProjects }: { initialProjects: Project[] }) 
             : updatedProject.project_manager_id,
         organization:
           typeof updatedProject.organization === "object"
-            ? updatedProject.organization._id
+            ? updatedProject.organization_id
             : updatedProject.organization,
       }
 

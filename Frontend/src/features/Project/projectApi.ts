@@ -1,17 +1,16 @@
-// src/services/api/projectApi.ts - RTK Query APIs
+
 import type { Project } from '../../types/Project';
 import { api } from '../../app/api';
 import type { User } from '../../types/User';
 
 export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // קבלת רשימת מנהלי פרויקט
+
     getProjectManagers: builder.query({
       query: () => 'users/project-managers',
       providesTags: ['User'],
     }),
 
-    // הוספת פרויקט חדש
     addProject: builder.mutation<Project, Project>({
       query: (project) => ({
         url: 'projects/addProject',
@@ -21,7 +20,6 @@ export const projectApi = api.injectEndpoints({
       invalidatesTags: ['Project'],
     }),
 
-    // קבלת פרויקטים לפי מנהל
     getProjectsByManagerId: builder.query<Project[], string | null>({
       query: (managerId) => ({
         url: `projects/getProjectsByManagerId/${managerId}`,
@@ -30,7 +28,6 @@ export const projectApi = api.injectEndpoints({
       providesTags: ['Project'],
     }),
 
-    // מחיקת פרויקט
     deleteProject: builder.mutation<Project[], string | null>({
       query: (projectId) => ({
         url: `projects/DeleteProject/${projectId}`,
@@ -39,7 +36,6 @@ export const projectApi = api.injectEndpoints({
       invalidatesTags: ['Project'],
     }),
 
-    // עדכון פרויקט
     updateProject: builder.mutation<Project, Project>({
       query: (project) => ({
         url: `projects/updateProject/${project._id}`,
@@ -49,7 +45,6 @@ export const projectApi = api.injectEndpoints({
       invalidatesTags: ['Project'],
     }),
 
-    // עדכון סטטוס פרויקט
     updateProjectStatus: builder.mutation<Project, { id: string; status: string }>({
       query: ({ id, status }) => ({
         url: `projects/${id}/status`,
@@ -59,7 +54,6 @@ export const projectApi = api.injectEndpoints({
       invalidatesTags: ['Project'],
     }),
 
-    // הוספת משתמש מורשה לפרויקט
     addAuthorizedUser: builder.mutation<Project, { projectId: string, userId: string }>({
       query: ({ projectId, userId }) => ({
         url: `projects/${projectId}/authorized-users`,
@@ -69,7 +63,6 @@ export const projectApi = api.injectEndpoints({
       invalidatesTags: ['Project'],
     }),
 
-    // הסרת משתמש מורשה מפרויקט
     removeAuthorizedUser: builder.mutation<Project, { projectId: string, userId: string }>({
       query: ({ projectId, userId }) => ({
         url: `projects/${projectId}/authorized-users/${userId}`,

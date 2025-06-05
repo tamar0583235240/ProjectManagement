@@ -1,4 +1,4 @@
-// components/auth/SignUp/SignUpDialog.tsx
+
 import React, { useState } from "react"
 import Dialog from "@mui/material/Dialog"
 import DialogTitle from "@mui/material/DialogTitle"
