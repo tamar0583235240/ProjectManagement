@@ -10,6 +10,7 @@ import ProjectDetails from "../features/Project/ProjectDetails";
 import NotFound from "../pages/NotFound";
 import OrganizationAbout from "../pages/OrganizationAbout";
 import EmployeeManagement from "../pages/EmployeeManagment";
+import InviteUserForm from "../features/User/InviteUserForm";
 
 const router = createBrowserRouter([
   {
@@ -38,12 +39,12 @@ const router = createBrowserRouter([
       {
         path: "employee-management",
         element: <EmployeeManagement />,
-        // children: [
-        //   {
-        //     path: "invite",
-        //     element: <InviteUserForm />
-        //   }
-        // ]
+        children: [
+          {
+            path: "invite",
+            element: <InviteUserForm />
+          }
+        ]
       },
     ]
   },

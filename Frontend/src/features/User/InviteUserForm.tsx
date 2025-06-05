@@ -34,30 +34,25 @@ const InviteUserForm: React.FC<{ onSave: (data: InviteUserInput) => Promise<void
   const form = useForm<InviteUserInput>({
     resolver: zodResolver(inviteUserSchema),
     defaultValues: {
-      role: hasTeamLeads ? Role.EMPLOYEE : Role.TEAMLEADER, // ברירת מחדל: עובד אם יש ראשי צוות, אחרת ראש צוות
+      role: hasTeamLeads ? Role.EMPLOYEE : Role.TEAMLEADER,
     },
   });
 
   const role = form.watch("role");
 
   useEffect(() => {
-    // אם אין ראשי צוות והתפקיד הנוכחי הוא עובד, שנה לראש צוות
     if (!hasTeamLeads && role === Role.EMPLOYEE) {
       form.setValue("role", Role.TEAMLEADER);
     }
-    // אם יש ראשי צוות אבל התפקיד הוא TEAMLEADER, ושדה teamLeadId מוגדר, נקה אותו
     if (hasTeamLeads && role === Role.TEAMLEADER && form.getValues("teamLeadId")) {
       form.setValue("teamLeadId", undefined);
     }
-    // אם אין ראשי צוות, ודא ששדה teamLeadId ריק, כי הוא לא רלוונטי
     if (!hasTeamLeads) {
       form.setValue("teamLeadId", undefined);
     }
   }, [hasTeamLeads, role, form]);
 
   const onSubmit = async (data: InviteUserInput) => {
-    // אם התפקיד הוא עובד ואין ראשי צוות, אנחנו לא אמורים להגיע לכאן,
-    // אבל זו הגנה נוספת.
     if (data.role === Role.EMPLOYEE && !hasTeamLeads) {
       console.warn("Cannot invite an employee when no team leaders are available.");
       return;
@@ -65,20 +60,16 @@ const InviteUserForm: React.FC<{ onSave: (data: InviteUserInput) => Promise<void
 
     const payload = {
       ...data,
-      // לוגיקה לעדכון manager_id:
-      // אם התפקיד הוא עובד, המנהל הוא teamLeadId שנבחר.
-      // אם התפקיד הוא ראש צוות, המנהל הוא ה-ID של המשתמש הנוכחי (המנהל שיוצר את ההזמנה).
       manager_id: data.role === Role.EMPLOYEE ? data.teamLeadId : user?._id,
       organization_id: user?.organization_id,
     };
 
     try {
-      await inviteUserMutation(payload).unwrap(); // השתמש ב-.unwrap() לטיפול בשגיאות
+      await inviteUserMutation(payload).unwrap();
       form.reset();
       onClose();
     } catch (error) {
       console.error("שגיאה בשליחת ההזמנה:", error);
-      // ייתכן ותרצה להציג הודעת שגיאה למשתמש (לדוגמה, עם Snackbar)
     }
   };
 
@@ -113,18 +104,13 @@ const InviteUserForm: React.FC<{ onSave: (data: InviteUserInput) => Promise<void
           value={role}
           sx={{ mt: 0 }}
         >
-          {/* תמיד נציג את האפשרות ל-Team Leader */}
           <MenuItem value={Role.TEAMLEADER}>ראש צוות</MenuItem>
-
-          {/* נציג את האפשרות ל-Employee רק אם יש ראשי צוות */}
           {hasTeamLeads && (
             <MenuItem value={Role.EMPLOYEE}>עובד</MenuItem>
           )}
         </Select>
         {form.formState.errors.role && <FormHelperText>{form.formState.errors.role?.message}</FormHelperText>}
       </FormControl>
-
-      {/* נציג את שדה בחירת ראש הצוות רק אם נבחר תפקיד 'עובד' ויש ראשי צוות זמינים */}
       {role === Role.EMPLOYEE && hasTeamLeads && (
         <SelectTeamLeader
           control={form.control}

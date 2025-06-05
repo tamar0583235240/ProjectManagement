@@ -20,8 +20,6 @@ const SelectTeamLeader = ({ control, teamLeads, error, helperText, isLoadingTeam
       </Box>
     );
   }
-
-  // זו הגנה, אבל הלוגיקה ב-InviteUserForm אמורה למנוע רינדור של זה אם אין ראשי צוות.
   if (teamLeads.length === 0) {
     return (
       <Typography color="error" sx={{ my: 2 }}>
@@ -32,20 +30,19 @@ const SelectTeamLeader = ({ control, teamLeads, error, helperText, isLoadingTeam
 
   return (
     <Controller
-      name="teamLeadId" // השדה ש-React Hook Form ינהל
+      name="teamLeadId"
       control={control}
       rules={{ required: "יש לבחור ראש צוות" }}
       render={({ field, fieldState }) => (
         <TextField
-          select // זה חשוב כדי שה-TextField יתנהג כסלקט
+          select 
           label="בחר ראש צוות"
-          {...field} // מקשר את השדה ל-React Hook Form (value, onChange, onBlur)
+          {...field} 
           fullWidth
           margin="normal"
           error={error || !!fieldState.error}
           helperText={helperText || fieldState.error?.message}
         >
-          {/* לולאה על מערך teamLeads שקיבלנו בפרופס */}
           {teamLeads.map((lead) => (
             <MenuItem key={lead._id} value={lead._id}>
               {lead.user_name}
