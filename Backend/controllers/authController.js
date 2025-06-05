@@ -79,7 +79,7 @@ exports.forgotPassword = async (req, res) => {
     console.log("User found:", user);
     if (!user) return res.status(404).json({ message: "User not found" });
     const token = generatePasswordToken();
-    const expires = Date.now() + 1000 * 60 * 60 * 48; // 48 שעות
+    const expires = Date.now() + 1000 * 60 * 60 * 48;
     console.log("Generated token:", token, "Expires at:", new Date(expires));
     user.password_token = token;
     user.password_token_expires = new Date(expires);

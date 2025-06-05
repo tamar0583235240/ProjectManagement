@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 
 function generatePasswordToken() {
-  return crypto.randomBytes(32).toString('hex'); // טוקן אקראי באורך 64 תווים
+  return crypto.randomBytes(32).toString('hex'); 
 }
 
 module.exports = generatePasswordToken;

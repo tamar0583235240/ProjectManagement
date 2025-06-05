@@ -1,4 +1,4 @@
-// const { log } = require('node:console');
+
 const Projects = require('../models/Projects');
 exports.AddProject = async (req, res) => {
     try {
