@@ -67,7 +67,7 @@ exports.getTeamLeaders = async (req, res) => {
     const teamLeaders = await User.find({
       role: Role.TeamLeader,
       manager_id: managerId,
-    }).select("_id name");
+    });
 
     return res.json(
       teamLeaders.map((tl) => ({
