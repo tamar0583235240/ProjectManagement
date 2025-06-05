@@ -12,7 +12,3 @@ function App() {
 }
 
 export default App;
-<<<<<<< HEAD
-
-=======
->>>>>>> Frontend/Employees

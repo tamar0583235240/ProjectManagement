@@ -2,13 +2,13 @@ import { createBrowserRouter } from "react-router-dom";
 import AppLayout from "../components/AppLayout";
 import HomePage from "../pages/HomePage";
 import Projects from "../pages/Projects";
-import Tasks from "../pages/Tasks";
 import LandingPage from "../pages/LandingPage";
 import InitialRouter from "../components/InitialRouter";
 import SetPasswordPage from "../pages/SetPasswordPage";
 import ResetPasswordPage from "../features/auth/ResetPasswordPage";
 import ProjectDetails from "../features/Project/ProjectDetails";
 import NotFound from "../pages/NotFound";
+import OrganizationAbout from "../pages/OrganizationAbout";
 import EmployeeManagement from "../pages/EmployeeManagment";
 
 const router = createBrowserRouter([
@@ -34,16 +34,16 @@ const router = createBrowserRouter([
       { element: <HomePage />, index: true },
       { path: "projects", element: <Projects /> },
       { path: 'projects/:projectId', element: <ProjectDetails /> },
-      { path: "tasks", element: <Tasks /> },
+      { path: "OrganizationAbout", element: <OrganizationAbout /> },
       {
         path: "employee-management",
         element: <EmployeeManagement />,
-        children: [
-          {
-            path: "invite",
-            element: <InviteUserForm />
-          }
-        ]
+        // children: [
+        //   {
+        //     path: "invite",
+        //     element: <InviteUserForm />
+        //   }
+        // ]
       },
     ]
   },

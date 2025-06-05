@@ -16,14 +16,8 @@ export const api = createApi({
   tagTypes: ["User", "Organization", "Project", "Task"],
   endpoints: () => ({}),
 });
-<<<<<<< HEAD
-const getCookie=(name: string): string | null=> {
-=======
-
-
 
 export const getCookie = (name: string): string | null => {
->>>>>>> Frontend/Employees
   const cookies = document.cookie.split(';');
   for (let cookie of cookies) {
     const [key, value] = cookie.trim().split('=');

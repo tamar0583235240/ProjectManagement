@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> Frontend/Employees
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { setPasswordSchema } from "../schemas/SchemaSetPassword";
@@ -9,7 +5,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { Button, TextField, Typography, Box, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useSetPasswordMutation } from "../features/User/userApi";
+import { useSetPasswordMutation } from "../features/users/userApi";
 
 type SetPasswordData = z.infer<typeof setPasswordSchema>;
 type Props = {

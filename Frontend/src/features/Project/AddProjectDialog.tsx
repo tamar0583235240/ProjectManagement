@@ -36,11 +36,8 @@ import AuthorizedUsersList from "./AuthorizedUsersList";
 import AddAuthorizedUserForm from "./AddAuthorizedUserForm";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { selectCurrentManagerId } from "../auth/userSlice";
-<<<<<<< HEAD
-=======
 import { Status } from "../../types/Status";
 
->>>>>>> Frontend/Employees
 interface ValidatedUser {
   _id: string;
   user_name: string;
@@ -105,10 +102,6 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
       }
     }
   }, [teamMembersData, currentManagerId, selectedManagerId, setValue]);
-<<<<<<< HEAD
-=======
-
->>>>>>> Frontend/Employees
   useEffect(() => {
     setValue("authorized_Users", authorizedUsers.map(user => user._id));
   }, [authorizedUsers, setValue]);
@@ -156,10 +149,6 @@ const AddProjectDialog: React.FC<AddProjectDialogProps> = ({
   const onSubmit: SubmitHandler<AddProjectFormData> = async (data) => {
     console.log("Submitting project data:", data);
     try {
-<<<<<<< HEAD
-=======
-
->>>>>>> Frontend/Employees
       const finalData = {
         project_name: data.project_name,
         description: data.description,

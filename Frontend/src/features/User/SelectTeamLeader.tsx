@@ -1,16 +1,8 @@
 import { Controller, type Control } from "react-hook-form";
-<<<<<<< HEAD:Frontend/src/features/User/SelectTeamLeader.tsx
-import { MenuItem, TextField, CircularProgress } from "@mui/material";
-import useCurrentUser from "../../hooks/useCurrentUser";
-import { useGetTeamLeadersQuery } from "./userApi";
-=======
 import { MenuItem, TextField, CircularProgress, Box, Typography } from "@mui/material";
-import React from "react";
 import type { InviteUserInput } from "../../schemas/inviteUserSchema";
-import type { User } from "../../types/Project";
+import type { User } from "../../types/User";
 
-
->>>>>>> Frontend/Employees:Frontend/src/features/users/SelectTeamLeader.tsx
 interface SelectTeamLeaderProps {
   control: Control<InviteUserInput>;
   teamLeads: User[];
@@ -18,22 +10,6 @@ interface SelectTeamLeaderProps {
   helperText?: string;
   isLoadingTeamLeads: boolean;
 }
-<<<<<<< HEAD:Frontend/src/features/User/SelectTeamLeader.tsx
-const SelectTeamLeader = ({ control }: SelectTeamLeaderProps) => {
-  const user = useCurrentUser();
-  const userId = user?._id;
-
-  const {
-    data: teamLeads = [],
-    isLoading,
-    isError,
-  } = useGetTeamLeadersQuery(userId!, {
-    skip: !userId,
-  });
-
-  if (isLoading) return <CircularProgress />;
-  if (isError) return <p>Error loading team leaders</p>;
-=======
 
 const SelectTeamLeader = ({ control, teamLeads, error, helperText, isLoadingTeamLeads }: SelectTeamLeaderProps) => {
   if (isLoadingTeamLeads) {
@@ -45,6 +21,7 @@ const SelectTeamLeader = ({ control, teamLeads, error, helperText, isLoadingTeam
     );
   }
 
+  // זו הגנה, אבל הלוגיקה ב-InviteUserForm אמורה למנוע רינדור של זה אם אין ראשי צוות.
   if (teamLeads.length === 0) {
     return (
       <Typography color="error" sx={{ my: 2 }}>
@@ -52,29 +29,23 @@ const SelectTeamLeader = ({ control, teamLeads, error, helperText, isLoadingTeam
       </Typography>
     );
   }
->>>>>>> Frontend/Employees:Frontend/src/features/users/SelectTeamLeader.tsx
 
   return (
     <Controller
-      name="teamLeadId" 
+      name="teamLeadId" // השדה ש-React Hook Form ינהל
       control={control}
-      rules={{ required: "A team leader must be chosen" }}
+      rules={{ required: "יש לבחור ראש צוות" }}
       render={({ field, fieldState }) => (
         <TextField
-<<<<<<< HEAD:Frontend/src/features/User/SelectTeamLeader.tsx
-          select
-          label="Choose a team leader"
-          {...field}
-=======
-          select 
+          select // זה חשוב כדי שה-TextField יתנהג כסלקט
           label="בחר ראש צוות"
-          {...field} 
->>>>>>> Frontend/Employees:Frontend/src/features/users/SelectTeamLeader.tsx
+          {...field} // מקשר את השדה ל-React Hook Form (value, onChange, onBlur)
           fullWidth
           margin="normal"
           error={error || !!fieldState.error}
           helperText={helperText || fieldState.error?.message}
         >
+          {/* לולאה על מערך teamLeads שקיבלנו בפרופס */}
           {teamLeads.map((lead) => (
             <MenuItem key={lead._id} value={lead._id}>
               {lead.user_name}

@@ -52,11 +52,7 @@ const storedUser = useCurrentUser();
 
 const initialState: UserState = {
   role: storedUser?.role || null,
-<<<<<<< HEAD
   currentManager: storedUser?.role!==Role.MANAGER? storedUser?.manager_id : storedUser?._id,
-=======
-  currentManager: storedUser?.role !== Role.MANAGER ? storedUser?.manager_id : storedUser?._id,
->>>>>>> Frontend/Employees
 }
 
 const userSlice = createSlice({

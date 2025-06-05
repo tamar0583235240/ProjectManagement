@@ -14,10 +14,10 @@ import {
 } from "@mui/material";
 import SelectTeamLeader from "./SelectTeamLeader";
 import useCurrentUser from "../../hooks/useCurrentUser";
-import { useGetTeamLeadersQuery, useInviteUserMutation } from "./userApi";
 import { inviteUserSchema, type InviteUserInput } from "../../schemas/inviteUserSchema";
 import { Role } from "../../types/Role";
 import { grey } from "@mui/material/colors";
+import { useGetTeamLeadersQuery, useInviteUserMutation } from "../users/userApi";
 
 const InviteUserForm: React.FC<{ onSave: (data: InviteUserInput) => Promise<void>, isLoading: boolean, onClose: () => void }> = ({ onSave, isLoading: isSubmitting, onClose }) => {
   const user = useCurrentUser();
