@@ -12,6 +12,10 @@ export const organizationsApi = api.injectEndpoints({
       invalidatesTags: ["Organization"],
     }),
 
+    getOrganizationByUserId: builder.query<Organization, string>({
+      query: (userId: string) => `organizations/by-user/${userId}`,
+    }),
+
   }),
   overrideExisting: false,
 });
