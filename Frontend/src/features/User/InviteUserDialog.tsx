@@ -35,9 +35,8 @@ const InviteUserDialog = ({ open, onClose, onSave, isLoading }: { open: boolean,
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ pt: 2, pb: 3, px: 3 }}>
-        <InviteUserForm onClose={onClose} onSave={onSave} isLoading={isLoading} /> {/* Render the new InviteUserForm */}
+        <InviteUserForm onClose={onClose} onSave={onSave} isLoading={isLoading} />
       </DialogContent>
-      {/* DialogActions are now handled within InviteUserFormContent for submit button */}
     </Dialog>
   );
 };

@@ -1,44 +1,50 @@
-
 import { Controller, type Control } from "react-hook-form";
-import { MenuItem, TextField, CircularProgress } from "@mui/material";
-import { useGetTeamLeadersQuery } from "./userApi";
-import useCurrentUser from "../../hooks/useCurrentUser";
-// import { InviteUserInput } from "../../schemas/inviteUserSchema";
+import { MenuItem, TextField, CircularProgress, Box, Typography } from "@mui/material";
 import React from "react";
+import type { InviteUserInput } from "../../schemas/inviteUserSchema";
+import type { User } from "../../types/Project";
+
 
 interface SelectTeamLeaderProps {
-  control: Control<any>;
+  control: Control<InviteUserInput>;
+  teamLeads: User[];
+  error: boolean;
+  helperText?: string;
+  isLoadingTeamLeads: boolean;
 }
 
-const SelectTeamLeader = ({ control }: SelectTeamLeaderProps) => {
-  const user = useCurrentUser();
-  const userId = user?._id;
+const SelectTeamLeader = ({ control, teamLeads, error, helperText, isLoadingTeamLeads }: SelectTeamLeaderProps) => {
+  if (isLoadingTeamLeads) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
+        <CircularProgress />
+        <Typography ml={2}>טוען ראשי צוות...</Typography>
+      </Box>
+    );
+  }
 
-  const {
-    data: teamLeads = [],
-    isLoading,
-    isError,
-  } = useGetTeamLeadersQuery(userId!, {
-    skip: !userId,
-  });
-
-  if (isLoading) return <CircularProgress />;
-  if (isError) return <p>שגיאה בטעינת ראשי צוות</p>;
+  if (teamLeads.length === 0) {
+    return (
+      <Typography color="error" sx={{ my: 2 }}>
+        אין ראשי צוות זמינים לבחירה.
+      </Typography>
+    );
+  }
 
   return (
     <Controller
-      name="teamLeadId"
+      name="teamLeadId" 
       control={control}
       rules={{ required: "יש לבחור ראש צוות" }}
       render={({ field, fieldState }) => (
         <TextField
-          select
+          select 
           label="בחר ראש צוות"
-          {...field}
+          {...field} 
           fullWidth
           margin="normal"
-          error={!!fieldState.error}
-          helperText={fieldState.error?.message}
+          error={error || !!fieldState.error}
+          helperText={helperText || fieldState.error?.message}
         >
           {teamLeads.map((lead) => (
             <MenuItem key={lead._id} value={lead._id}>

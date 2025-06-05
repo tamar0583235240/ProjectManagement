@@ -228,13 +228,6 @@ const EmployeeManagement = () => {
 
         <EmployeeStatsCards stats={stats} />
 
-        {/* <EmployeeFilters
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          roleFilter={roleFilter}
-          setRoleFilter={setRoleFilter}
-        /> */}
-
         <EmployeeGrid
           filteredEmployees={filteredEmployees}
           isLoading={isLoading}
