@@ -1,4 +1,6 @@
 const Organization = require('../models/Organization');
+const User = require('../models/User');
+
 exports.AddOrganization = async (req, res) => {
     const organization = await Organization.create(req.body);
     res.json(organization)
