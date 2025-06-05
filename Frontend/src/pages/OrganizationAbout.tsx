@@ -180,22 +180,6 @@ const OrganizationAbout = () => {
               </Box>
             </Box>
           </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Box
-              sx={{
-                height: 260,
-                bgcolor: 'grey.100',
-                borderRadius: 3,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'grey.500',
-              }}
-            >
-              Image or Map Placeholder
-            </Box>
-          </Grid>
         </Grid>
       </Container>
     </Box>
