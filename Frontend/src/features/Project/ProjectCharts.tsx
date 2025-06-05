@@ -42,6 +42,7 @@ const ProjectCharts: React.FC<ProjectChartsProps> = ({ projects }) => {
   const getMonthData = () => {
     const monthCounts: Record<string, number> = {}
 
+
     ALL_MONTHS.forEach((month) => {
       monthCounts[month] = 0
     })
