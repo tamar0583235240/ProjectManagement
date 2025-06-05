@@ -90,7 +90,6 @@ const SelectTeamLeader = ({ control, teamLeads, error, helperText, isLoadingTeam
     <Controller
       name="teamLeadId"
       control={control}
-      // The Zod schema now handles the 'required' rule for teamLeadId based on role
       render={({ field, fieldState }) => (
         <TextField
           select
