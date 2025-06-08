@@ -31,7 +31,6 @@ type TaskFormValues = {
 
 type Employee = {
   _id: string;
-  full_name?: string;
   user_name: string;
   email: string;
 };
@@ -164,11 +163,7 @@ const AddTaskDialog: React.FC<AddTaskDialogProps> = ({
                 ) : employees.length === 0 ? (
                   <MenuItem disabled>No employees found</MenuItem>
                 ) : (
-                  employees.map((emp: Employee) => (
-                    <MenuItem key={emp._id} value={emp._id}>
-                      {emp.full_name || emp.user_name}
-                    </MenuItem>
-                  ))
+                  employees.map((emp) => (<MenuItem key={emp._id} value={emp._id}> {emp.user_name}</MenuItem>))
                 )}
               </TextField>
             )}
