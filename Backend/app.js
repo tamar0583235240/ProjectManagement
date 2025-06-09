@@ -16,14 +16,7 @@ const PORT = process.env.PORT || 7001;
 const app = express();
 connectDB();
 
-app.use(cors({
-  origin: [
-    'https://projectmanagement-1-d01r.onrender.com', 
-    'http://localhost:5173' 
-  ],
-  credentials: true
-}));
-
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static("public"));
 
@@ -31,12 +24,26 @@ app.use("/api/projects", projectsRoutes);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/organizations", organizationsRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/auth",authRoutes )
 app.use('/api/invite', inviteRoutes);
 
-app.get("/app", (req, res) => {
-  res.json({ message: "Backend API is running!" });
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.get("/", (req, res) => {
+    res.send("this is the home page");
+  });
+}
+
+const path = require('path');
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../Frontend/dist')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../Frontend/dist/index.html'));
+  });
+}
+
+
+
 
 mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB');
