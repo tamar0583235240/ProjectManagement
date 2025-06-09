@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import React from "react"
-=======
->>>>>>> Frontend/Employees
 import { zodResolver } from "@hookform/resolvers/zod"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
@@ -11,24 +7,15 @@ import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
-<<<<<<< HEAD
-=======
-import { useForm } from "react-hook-form"
-import { useCookies } from "react-cookie"
-import { useNavigate } from "react-router-dom"
->>>>>>> Frontend/Employees
 import { type FormData } from "../../schemas/SchemaSignUp"
 import { useSignUpMutation } from "../auth/authApi"
 import type { Organization } from "../../types/Organization"
 import type { User } from "../../types/User"
-<<<<<<< HEAD
 import { useAddOrganizationMutation } from "../organizations/organizationsApi"
 import { SchemaOrganization, type OrganizationFormData } from "../../schemas/SchemaSignUpOrganization"
 import { useForm } from "react-hook-form"
 import { useCookies } from "react-cookie"
-=======
 
->>>>>>> Frontend/Employees
 interface OrganizationDialogProps {
     open: boolean
     onClose: () => void
@@ -48,7 +35,6 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
         },
     })
 
-<<<<<<< HEAD
     const [addOrganization] = useAddOrganizationMutation();
     const [addUser] = useSignUpMutation();
     const [cookies, setCookies] = useCookies(['token'])
@@ -57,12 +43,6 @@ const OrganizationDialog: React.FC<OrganizationDialogProps> = ({ open, onClose, 
             console.error("Missing organization or user data.");
             return;
         }
-=======
-  const [addOrganization] = useAddOrganizationMutation()
-  const [addUser] = useSignUpMutation()
-  const [cookies, setCookies] = useCookies(["token"])
-  const navigate = useNavigate()
->>>>>>> Frontend/Employees
 
         console.log("User data:", userData);
         console.log("Organization data:", organizationData);
