@@ -27,10 +27,23 @@ app.use("/api/organizations", organizationsRoutes);
 app.use("/api/auth",authRoutes )
 app.use('/api/invite', inviteRoutes);
 
-
-app.get("/", (req, res) => {
+if (process.env.NODE_ENV !== 'production') {
+  app.get("/", (req, res) => {
     res.send("this is the home page");
-});
+  });
+}
+
+const path = require('path');
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../Frontend/dist')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../Frontend/dist/index.html'));
+  });
+}
+
+
+
 
 mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB');
