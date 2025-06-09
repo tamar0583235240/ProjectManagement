@@ -11,6 +11,6 @@ export default defineConfig({
   preview: {
     host: '0.0.0.0',
     port: 5173,
-    allowedHosts: ['all'] // מאפשר לכל ה-hosts
+    strictPort: false
   }
 })
