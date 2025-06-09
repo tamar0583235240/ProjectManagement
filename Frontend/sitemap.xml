@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- עמוד נחיתה ראשי -->
   <url>
     <loc>https://projectmanagement-5sr4.onrender.com/</loc>
     <lastmod>2025-06-09</lastmod>
     <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
   </url>
+  
+  <!-- עמוד נחיתה -->
   <url>
-    <loc>https://projectmanagement-5sr4.onrender.com/about</loc>
+    <loc>https://projectmanagement-5sr4.onrender.com/landingPage</loc>
+    <lastmod>2025-06-09</lastmod>
+    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  
+  <!-- דף הבית של האפליקציה -->
+  <url>
+    <loc>https://projectmanagement-5sr4.onrender.com/app</loc>
+    <lastmod>2025-06-09</lastmod>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <!-- עמוד פרויקטים -->
+  <url>
+    <loc>https://projectmanagement-5sr4.onrender.com/app/projects</loc>
     <lastmod>2025-06-09</lastmod>
     <priority>0.8</priority>
+    <changefreq>daily</changefreq>
   </url>
-  <!-- הוסף עמודים נוספים -->
+  
+  <!-- אודות הארגון -->
+  <url>
+    <loc>https://projectmanagement-5sr4.onrender.com/app/OrganizationAbout</loc>
+    <lastmod>2025-06-09</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  
+  <!-- ניהול עובדים -->
+  <url>
+    <loc>https://projectmanagement-5sr4.onrender.com/app/employee-management</loc>
+    <lastmod>2025-06-09</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <!-- הזמנת משתמשים -->
+  <url>
+    <loc>https://projectmanagement-5sr4.onrender.com/app/employee-management/invite</loc>
+    <lastmod>2025-06-09</lastmod>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
 </urlset>
