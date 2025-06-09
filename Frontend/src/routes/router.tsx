@@ -30,18 +30,18 @@ const router = createBrowserRouter([
     element: <ResetPasswordPage />
   },
   {
-    path: "app", element: <AppLayout />,
+    path: 'app', element: <AppLayout />,
     children: [
       { element: <HomePage />, index: true },
-      { path: "projects", element: <Projects /> },
+      { path: 'projects', element: <Projects /> },
       { path: 'projects/:projectId', element: <ProjectDetails /> },
-      { path: "OrganizationAbout", element: <OrganizationAbout /> },
+      { path: 'OrganizationAbout', element: <OrganizationAbout /> },
       {
-        path: "employee-management",
+        path: 'employee-management',
         element: <EmployeeManagement />,
         children: [
           {
-            path: "invite",
+            path: 'invite',
             element: <InviteUserForm />
           }
         ]
