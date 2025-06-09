@@ -2,7 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/",
+    // baseUrl: "http://localhost:5000/api/",
+    baseUrl: "https://projectmanagement-1-d01r.onrender.com",
     prepareHeaders: (headers) => {
       const token = getCookie('token');
       console.log('Token from cookie:', token);
